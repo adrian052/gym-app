@@ -1,17 +1,18 @@
 package gym.storage;
 
 import java.util.List;
-import gym.entities.Trainer;
-import gym.entities.Trainee;
-import gym.entities.Training;
+
+import gym.entities.*;
 import org.springframework.stereotype.Component;
 
 public class Data {
     private List<Trainer> trainers;
     private List<Trainee> trainees;
     private List<Training> trainings;
+    private List<User> users;
+    private List<TrainingType> trainingTypes;
 
-    // Getters y setters para los campos trainers, trainees y trainings
+    // Getters y setters
 
     public List<Trainer> getTrainers() {
         return trainers;
@@ -35,5 +36,13 @@ public class Data {
 
     public void setTrainings(List<Training> trainings) {
         this.trainings = trainings;
+    }
+
+    public List<User> getUsers(){
+        return users;
+    }
+
+    public List<TrainingType> getTrainingTypes(){
+        return trainingTypes;
     }
 }

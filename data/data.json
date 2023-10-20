@@ -63,10 +63,26 @@
     {
       "id": 1,
       "trainee": {
-        "id": 1
+        "id": 1,
+        "user": {
+          "id": 3,
+          "firstName": "Alice",
+          "lastName": "Johnson",
+          "username": "Alice.Johnson",
+          "password": "user-pass",
+          "active": true
+        }
       },
       "trainer": {
-        "id": 1
+        "id": 1,
+        "user": {
+          "id": 1,
+          "firstName": "John",
+          "lastName": "Doe",
+          "username": "John.Doe",
+          "password": "password123",
+          "active": true
+        }
       },
       "trainingName": "Training 1",
       "trainingType": {
@@ -79,10 +95,26 @@
     {
       "id": 2,
       "trainee": {
-        "id": 2
+        "id": 2,
+        "user": {
+          "id": 4,
+          "firstName": "Bob",
+          "lastName": "Smith",
+          "username": "Bob.Smith",
+          "password": "password123",
+          "active": true
+        }
       },
       "trainer": {
-        "id": 2
+        "id": 2,
+        "user": {
+          "id": 2,
+          "firstName": "Jane",
+          "lastName": "Smith",
+          "username": "Jane.Smith",
+          "password": "secure-pass",
+          "active": true
+        }
       },
       "trainingName": "Training 2",
       "trainingType": {
@@ -92,6 +124,49 @@
       "trainingDate": "2023-06-15",
       "trainingDuration": 45
     }
+  ],
+  "trainingTypes": [
+    {
+      "id": 1,
+      "trainingTypeName": "Training Type 1"
+    },
+    {
+      "id": 2,
+      "trainingTypeName": "Training Type 2"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "firstName": "John",
+      "lastName": "Doe",
+      "username": "John.Doe",
+      "password": "password123",
+      "active": true
+    },
+    {
+      "id": 2,
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "username": "Jane.Smith",
+      "password": "secure-pass",
+      "active": true
+    },
+    {
+      "id": 3,
+      "firstName": "Alice",
+      "lastName": "Johnson",
+      "username": "Alice.Johnson",
+      "password": "user-pass",
+      "active": true
+    },
+    {
+      "id": 4,
+      "firstName": "Bob",
+      "lastName": "Smith",
+      "username": "Bob.Smith",
+      "password": "password123",
+      "active": true
+    }
   ]
 }
-
