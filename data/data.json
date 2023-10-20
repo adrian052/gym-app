@@ -1,0 +1,97 @@
+{
+  "trainers": [
+    {
+      "id": 1,
+      "specialization": {
+        "id": 1,
+        "trainingTypeName": "Specialization 1"
+      },
+      "user": {
+        "id": 1,
+        "firstName": "John",
+        "lastName": "Doe",
+        "username": "John.Doe",
+        "password": "password123",
+        "active": true
+      }
+    },
+    {
+      "id": 2,
+      "specialization": {
+        "id": 2,
+        "trainingTypeName": "Specialization 2"
+      },
+      "user": {
+        "id": 2,
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "username": "Jane.Smith",
+        "password": "secure-pass",
+        "active": true
+      }
+    }
+  ],
+  "trainees": [
+    {
+      "id": 1,
+      "dateOfBirth": "1990-01-15",
+      "address": "123 Main St",
+      "user": {
+        "id": 3,
+        "firstName": "Alice",
+        "lastName": "Johnson",
+        "username": "Alice.Johnson",
+        "password": "user-pass",
+        "active": true
+      }
+    },
+    {
+      "id": 2,
+      "dateOfBirth": "1985-03-20",
+      "address": "456 Elm St",
+      "user": {
+        "id": 4,
+        "firstName": "Bob",
+        "lastName": "Smith",
+        "username": "Bob.Smith",
+        "password": "password123",
+        "active": true
+      }
+    }
+  ],
+  "trainings": [
+    {
+      "id": 1,
+      "trainee": {
+        "id": 1
+      },
+      "trainer": {
+        "id": 1
+      },
+      "trainingName": "Training 1",
+      "trainingType": {
+        "id": 1,
+        "trainingTypeName": "Training Type 1"
+      },
+      "trainingDate": "2023-05-10",
+      "trainingDuration": 60
+    },
+    {
+      "id": 2,
+      "trainee": {
+        "id": 2
+      },
+      "trainer": {
+        "id": 2
+      },
+      "trainingName": "Training 2",
+      "trainingType": {
+        "id": 2,
+        "trainingTypeName": "Training Type 2"
+      },
+      "trainingDate": "2023-06-15",
+      "trainingDuration": 45
+    }
+  ]
+}
+
