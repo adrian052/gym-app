@@ -72,4 +72,12 @@ public class User {
     public void setActive(boolean active) {
         isActive = active;
     }
+
+    @Override
+    public String toString() {
+        return "User ID: " + id +
+                "\nName: " + firstName + " " + lastName +
+                "\nUsername: " + username +
+                "\nActive: " + isActive;
+    }
 }

@@ -28,4 +28,9 @@ public class TrainingType {
     public void setTrainingTypeName(String trainingTypeName) {
         this.trainingTypeName = trainingTypeName;
     }
+    @Override
+    public String toString() {
+        return "Type ID: " + id +
+                "\nTraining Type: " + trainingTypeName;
+    }
 }

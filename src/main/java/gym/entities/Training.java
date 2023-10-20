@@ -88,4 +88,15 @@ public class Training {
     public void setTrainingDuration(int trainingDuration) {
         this.trainingDuration = trainingDuration;
     }
+    
+    @Override
+    public String toString() {
+        return "Training ID: " + id +
+                "\nTraining Name: " + trainingName +
+                "\nTraining Date: " + trainingDate +
+                "\nDuration: " + trainingDuration + " minutes" +
+                "\nTrainee: " + trainee.getUser().getFirstName() + " " + trainee.getUser().getLastName() +
+                "\nTrainer: " + trainer.getUser().getFirstName() + " " + trainer.getUser().getLastName() +
+                "\nTraining Type: " + trainingType.getTrainingTypeName();
+    }
 }

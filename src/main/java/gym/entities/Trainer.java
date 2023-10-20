@@ -41,4 +41,12 @@ public class Trainer {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "Trainer ID: " + id +
+                "\nName: " + user.getFirstName() + " " + user.getLastName() +
+                "\nSpecialization: " + specialization.getTrainingTypeName() +
+                "\nUser ID: " + user.getId();
+    }
 }

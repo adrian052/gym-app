@@ -53,4 +53,11 @@ public class Trainee {
     public void setUser(User user) {
         this.user = user;
     }
+    public String toString() {
+        return "Trainee ID: " + id +
+                "\nName: " + user.getFirstName() + " " + user.getLastName() +
+                "\nDate of Birth: " + dateOfBirth +
+                "\nAddress: " + address +
+                "\nUser ID: " + user.getId();
+    }
 }
