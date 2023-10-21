@@ -10,8 +10,13 @@ import java.util.List;
 
 @Component
 public class UserDAO implements DataAccessObject<User>{
-    @Autowired
+
     private GymStorage storage;
+
+    @Autowired
+    public void setStorage(GymStorage storage) {
+        this.storage = storage;
+    }
 
     public List<User> findAll() {
         return new ArrayList<>(storage.getUsers().values());

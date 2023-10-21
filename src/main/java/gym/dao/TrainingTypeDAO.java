@@ -10,8 +10,11 @@ import java.util.List;
 
 @Component
 public class TrainingTypeDAO implements DataAccessObject<TrainingType>{
-    @Autowired
     private GymStorage storage;
+    @Autowired
+    public void setStorage(GymStorage storage) {
+        this.storage = storage;
+    }
 
     public List<TrainingType> findAll() {
         return new ArrayList<>(storage.getTrainingTypes().values());
