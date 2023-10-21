@@ -1,28 +1,25 @@
 package gym.dao;
 
 import gym.entities.Trainee;
-import gym.storage.InMemoryStorage;
+import gym.storage.GymStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Component
-public class TraineeDAO {
+public class TraineeDAO implements DataAccessObject<Trainee> {
 
     private Map<Long, Trainee> traineeMap;
 
     @Autowired
-    public TraineeDAO(InMemoryStorage storage) {
+    public TraineeDAO(GymStorage storage) {
         this.traineeMap = storage.getTrainees();
     }
 
     public List<Trainee> findAll() {
-        System.out.println(traineeMap.size());
-
         return new ArrayList<>(traineeMap.values());
     }
 

@@ -26,9 +26,13 @@ public class Trainer {
         this.id = id;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "id")
     public TrainingType getSpecialization() {
         return specialization;
     }
+
+
 
     public void setSpecialization(TrainingType specialization) {
         this.specialization = specialization;

@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Component("storage")
 @PropertySource("context.properties")
-public class InMemoryStorage {
+public class InMemoryGymStorage implements GymStorage{
     @Value("${data.json.file.path}")
     private String jsonFilePath;
     private Map<Long, Trainer> trainers;
@@ -23,7 +23,7 @@ public class InMemoryStorage {
     private Map<Long, TrainingType> trainingTypes;
     private Map<Long, User> users;
 
-    public InMemoryStorage() {
+    public InMemoryGymStorage() {
         this.trainers = new HashMap<>();
         this.trainees = new HashMap<>();
         this.trainings = new HashMap<>();
@@ -57,21 +57,12 @@ public class InMemoryStorage {
             ObjectMapper objectMapper = new ObjectMapper();
             File jsonFile = new File(jsonFilePath);
             Data data = objectMapper.readValue(jsonFile, Data.class);
-            for (User user : data.getUsers()) {
-                this.users.put(user.getId(), user);
-            }
-            for (Trainer trainer : data.getTrainers()) {
-                this.trainers.put(trainer.getId(), trainer);
-            }
-            for (Trainee trainee : data.getTrainees()) {
-                this.trainees.put(trainee.getId(), trainee);
-            }
-            for (Training training : data.getTrainings()) {
-                this.trainings.put(training.getId(), training);
-            }
-            for (TrainingType trainingType : data.getTrainingTypes()) {
-                this.trainingTypes.put(trainingType.getId(), trainingType);
-            }
+
+            data.getUsers().forEach(user -> users.put(user.getId(), user));
+            data.getTrainers().forEach(trainer -> trainers.put(trainer.getId(), trainer));
+            data.getTrainees().forEach(trainee -> trainees.put(trainee.getId(), trainee));
+            data.getTrainings().forEach(training -> trainings.put(training.getId(), training));
+            data.getTrainingTypes().forEach(trainingType -> trainingTypes.put(trainingType.getId(), trainingType));
 
         } catch (IOException e) {
             e.printStackTrace();

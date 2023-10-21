@@ -1,22 +1,22 @@
 package gym.dao;
 
 import gym.entities.Training;
-import gym.storage.InMemoryStorage;
+import gym.storage.GymStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Component
-public class TrainingDAO {
+public class TrainingDAO implements DataAccessObject<Training> {
 
     private Map<Long, Training> trainingMap;
 
     @Autowired
-    public TrainingDAO(InMemoryStorage storage) {
+    public TrainingDAO(GymStorage storage) {
         this.trainingMap = storage.getTrainings();
     }
 

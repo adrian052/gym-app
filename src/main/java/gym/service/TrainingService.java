@@ -1,30 +1,78 @@
 package gym.service;
 
+import gym.dao.DataAccessObject;
 import gym.dao.TrainingDAO;
+import gym.dao.TraineeDAO;
+import gym.dao.TrainerDAO;
+import gym.dao.TrainingTypeDAO;
+import gym.entities.Trainee;
+import gym.entities.Trainer;
 import gym.entities.Training;
+import gym.entities.TrainingType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TrainingService {
-    private TrainingDAO trainingDAO;
+public class TrainingService implements GymService<Training> {
+    private DataAccessObject<Training> trainingDAO;
+    private DataAccessObject<Trainee> traineeDAO;
+    private DataAccessObject<Trainer> trainerDAO;
+    private DataAccessObject<TrainingType> trainingTypeDAO;
 
     @Autowired
-    public TrainingService(TrainingDAO trainingDAO) {
+    public TrainingService(DataAccessObject<Training> trainingDAO, DataAccessObject<Trainee> traineeDAO, DataAccessObject<Trainer> trainerDAO, DataAccessObject<TrainingType> trainingTypeDAO) {
         this.trainingDAO = trainingDAO;
+        this.traineeDAO = traineeDAO;
+        this.trainerDAO = trainerDAO;
+        this.trainingTypeDAO = trainingTypeDAO;
     }
 
-    public List<Training> getAllTrainings() {
+    @Override
+    public List<Training> selectAll() {
         return trainingDAO.findAll();
     }
 
-    public Training getTrainingById(Long id) {
-        return trainingDAO.findById(id);
+    @Override
+    public Training select(Long id) {
+        Training training = trainingDAO.findById(id);
+        if (training == null) {
+            throw new IllegalArgumentException("Training with ID " + id + " does not exist.");
+        }
+        return training;
     }
 
-    public void createTraining(Training training) {
+    @Override
+    public void create(Training training) {
+        if (training.getId() != null) {
+            throw new IllegalArgumentException("Training ID must be null for create.");
+        }
+
+        // Check if Trainee, Trainer, and TrainingType exist
+        if (traineeDAO.findById(training.getTrainee().getId()) == null) {
+            throw new IllegalArgumentException("Trainee with ID " + training.getTrainee().getId() + " does not exist.");
+        }
+
+        if (trainerDAO.findById(training.getTrainer().getId()) == null) {
+            throw new IllegalArgumentException("Trainer with ID " + training.getTrainer().getId() + " does not exist.");
+        }
+
+        if (trainingTypeDAO.findById(training.getTrainingType().getId()) == null) {
+            throw new IllegalArgumentException("TrainingType with ID " + training.getTrainingType().getId() + " does not exist.");
+        }
+
+        // If all checks pass, save the training
         trainingDAO.save(training);
+    }
+
+    @Override
+    public void update(Training training) {
+        // Implement update logic if necessary.
+    }
+
+    @Override
+    public void delete(Long id) {
+        // Implement deletion logic if necessary.
     }
 }

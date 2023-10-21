@@ -1,7 +1,7 @@
 package gym.dao;
 
 import gym.entities.Trainer;
-import gym.storage.InMemoryStorage;
+import gym.storage.GymStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class TrainerDAO {
+public class TrainerDAO implements DataAccessObject<Trainer>{
 
     private Map<Long, Trainer> trainerMap;
 
     @Autowired
-    public TrainerDAO(InMemoryStorage storage) {
+    public TrainerDAO(GymStorage storage) {
         this.trainerMap = storage.getTrainers();
     }
 

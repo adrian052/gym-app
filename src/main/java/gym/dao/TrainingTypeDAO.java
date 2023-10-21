@@ -1,7 +1,7 @@
 package gym.dao;
 
 import gym.entities.TrainingType;
-import gym.storage.InMemoryStorage;
+import gym.storage.GymStorage;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class TrainingTypeDAO {
+public class TrainingTypeDAO implements DataAccessObject<TrainingType>{
 
     private Map<Long, TrainingType> trainingTypeMap;
 
-    public TrainingTypeDAO(InMemoryStorage storage) {
+    public TrainingTypeDAO(GymStorage storage) {
         this.trainingTypeMap = storage.getTrainingTypes();
     }
 

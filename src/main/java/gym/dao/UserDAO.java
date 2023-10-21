@@ -1,7 +1,7 @@
 package gym.dao;
 
 import gym.entities.User;
-import gym.storage.InMemoryStorage;
+import gym.storage.GymStorage;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -9,11 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class UserDAO {
-
+public class UserDAO implements DataAccessObject<User>{
     private Map<Long, User> userMap;
 
-    public UserDAO(InMemoryStorage storage) {
+    public UserDAO(GymStorage storage) {
         this.userMap = storage.getUsers();
     }
 
