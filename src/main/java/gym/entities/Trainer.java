@@ -33,7 +33,6 @@ public class Trainer {
     }
 
 
-
     public void setSpecialization(TrainingType specialization) {
         this.specialization = specialization;
     }

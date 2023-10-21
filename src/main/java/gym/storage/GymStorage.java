@@ -20,5 +20,4 @@ public interface GymStorage {
 
     Map<Long, User> getUsers();
 
-    void initializeData();
 }

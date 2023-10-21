@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Component("storage")
 @PropertySource("context.properties")
-public class InMemoryGymStorage implements GymStorage{
+public class InMemoryGymStorage implements GymStorage {
     @Value("${data.json.file.path}")
     private String jsonFilePath;
     private Map<Long, Trainer> trainers;
@@ -52,17 +52,17 @@ public class InMemoryGymStorage implements GymStorage{
     }
 
     @PostConstruct
-    public void initializeData() {
+    private void initializeData() {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             File jsonFile = new File(jsonFilePath);
-            Data data = objectMapper.readValue(jsonFile, Data.class);
+            GymDataLoader gymDataLoader = objectMapper.readValue(jsonFile, GymDataLoader.class);
 
-            data.getUsers().forEach(user -> users.put(user.getId(), user));
-            data.getTrainers().forEach(trainer -> trainers.put(trainer.getId(), trainer));
-            data.getTrainees().forEach(trainee -> trainees.put(trainee.getId(), trainee));
-            data.getTrainings().forEach(training -> trainings.put(training.getId(), training));
-            data.getTrainingTypes().forEach(trainingType -> trainingTypes.put(trainingType.getId(), trainingType));
+            gymDataLoader.getUsers().forEach(user -> users.put(user.getId(), user));
+            gymDataLoader.getTrainers().forEach(trainer -> trainers.put(trainer.getId(), trainer));
+            gymDataLoader.getTrainees().forEach(trainee -> trainees.put(trainee.getId(), trainee));
+            gymDataLoader.getTrainings().forEach(training -> trainings.put(training.getId(), training));
+            gymDataLoader.getTrainingTypes().forEach(trainingType -> trainingTypes.put(trainingType.getId(), trainingType));
 
         } catch (IOException e) {
             e.printStackTrace();

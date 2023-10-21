@@ -2,33 +2,30 @@ package gym.dao;
 
 import gym.entities.User;
 import gym.storage.GymStorage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class UserDAO implements DataAccessObject<User>{
-    private Map<Long, User> userMap;
-
-    public UserDAO(GymStorage storage) {
-        this.userMap = storage.getUsers();
-    }
+    @Autowired
+    private GymStorage storage;
 
     public List<User> findAll() {
-        return new ArrayList<>(userMap.values());
+        return new ArrayList<>(storage.getUsers().values());
     }
 
     public User findById(Long id) {
-        return userMap.get(id);
+        return storage.getUsers().get(id);
     }
 
     public void save(User user) {
-        userMap.put(user.getId(), user);
+        storage.getUsers().put(user.getId(), user);
     }
 
     public void delete(Long id) {
-        userMap.remove(id);
+        storage.getUsers().remove(id);
     }
 }

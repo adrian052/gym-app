@@ -1,10 +1,6 @@
 package gym.service;
 
 import gym.dao.DataAccessObject;
-import gym.dao.TrainingDAO;
-import gym.dao.TraineeDAO;
-import gym.dao.TrainerDAO;
-import gym.dao.TrainingTypeDAO;
 import gym.entities.Trainee;
 import gym.entities.Trainer;
 import gym.entities.Training;
@@ -16,10 +12,10 @@ import java.util.List;
 
 @Service
 public class TrainingService implements GymService<Training> {
-    private DataAccessObject<Training> trainingDAO;
-    private DataAccessObject<Trainee> traineeDAO;
-    private DataAccessObject<Trainer> trainerDAO;
-    private DataAccessObject<TrainingType> trainingTypeDAO;
+    private final DataAccessObject<Training> trainingDAO;
+    private final DataAccessObject<Trainee> traineeDAO;
+    private final DataAccessObject<Trainer> trainerDAO;
+    private final DataAccessObject<TrainingType> trainingTypeDAO;
 
     @Autowired
     public TrainingService(DataAccessObject<Training> trainingDAO, DataAccessObject<Trainee> traineeDAO, DataAccessObject<Trainer> trainerDAO, DataAccessObject<TrainingType> trainingTypeDAO) {

@@ -7,31 +7,26 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class TrainerDAO implements DataAccessObject<Trainer>{
 
-    private Map<Long, Trainer> trainerMap;
-
     @Autowired
-    public TrainerDAO(GymStorage storage) {
-        this.trainerMap = storage.getTrainers();
-    }
+    private GymStorage storage;
 
     public List<Trainer> findAll() {
-        return new ArrayList<>(trainerMap.values());
+        return new ArrayList<>(storage.getTrainers().values());
     }
 
     public Trainer findById(Long id) {
-        return trainerMap.get(id);
+        return storage.getTrainers().get(id);
     }
 
     public void save(Trainer trainer) {
-        trainerMap.put(trainer.getId(), trainer);
+        storage.getTrainers().put(trainer.getId(), trainer);
     }
 
     public void delete(Long id) {
-        trainerMap.remove(id);
+        storage.getTrainers().remove(id);
     }
 }

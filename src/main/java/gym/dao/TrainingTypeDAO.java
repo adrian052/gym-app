@@ -2,34 +2,30 @@ package gym.dao;
 
 import gym.entities.TrainingType;
 import gym.storage.GymStorage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class TrainingTypeDAO implements DataAccessObject<TrainingType>{
-
-    private Map<Long, TrainingType> trainingTypeMap;
-
-    public TrainingTypeDAO(GymStorage storage) {
-        this.trainingTypeMap = storage.getTrainingTypes();
-    }
+    @Autowired
+    private GymStorage storage;
 
     public List<TrainingType> findAll() {
-        return new ArrayList<>(trainingTypeMap.values());
+        return new ArrayList<>(storage.getTrainingTypes().values());
     }
 
     public TrainingType findById(Long id) {
-        return trainingTypeMap.get(id);
+        return storage.getTrainingTypes().get(id);
     }
 
     public void save(TrainingType trainingType) {
-        trainingTypeMap.put(trainingType.getId(), trainingType);
+        storage.getTrainingTypes().put(trainingType.getId(), trainingType);
     }
 
     public void delete(Long id) {
-        trainingTypeMap.remove(id);
+        storage.getTrainingTypes().remove(id);
     }
 }

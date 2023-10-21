@@ -1,4 +1,3 @@
-import gym.config.AppConfig;
 import gym.dao.TrainingTypeDAO;
 import gym.entities.*;
 import gym.service.TraineeService;
@@ -11,7 +10,7 @@ import java.util.Date;
 
 public class GymApp {
     public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext("gym");
 
         // Obtener los servicios necesarios
         TraineeService traineeService = context.getBean(TraineeService.class);
