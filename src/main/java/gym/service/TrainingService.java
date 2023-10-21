@@ -12,18 +12,14 @@ import java.util.List;
 
 @Service
 public class TrainingService implements GymService<Training> {
-    private final DataAccessObject<Training> trainingDAO;
-    private final DataAccessObject<Trainee> traineeDAO;
-    private final DataAccessObject<Trainer> trainerDAO;
-    private final DataAccessObject<TrainingType> trainingTypeDAO;
-
     @Autowired
-    public TrainingService(DataAccessObject<Training> trainingDAO, DataAccessObject<Trainee> traineeDAO, DataAccessObject<Trainer> trainerDAO, DataAccessObject<TrainingType> trainingTypeDAO) {
-        this.trainingDAO = trainingDAO;
-        this.traineeDAO = traineeDAO;
-        this.trainerDAO = trainerDAO;
-        this.trainingTypeDAO = trainingTypeDAO;
-    }
+    private  DataAccessObject<Training> trainingDAO;
+    @Autowired
+    private DataAccessObject<Trainee> traineeDAO;
+    @Autowired
+    private DataAccessObject<Trainer> trainerDAO;
+    @Autowired
+    private DataAccessObject<TrainingType> trainingTypeDAO;
 
     @Override
     public List<Training> selectAll() {

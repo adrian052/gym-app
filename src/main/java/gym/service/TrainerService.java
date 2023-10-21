@@ -12,14 +12,10 @@ import java.util.List;
 
 @Service
 public class TrainerService implements GymService<Trainer> {
-    private DataAccessObject<Trainer> trainerDAO;
-    private DataAccessObject<User> userDAO;
-
     @Autowired
-    public TrainerService(TrainerDAO trainerDAO, UserDAO userDAO) {
-        this.trainerDAO = trainerDAO;
-        this.userDAO = userDAO;
-    }
+    private DataAccessObject<Trainer> trainerDAO;
+    @Autowired
+    private DataAccessObject<User> userDAO;
 
     @Override
     public List<Trainer> selectAll() {

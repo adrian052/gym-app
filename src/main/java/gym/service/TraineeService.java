@@ -11,7 +11,9 @@ import java.util.List;
 
 @Service
 public class TraineeService implements GymService<Trainee> {
+    @Autowired
     private DataAccessObject<Trainee> traineeDAO;
+    @Autowired
     private DataAccessObject<User> userDAO;
 
     @Autowired
