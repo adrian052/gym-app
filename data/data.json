@@ -88,6 +88,10 @@
           "active": true
         }
       },
+      "trainingType": {
+        "id": 1,
+        "trainingTypeName": "Training Type 1"
+      },
       "trainingName": "Training 1",
       "trainingDate": "2023-05-10",
       "trainingDuration": 60
@@ -119,6 +123,10 @@
           "password": "secure-pass",
           "active": true
         }
+      },
+      "trainingType": {
+        "id": 2,
+        "trainingTypeName": "Training Type 2"
       },
       "trainingName": "Training 2",
       "trainingDate": "2023-06-15",

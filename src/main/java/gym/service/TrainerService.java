@@ -28,11 +28,7 @@ public class TrainerService implements GymService<Trainer> {
     }
 
     @Override
-    public void create(Trainer trainer) {
-        if (trainer.getId() != null) {
-            throw new IllegalArgumentException("Trainer ID must be null for create.");
-        }
-
+    public Long create(Trainer trainer) {
         // Check if the user with the specified ID exists
         User user = userDAO.findById(trainer.getUser().getId());
         if (user == null) {
@@ -44,7 +40,10 @@ public class TrainerService implements GymService<Trainer> {
             throw new IllegalArgumentException("Specialization must not be null.");
         }
 
+        Long newTrainerId = generateNewTrainerId();
+        trainer.setId(newTrainerId);
         trainerDAO.save(trainer);
+        return newTrainerId;
     }
 
     @Override
@@ -74,5 +73,13 @@ public class TrainerService implements GymService<Trainer> {
     @Override
     public void delete(Long id) {
         // TODO: Implement delete logic
+    }
+
+    private long generateNewTrainerId() {
+        long maxId = trainerDAO.findAll().stream()
+                .mapToLong(Trainer::getId)
+                .max()
+                .orElse(0);
+        return maxId + 1;
     }
 }

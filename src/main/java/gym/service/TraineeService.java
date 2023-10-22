@@ -2,7 +2,6 @@ package gym.service;
 
 import gym.dao.DataAccessObject;
 import gym.entities.Trainee;
-import gym.dao.UserDAO;
 import gym.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +13,7 @@ public class TraineeService implements GymService<Trainee> {
     @Autowired
     private DataAccessObject<Trainee> traineeDAO;
     @Autowired
-    private DataAccessObject<User> userDAO;
-
-    @Autowired
-    public TraineeService(DataAccessObject<Trainee> traineeDAO, DataAccessObject<User> userDAO) {
-        this.traineeDAO = traineeDAO;
-        this.userDAO = userDAO;
-    }
+    private GymService<User> userService;
 
     @Override
     public List<Trainee> selectAll() {
@@ -33,16 +26,16 @@ public class TraineeService implements GymService<Trainee> {
     }
 
     @Override
-    public void create(Trainee trainee) {
-        if (trainee.getId() != null) {
-            throw new IllegalArgumentException("Trainee ID must be null for create.");
-        }
-        User user = userDAO.findById(trainee.getUser().getId());
+    public Long create(Trainee trainee) {
+        User user = userService.select(trainee.getUser().getId());
         if (user == null) {
             throw new IllegalArgumentException("User with the specified ID does not exist.");
         }
+        Long newTraineeId = generateNewTraineeId();
+        trainee.setId(newTraineeId);
 
         traineeDAO.save(trainee);
+        return newTraineeId;
     }
 
     @Override
@@ -56,7 +49,7 @@ public class TraineeService implements GymService<Trainee> {
             throw new IllegalArgumentException("Trainee with the specified ID does not exist.");
         }
 
-        User user = userDAO.findById(trainee.getUser().getId());
+        User user = userService.select(trainee.getUser().getId());
         if (user == null) {
             throw new IllegalArgumentException("User with the specified ID does not exist.");
         }
@@ -70,7 +63,14 @@ public class TraineeService implements GymService<Trainee> {
         if (existingTrainee == null) {
             throw new IllegalArgumentException("Trainee with the specified ID does not exist.");
         }
-
         traineeDAO.delete(id);
+    }
+
+    private long generateNewTraineeId() {
+        long maxId = traineeDAO.findAll().stream()
+                .mapToLong(Trainee::getId)
+                .max()
+                .orElse(0);
+        return maxId + 1;
     }
 }

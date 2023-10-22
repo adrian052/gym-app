@@ -1,64 +1,135 @@
-import gym.dao.TrainingTypeDAO;
-import gym.entities.*;
-import gym.service.TraineeService;
-import gym.service.TrainerService;
-import gym.service.TrainingService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import gym.facade.FacadeGym;
+import gym.entities.Trainee;
+import gym.entities.Trainer;
+import gym.entities.Training;
 
 import java.util.Date;
+import java.util.List;
 
 public class GymApp {
     public static void main(String[] args) {
+        // Initialize the Spring application context
         ApplicationContext context = new AnnotationConfigApplicationContext("gym");
 
-        // Obtener los servicios necesarios
-        TraineeService traineeService = context.getBean(TraineeService.class);
-        TrainerService trainerService = context.getBean(TrainerService.class);
-        TrainingService trainingService = context.getBean(TrainingService.class);
-        TrainingTypeDAO trainingTypeDAO = context.getBean(TrainingTypeDAO.class);
+        // Get the FacadeGym bean from the application context
+        FacadeGym gymFacade = context.getBean(FacadeGym.class);
 
-        // Crear un nuevo Trainee a partir de los datos proporcionados
-        Trainee newTrainee = new Trainee();
-        newTrainee.setDateOfBirth(new Date());
-        newTrainee.setAddress("123 Main St");
+        // Select all trainees and print their information
+        List<Trainee> trainees = gymFacade.selectAllTrainees();
+        System.out.println("All Trainees:");
+        for (Trainee trainee : trainees) {
+            System.out.println(trainee);
+            System.out.println();
+        }
 
-        // Crear un nuevo User para el Trainee
-        User traineeUser = new User();
-        traineeUser.setId(3L); // ID 3 del JSON
-        newTrainee.setUser(traineeUser);
+        System.out.println("------------------------------------------------------");
+        System.out.println();
 
-        traineeService.create(newTrainee);
-        System.out.println("New Trainee created: " + newTrainee);
+        // Select all trainers and print their information
+        List<Trainer> trainers = gymFacade.selectAllTrainers();
+        System.out.println("All Trainers:");
+        for (Trainer trainer : trainers) {
+            System.out.println(trainer);
+            System.out.println();
+        }
 
-        // Crear un nuevo Trainer a partir de los datos proporcionados
-        Trainer newTrainer = new Trainer();
+        System.out.println("------------------------------------------------------");
+        System.out.println();
 
-        // Crear un nuevo User para el Trainer
-        User trainerUser = new User();
-        trainerUser.setId(1L); // ID 1 del JSON
-        newTrainer.setUser(trainerUser);
+        // Select all trainings and print their information
+        List<Training> trainings = gymFacade.selectAllTrainings();
+        System.out.println("All Trainings:");
+        for (Training training : trainings) {
+            System.out.println(training);
+            System.out.println();
+        }
 
-        // Utiliza una TrainingType existente (por ejemplo, "Training Type 1")
-        TrainingType trainingType = new TrainingType();
-        trainingType.setId(1L); // ID 1 del JSON
-        newTrainer.setSpecialization(trainingType);
+        System.out.println("------------------------------------------------------");
+        System.out.println();
 
-        trainerService.create(newTrainer);
-        System.out.println("New Trainer created: " + newTrainer);
+        // Create a new trainee
+        gymFacade.createTrainee("New", "Trainee", true, new Date(), "123 Elm St");
 
-        // Crear un nuevo Training a partir de los datos proporcionados
-        Training newTraining = new Training();
-        newTraining.setTrainee(newTrainee);
-        newTraining.setTrainer(newTrainer);
-        newTraining.setTrainingName("New Training 3");
-        newTraining.setTrainingDate(new Date()); // Fecha nueva
-        newTraining.setTrainingDuration(75);
+        // Create a new trainer
+        gymFacade.createTrainer(1L, "New", "Trainer", true);
 
-        // Utiliza una TrainingType existente (por ejemplo, "Training Type 1")
-        newTraining.setTrainingType(trainingType);
+        // Create a new training
+        gymFacade.createTraining(3L, 3L, "New Training", 1L, new Date(), 60);
 
-        trainingService.create(newTraining);
-        System.out.println("New Training created: " + newTraining);
+        System.out.println("------------------------------------------------------");
+        System.out.println();
+
+        // Select a specific trainee and print their information
+        Trainee selectedTrainee = gymFacade.selectTrainee(3L);
+        if (selectedTrainee != null) {
+            System.out.println("Selected Trainee:");
+            System.out.println(selectedTrainee);
+            System.out.println();
+        }
+
+        // Select a specific trainer and print their information
+        Trainer selectedTrainer = gymFacade.selectTrainer(3L);
+        if (selectedTrainer != null) {
+            System.out.println("Selected Trainer:");
+            System.out.println(selectedTrainer);
+            System.out.println();
+        }
+
+        // Select a specific training and print its information
+        Training selectedTraining = gymFacade.selectTraining(3L);
+        if (selectedTraining != null) {
+            System.out.println("Selected Training:");
+            System.out.println(selectedTraining);
+            System.out.println();
+        }
+
+        System.out.println("------------------------------------------------------");
+        System.out.println();
+
+        // Update the trainee
+        gymFacade.updateTrainee(1L, "Updated", "Trainee", true, new Date(), "456 Oak St");
+
+        // Update the trainer
+        gymFacade.updateTrainer(1L, 2L, "Updated", "Trainer", true);
+
+        System.out.println("------------------------------------------------------");
+        System.out.println();
+
+        // Delete a trainee
+        boolean traineeDeleted = gymFacade.deleteTrainee(2L);
+        if (traineeDeleted) {
+            System.out.println("Trainee with ID 2 has been deleted.");
+        } else {
+            System.out.println("Failed to delete Trainee with ID 2.");
+        }
+
+        System.out.println("------------------------------------------------------");
+        System.out.println();
+
+        // Select all trainees and print their information again
+        List<Trainee> updatedTrainees = gymFacade.selectAllTrainees();
+        System.out.println("All Trainees (After Updates and Deletions):");
+        for (Trainee trainee : updatedTrainees) {
+            System.out.println(trainee);
+            System.out.println();
+        }
+
+        // Select all trainers and print their information again
+        List<Trainer> updatedTrainers = gymFacade.selectAllTrainers();
+        System.out.println("All Trainers (After Updates and Deletions):");
+        for (Trainer trainer : updatedTrainers) {
+            System.out.println(trainer);
+            System.out.println();
+        }
+
+        // Select all trainings and print their information again
+        List<Training> updatedTrainings = gymFacade.selectAllTrainings();
+        System.out.println("All Trainings (After Updates and Deletions):");
+        for (Training training : updatedTrainings) {
+            System.out.println(training);
+            System.out.println();
+        }
     }
 }
