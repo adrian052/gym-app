@@ -50,10 +50,18 @@ public class GymApp {
         System.out.println();
 
         // Create a new trainee
+        gymFacade.createTrainee("Alice", "Johnson", true, new Date(), "123 Elm St");
+        System.out.println();
+
         gymFacade.createTrainee("New", "Trainee", true, new Date(), "123 Elm St");
+        System.out.println();
 
         // Create a new trainer
+        gymFacade.createTrainer(1L, "John", "Doe", true);
+        System.out.println();
+
         gymFacade.createTrainer(1L, "New", "Trainer", true);
+        System.out.println();
 
         // Create a new training
         gymFacade.createTraining(3L, 3L, "New Training", 1L, new Date(), 60);

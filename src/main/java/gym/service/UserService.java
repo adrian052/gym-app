@@ -57,12 +57,12 @@ public class UserService implements GymService<User> {
     public String generateUsername(User user) {
         String baseUsername = user.getFirstName() + "." + user.getLastName();
         Random random = new Random();
-        String uniqueUsername;
+        String uniqueUsername = baseUsername;
 
-        do {
+        while(existUsername(uniqueUsername)){
             int randomNumber = random.nextInt(900000) + 100000; // Generate a random 6-digit number
             uniqueUsername = baseUsername + randomNumber;
-        } while (existUsername(uniqueUsername)); // Check for uniqueness
+        }
 
         return uniqueUsername;
     }
