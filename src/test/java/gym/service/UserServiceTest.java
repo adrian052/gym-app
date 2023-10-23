@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 
 public class UserServiceTest {
 
-    private UserService userService;
+    private GymService<User> userService;
 
     @Before
     public void setUp() {
@@ -76,7 +76,7 @@ public class UserServiceTest {
     @Test
     public void generateUsername_ShouldGenerateUniqueUsername() {
         User user = createUser(4L, "User4", "Last4", "user4", "password4");
-        String username = userService.generateUsername(user);
+        String username = ((UserService)userService).generateUsername(user);
 
         assertThat(username).isNotEmpty().isEqualTo("User4.Last4");
         ; // Adjust the expected format as needed
@@ -84,20 +84,20 @@ public class UserServiceTest {
 
     @Test
     public void existUsername_ShouldReturnTrueForExistingUsername() {
-        boolean exists = userService.existUsername("user1");
+        boolean exists = ((UserService)userService).existUsername("user1");
         assertThat(exists).isTrue();
     }
 
     @Test
     public void existUsername_ShouldReturnFalseForNonExistingUsername() {
-        boolean exists = userService.existUsername("nonexistinguser");
+        boolean exists = ((UserService)userService).existUsername("nonexistinguser");
         assertThat(exists).isFalse();
     }
 
     @Test
     public void generateRandomPassword_ShouldGenerateRandomPassword() {
         int passwordLength = 8;
-        String password = userService.generateRandomPassword(passwordLength);
+        String password = ((UserService)userService).generateRandomPassword(passwordLength);
         assertThat(password).hasSize(passwordLength).isNotNull();
     }
 

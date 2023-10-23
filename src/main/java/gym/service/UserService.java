@@ -1,5 +1,6 @@
 package gym.service;
 
+import gym.dao.DataAccessObject;
 import gym.dao.UserDAO;
 import gym.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.Random;
 @Service
 public class UserService implements GymService<User> {
     @Autowired
-    private UserDAO userDAO;
+    private DataAccessObject<User> userDAO;
 
     @Override
     public List<User> selectAll() {
