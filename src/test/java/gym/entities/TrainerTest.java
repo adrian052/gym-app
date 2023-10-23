@@ -7,23 +7,23 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class TrainerTest {
+class TrainerTest {
 
     private Trainer trainer;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         trainer = new Trainer();
     }
 
     @Test
-    public void testGetAndSetId() {
+    void testGetAndSetId() {
         trainer.setId(1L);
         assertThat(trainer.getId()).isEqualTo(1L);
     }
 
     @Test
-    public void testGetAndSetSpecialization() {
+    void testGetAndSetSpecialization() {
         TrainingType specialization = new TrainingType();
         specialization.setTrainingTypeName("Strength Training");
         trainer.setSpecialization(specialization);
@@ -31,7 +31,7 @@ public class TrainerTest {
     }
 
     @Test
-    public void testGetAndSetUser() {
+    void testGetAndSetUser() {
         User user = new User();
         user.setId(1L);
         user.setFirstName("Alice");
@@ -41,7 +41,7 @@ public class TrainerTest {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         User user = new User();
         user.setId(1L);
         user.setFirstName("Alice");
@@ -53,17 +53,17 @@ public class TrainerTest {
         trainer.setId(1L);
         trainer.setSpecialization(specialization);
         trainer.setUser(user);
-
+        String actual = trainer.toString();
         String expectedString = "Trainer ID: 1\n" +
                 "Name: Alice Johnson\n" +
                 "Specialization: Strength Training\n" +
                 "User ID: 1";
 
-        assertThat(trainer.toString()).isEqualTo(expectedString);
+        assertThat(actual).isEqualTo(expectedString);
     }
 
     @Test
-    public void testSpecializationNull() {
+    void testSpecializationNull() {
         // Ensure that the specialization is null by default
         assertThat(trainer.getSpecialization()).isNull();
     }

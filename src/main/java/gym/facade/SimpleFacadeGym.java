@@ -2,14 +2,12 @@ package gym.facade;
 
 import gym.entities.*;
 import gym.service.GymService;
-import gym.service.TrainingService;
 import gym.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TransferQueue;
 
 @Component
 public class SimpleFacadeGym implements FacadeGym{

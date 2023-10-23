@@ -1,8 +1,6 @@
 package gym.service;
 
 import gym.dao.DataAccessObject;
-import gym.dao.TrainerDAO;
-import gym.dao.UserDAO;
 import gym.entities.Trainer;
 import gym.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;

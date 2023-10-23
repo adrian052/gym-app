@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TrainingTypeTest {
+class TrainingTypeTest {
 
     private TrainingType trainingType;
 
@@ -16,26 +16,27 @@ public class TrainingTypeTest {
     }
 
     @Test
-    public void testGetAndSetId() {
+     void testGetAndSetId() {
         trainingType.setId(1L);
         assertThat(trainingType.getId()).isEqualTo(1L);
     }
 
     @Test
-    public void testGetAndSetTrainingTypeName() {
+     void testGetAndSetTrainingTypeName() {
         trainingType.setTrainingTypeName("Cardio");
         assertThat(trainingType.getTrainingTypeName()).isEqualTo("Cardio");
     }
 
     @Test
-    public void testToString() {
+     void testToString() {
         trainingType.setId(1L);
         trainingType.setTrainingTypeName("Cardio");
 
+        String actual = trainingType.toString();
         String expectedString = "Type ID: 1\n" +
                 "Training Type: Cardio";
 
-        assertThat(trainingType.toString()).isEqualTo(expectedString);
+        assertThat(actual).isEqualTo(expectedString);
     }
 
 }

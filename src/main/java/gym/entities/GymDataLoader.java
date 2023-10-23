@@ -1,7 +1,5 @@
 package gym.entities;
 
-import gym.entities.*;
-
 import java.util.List;
 
 public class GymDataLoader {

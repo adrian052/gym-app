@@ -7,36 +7,36 @@ import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TraineeTest {
+class TraineeTest {
 
     private Trainee trainee;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         trainee = new Trainee();
     }
 
     @Test
-    public void testGetAndSetId() {
+     void testGetAndSetId() {
         trainee.setId(1L);
         assertThat(trainee.getId()).isEqualTo(1L);
     }
 
     @Test
-    public void testGetAndSetDateOfBirth() {
+    void testGetAndSetDateOfBirth() {
         Date dateOfBirth = new Date();
         trainee.setDateOfBirth(dateOfBirth);
         assertThat(trainee.getDateOfBirth()).isEqualTo(dateOfBirth);
     }
 
     @Test
-    public void testGetAndSetAddress() {
+    void testGetAndSetAddress() {
         trainee.setAddress("123 Elm St.");
         assertThat(trainee.getAddress()).isEqualTo("123 Elm St.");
     }
 
     @Test
-    public void testGetAndSetUser() {
+    void testGetAndSetUser() {
         User user = new User();
         user.setId(1L);
         user.setFirstName("Alice");
@@ -48,7 +48,7 @@ public class TraineeTest {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         User user = new User();
         user.setId(1L);
         user.setFirstName("Alice");
@@ -59,13 +59,13 @@ public class TraineeTest {
         trainee.setDateOfBirth(dateOfBirth);
         trainee.setAddress("123 Elm St.");
         trainee.setUser(user);
-
+        String actual = trainee.toString();
         String expectedString = "Trainee ID: 1\n" +
                 "Name: Alice Johnson\n" +
                 "Date of Birth: " + dateOfBirth + "\n" +
                 "Address: 123 Elm St.\n" +
                 "User ID: 1";
 
-        assertThat(trainee.toString()).isEqualTo(expectedString);
+        assertThat(actual).isEqualTo(expectedString);
     }
 }

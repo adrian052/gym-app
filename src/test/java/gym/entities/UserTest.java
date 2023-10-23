@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserTest {
+class UserTest {
 
     private User user;
 
@@ -16,43 +16,43 @@ public class UserTest {
     }
 
     @Test
-    public void testGetAndSetId() {
+     void testGetAndSetId() {
         user.setId(1L);
         assertThat(user.getId()).isEqualTo(1L);
     }
 
     @Test
-    public void testGetAndSetFirstName() {
+    void testGetAndSetFirstName() {
         user.setFirstName("Alice");
         assertThat(user.getFirstName()).isEqualTo("Alice");
     }
 
     @Test
-    public void testGetAndSetLastName() {
+    void testGetAndSetLastName() {
         user.setLastName("Johnson");
         assertThat(user.getLastName()).isEqualTo("Johnson");
     }
 
     @Test
-    public void testGetAndSetUsername() {
+    void testGetAndSetUsername() {
         user.setUsername("alice123");
         assertThat(user.getUsername()).isEqualTo("alice123");
     }
 
     @Test
-    public void testGetAndSetPassword() {
+    void testGetAndSetPassword() {
         user.setPassword("password123");
         assertThat(user.getPassword()).isEqualTo("password123");
     }
 
     @Test
-    public void testIsAndSetActive() {
+    void testIsAndSetActive() {
         user.setActive(true);
         assertThat(user.isActive()).isTrue();
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         user.setId(1L);
         user.setFirstName("Alice");
         user.setLastName("Johnson");

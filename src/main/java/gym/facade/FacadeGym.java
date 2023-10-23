@@ -4,8 +4,6 @@ package gym.facade;
 import gym.entities.Trainee;
 import gym.entities.Trainer;
 import gym.entities.Training;
-import gym.entities.User;
-import gym.entities.TrainingType;
 
 import java.util.Date;
 import java.util.List;

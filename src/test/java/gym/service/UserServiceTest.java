@@ -19,12 +19,11 @@ import static org.mockito.Mockito.when;
 public class UserServiceTest {
 
     private UserService userService;
-    private UserDAO userDAO;
 
     @Before
     public void setUp() {
         userService = new UserService();
-        userDAO = new UserDAO();
+        UserDAO userDAO = new UserDAO();
 
         GymStorage storage = mock(GymStorage.class);
         ReflectionTestUtils.setField(userDAO, "storage", storage);
@@ -79,8 +78,8 @@ public class UserServiceTest {
         User user = createUser(4L, "User4", "Last4", "user4", "password4");
         String username = userService.generateUsername(user);
 
-        assertThat(username).isNotEmpty();
-        assertThat(username).isEqualTo("User4.Last4"); // Adjust the expected format as needed
+        assertThat(username).isNotEmpty().isEqualTo("User4.Last4");
+        ; // Adjust the expected format as needed
     }
 
     @Test
@@ -99,9 +98,7 @@ public class UserServiceTest {
     public void generateRandomPassword_ShouldGenerateRandomPassword() {
         int passwordLength = 8;
         String password = userService.generateRandomPassword(passwordLength);
-
-        assertThat(password).isNotNull();
-        assertThat(password).hasSize(passwordLength);
+        assertThat(password).hasSize(passwordLength).isNotNull();
     }
 
 

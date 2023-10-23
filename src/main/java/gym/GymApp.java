@@ -1,3 +1,5 @@
+package gym;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import gym.facade.FacadeGym;

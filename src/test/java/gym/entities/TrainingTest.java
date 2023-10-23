@@ -9,7 +9,7 @@ import java.util.Date;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class TrainingTest {
+class TrainingTest {
 
     private Training training;
 
@@ -19,13 +19,13 @@ public class TrainingTest {
     }
 
     @Test
-    public void testGetAndSetId() {
+    void testGetAndSetId() {
         training.setId(1L);
         assertThat(training.getId()).isEqualTo(1L);
     }
 
     @Test
-    public void testGetAndSetTrainee() {
+    void testGetAndSetTrainee() {
         Trainee trainee = new Trainee();
         trainee.setId(1L);
         training.setTrainee(trainee);
@@ -33,7 +33,7 @@ public class TrainingTest {
     }
 
     @Test
-    public void testGetAndSetTrainer() {
+    void testGetAndSetTrainer() {
         Trainer trainer = new Trainer();
         trainer.setId(1L);
         training.setTrainer(trainer);
@@ -41,13 +41,13 @@ public class TrainingTest {
     }
 
     @Test
-    public void testGetAndSetTrainingName() {
+    void testGetAndSetTrainingName() {
         training.setTrainingName("Strength Training");
         assertThat(training.getTrainingName()).isEqualTo("Strength Training");
     }
 
     @Test
-    public void testGetAndSetTrainingType() {
+    void testGetAndSetTrainingType() {
         TrainingType trainingType = new TrainingType();
         trainingType.setTrainingTypeName("Cardio");
         training.setTrainingType(trainingType);
@@ -55,7 +55,7 @@ public class TrainingTest {
     }
 
     @Test
-    public void testGetAndSetTrainingDate() {
+    void testGetAndSetTrainingDate() {
         Date trainingDate = new Date();
         training.setTrainingDate(trainingDate);
         assertThat(training.getTrainingDate()).isEqualTo(trainingDate);
@@ -68,7 +68,7 @@ public class TrainingTest {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         Trainee trainee = new Trainee();
         trainee.setId(1L);
         User traineeUser = new User();
@@ -96,6 +96,7 @@ public class TrainingTest {
         training.setTrainingDate(trainingDate);
         training.setTrainingDuration(60);
 
+        String actual = training.toString();
         String expectedString = "Training ID: 1\n" +
                 "Training Name: Cardio Session\n" +
                 "Training Date: " + trainingDate + "\n" +
@@ -104,7 +105,7 @@ public class TrainingTest {
                 "Trainer: Bob Smith\n" +
                 "Training Type: Cardio";
 
-        assertThat(training.toString()).isEqualTo(expectedString);
+        assertThat(actual).isEqualTo(expectedString);
     }
 
 }

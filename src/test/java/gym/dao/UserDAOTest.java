@@ -1,7 +1,5 @@
 package gym.dao;
 
-import gym.dao.DataAccessObject;
-import gym.dao.UserDAO;
 import gym.entities.User;
 import gym.storage.GymStorage;
 import gym.storage.InMemoryGymStorage;

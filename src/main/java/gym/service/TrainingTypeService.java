@@ -1,11 +1,11 @@
 package gym.service;
 
 import gym.dao.DataAccessObject;
-import gym.entities.Trainee;
 import gym.entities.TrainingType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,6 +38,6 @@ public class TrainingTypeService implements GymService<TrainingType>{
     @Override
     public List<TrainingType> selectAll() {
         //TODO
-        return null;
+        return new ArrayList<>();
     }
 }
