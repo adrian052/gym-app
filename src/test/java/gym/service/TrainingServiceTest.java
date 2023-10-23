@@ -70,7 +70,7 @@ public class TrainingServiceTest {
 
     @Test
     public void testCreate_ShouldCreateTraining() {
-        // Mock de Trainee, Trainer y TrainingType para que existan
+
         Trainee trainee = new Trainee();
         trainee.setId(1L);
         Trainer trainer = new Trainer();
@@ -89,7 +89,6 @@ public class TrainingServiceTest {
         training.setTrainingDate(new Date());
         training.setTrainingDuration(60);
 
-        // Configurar el mock para trainingDAO.save
         trainingDAO.save(any(Training.class));
 
         Long newTrainingId = trainingService.create(training);

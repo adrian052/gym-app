@@ -1,14 +1,9 @@
 package gym.entities;
 
-import jakarta.persistence.*;
 
-@Entity
 public class TrainingType {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String trainingTypeName;
 
     // Getters and setters

@@ -1,19 +1,10 @@
 package gym.entities;
 
-import jakarta.persistence.*;
-
-@Entity
 public class Trainer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "specialization_id")
     private TrainingType specialization;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
     // Getters and setters
@@ -26,8 +17,6 @@ public class Trainer {
         this.id = id;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "id")
     public TrainingType getSpecialization() {
         return specialization;
     }

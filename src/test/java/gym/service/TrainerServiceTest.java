@@ -62,21 +62,21 @@ public class TrainerServiceTest {
 
     @Test
     public void testCreate_ShouldCreateTrainer() {
-        // Mock de UserDAO para que devuelva un User válido
+
         User user = new User();
         user.setId(1L);
         Mockito.when(userDAO.findById(1L)).thenReturn(user);
 
-        // Mock de TrainingType para asegurarse de que exista una especialización
+
         TrainingType trainingType = new TrainingType();
         trainingType.setTrainingTypeName("Fitness");
         trainingType.setId(1L);
 
         Trainer trainer = new Trainer();
-        trainer.setUser(user); // Asignar el User al Trainer
-        trainer.setSpecialization(trainingType); // Asignar una especialización
+        trainer.setUser(user);
+        trainer.setSpecialization(trainingType);
 
-        // Configurar el mock para trainerDAO.save
+
         trainerDAO.save(any(Trainer.class));
 
         Long newTrainerId = trainerService.create(trainer);

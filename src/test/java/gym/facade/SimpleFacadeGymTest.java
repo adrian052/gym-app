@@ -38,7 +38,6 @@ public class SimpleFacadeGymTest {
 
     @BeforeEach
     public void setUp() {
-        // Inicializa la fachada con las dependencias simuladas
         MockitoAnnotations.initMocks(this);
         facadeGym = new SimpleFacadeGym(
                 traineeService,

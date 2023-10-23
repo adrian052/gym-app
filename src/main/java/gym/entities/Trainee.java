@@ -1,23 +1,15 @@
 package gym.entities;
 
-import jakarta.persistence.*;
 
 import java.util.Date;
 
-@Entity
 public class Trainee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private Date dateOfBirth;
 
-    @Column
     private String address;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
     // Getters and setters
