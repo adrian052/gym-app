@@ -69,7 +69,7 @@ public class UserService implements GymService<User> {
 
 
     // Check if a username already exists in the maps.
-    private boolean existUsername(String username) {
+    public boolean existUsername(String username) {
         List<User> users = userDAO.findAll();
         return users.stream().anyMatch(user -> user.getUsername().equals(username));
     }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +28,14 @@ public class InMemoryGymStorage implements GymStorage {
         this.trainings = new HashMap<>();
         this.trainingTypes = new HashMap<>();
         this.users = new HashMap<>();
+    }
+
+    public void setJsonFilePath(String jsonFilePath) {
+        this.jsonFilePath = jsonFilePath;
+    }
+
+    public String getJsonFilePath() {
+        return this.jsonFilePath;
     }
 
     public Map<Long, Trainer> getTrainers() {
@@ -52,7 +59,7 @@ public class InMemoryGymStorage implements GymStorage {
     }
 
     @PostConstruct
-    private void initializeData() {
+    public void initializeData() {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             File jsonFile = new File(jsonFilePath);
@@ -64,8 +71,10 @@ public class InMemoryGymStorage implements GymStorage {
             gymDataLoader.getTrainings().forEach(training -> trainings.put(training.getId(), training));
             gymDataLoader.getTrainingTypes().forEach(trainingType -> trainingTypes.put(trainingType.getId(), trainingType));
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
 }

@@ -1,4 +1,4 @@
-package gym.storage;
+package gym.entities;
 
 import gym.entities.*;
 
