@@ -10,7 +10,6 @@ import java.util.List;
 
 @Component
 public class UserDAO implements DataAccessObject<User>{
-
     private GymStorage storage;
 
     @Autowired

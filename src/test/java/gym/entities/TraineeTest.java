@@ -1,6 +1,5 @@
 package gym.entities;
 
-import jakarta.persistence.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

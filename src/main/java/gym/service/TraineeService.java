@@ -13,7 +13,7 @@ public class TraineeService implements GymService<Trainee> {
     @Autowired
     private DataAccessObject<Trainee> traineeDAO;
     @Autowired
-    private GymService<User> userService;
+    private DataAccessObject<User> userDAO;
 
     @Override
     public List<Trainee> selectAll() {
@@ -27,7 +27,7 @@ public class TraineeService implements GymService<Trainee> {
 
     @Override
     public Long create(Trainee trainee) {
-        User user = userService.select(trainee.getUser().getId());
+        User user = userDAO.findById(trainee.getUser().getId());
         if (user == null) {
             throw new IllegalArgumentException("User with the specified ID does not exist.");
         }
@@ -49,7 +49,7 @@ public class TraineeService implements GymService<Trainee> {
             throw new IllegalArgumentException("Trainee with the specified ID does not exist.");
         }
 
-        User user = userService.select(trainee.getUser().getId());
+        User user = userDAO.findById(trainee.getUser().getId());
         if (user == null) {
             throw new IllegalArgumentException("User with the specified ID does not exist.");
         }

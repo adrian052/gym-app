@@ -27,7 +27,7 @@ public class TraineeServiceTest {
     private DataAccessObject<Trainee> traineeDAO;
 
     @Mock
-    private GymService<User> userService;
+    private DataAccessObject<User> userDAO;
 
     @Before
     public void setUp() {
@@ -63,7 +63,7 @@ public class TraineeServiceTest {
     public void testCreate_ShouldCreateTrainee() {
         User user = new User();
         user.setId(1L);
-        Mockito.when(userService.select(1L)).thenReturn(user);
+        Mockito.when(userDAO.findById(1L)).thenReturn(user);
         Trainee trainee = new Trainee();
         trainee.setUser(user);
         traineeDAO.save(any(Trainee.class));
@@ -74,7 +74,7 @@ public class TraineeServiceTest {
 
     @Test
     public void testCreate_ShouldThrowExceptionIfUserNotFound() {
-        Mockito.when(userService.select(1L)).thenReturn(null);
+        Mockito.when(userDAO.findById(1L)).thenReturn(null);
 
         Trainee trainee = new Trainee();
         User user = new User();
