@@ -1,4 +1,4 @@
-package gym.service.interfaces;
+package gym.service;
 
 import gym.entities.Training;
 

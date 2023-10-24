@@ -4,7 +4,7 @@ import gym.dao.*;
 import gym.entities.Trainer;
 import gym.entities.TrainingType;
 
-import gym.service.interfaces.TrainerService;
+import gym.service.implementations.TrainerServiceImpl;
 import gym.storage.GymStorage;
 import gym.storage.InMemoryGymStorage;
 import org.junit.Before;
@@ -42,11 +42,9 @@ public class TrainerServiceImplTest {
         String firstName = "John";
         String lastName = "Doe";
         boolean isActive = true;
-        Date dateOfBirth = new Date();
-        String address = "Address";
         Long specialization = 12345L;
 
-        Long trainerId = trainerService.create(firstName, lastName, isActive, dateOfBirth, address, specialization);
+        Long trainerId = trainerService.create(firstName, lastName, isActive,  specialization);
 
         assertNull(trainerId);
     }
@@ -64,7 +62,7 @@ public class TrainerServiceImplTest {
         newTrainingType.setTrainingTypeName("Nuevo Tipo de Entrenamiento");
         Long specialization = trainingTypeDAO.save(newTrainingType);
 
-        Long trainerId = trainerService.create(firstName, lastName, isActive, dateOfBirth, address, specialization);
+        Long trainerId = trainerService.create(firstName, lastName, isActive, specialization);
         System.out.println(trainerId);
         assertNotNull(trainerId);
     }
@@ -74,22 +72,19 @@ public class TrainerServiceImplTest {
         String firstName = "John";
         String lastName = "Doe";
         boolean isActive = true;
-        Date dateOfBirth = new Date();
-        String address = "Address";
+
 
         TrainingType newTrainingType = new TrainingType();
         newTrainingType.setTrainingTypeName("Nuevo Tipo de Entrenamiento");
         Long specialization = trainingTypeDAO.save(newTrainingType);
 
-        Long trainerId = trainerService.create(firstName, lastName, isActive, dateOfBirth, address, specialization);
+        Long trainerId = trainerService.create(firstName, lastName, isActive,  specialization);
 
         String updatedFirstName = "UpdatedFirstName";
         String updatedLastName = "UpdatedLastName";
         boolean updatedIsActive = false;
-        Date updatedDateOfBirth = new Date();
-        String updatedAddress = "UpdatedAddress";
 
-        boolean isUpdated = trainerService.update(trainerId, updatedFirstName, updatedLastName, updatedIsActive, updatedDateOfBirth, updatedAddress, specialization);
+        boolean isUpdated = trainerService.update(trainerId, updatedFirstName, updatedLastName, updatedIsActive, specialization);
 
         assertTrue(isUpdated);
 
@@ -104,15 +99,13 @@ public class TrainerServiceImplTest {
         String firstName = "John";
         String lastName = "Doe";
         boolean isActive = true;
-        Date dateOfBirth = new Date();
-        String address = "Address";
 
         TrainingType newTrainingType = new TrainingType();
         newTrainingType.setTrainingTypeName("Nuevo Tipo de Entrenamiento");
         Long specialization = trainingTypeDAO.save(newTrainingType);
 
-        Long trainerId1 = trainerService.create(firstName, lastName, isActive, dateOfBirth, address, specialization);
-        Long trainerId2 = trainerService.create(firstName, lastName, isActive, dateOfBirth, address, specialization);
+        Long trainerId1 = trainerService.create(firstName, lastName, isActive,  specialization);
+        Long trainerId2 = trainerService.create(firstName, lastName, isActive,  specialization);
 
         assertNotNull(trainerId1);
         assertNotNull(trainerId2);

@@ -3,10 +3,9 @@ package gym.facade;
 import gym.entities.Trainee;
 import gym.entities.Trainer;
 import gym.entities.Training;
-import gym.service.interfaces.TraineeService;
-import gym.service.interfaces.TrainerService;
-import gym.service.interfaces.TrainingService;
-import org.springframework.beans.factory.annotation.Autowired;
+import gym.service.TraineeService;
+import gym.service.TrainerService;
+import gym.service.TrainingService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -49,13 +48,13 @@ public class SimpleFacadeGym implements FacadeGym {
     }
 
     @Override
-    public Long createTrainer(String firstName, String lastName, boolean isActive,Date birthDate,String address, Long specializationId) {
-        return trainerService.create(firstName, lastName, isActive,birthDate,address,specializationId);
+    public Long createTrainer(String firstName, String lastName, boolean isActive, Long specializationId) {
+        return trainerService.create(firstName, lastName, isActive,specializationId);
     }
 
     @Override
     public boolean updateTrainer(Long id, String firstName, String lastName, boolean isActive,Date birthDate,String address, Long specializationId) {
-        return trainerService.update(id, firstName, lastName, isActive,birthDate,address,specializationId);
+        return trainerService.update(id, firstName, lastName, isActive,specializationId);
     }
 
     @Override

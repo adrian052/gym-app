@@ -1,5 +1,6 @@
 package gym.dao;
 
+import gym.entities.Trainee;
 import gym.entities.Training;
 import gym.storage.GymStorage;
 import org.slf4j.Logger;
@@ -28,28 +29,30 @@ public class TrainingDAO implements DataAccessObject<Training> {
 
     @Override
     public Training findById(Long id) {
+        if (id == null) {
+            return null; // or throw an exception if you prefer
+        }
         return storage.getTrainings().get(id);
     }
 
     @Override
     public Long save(Training training) {
-        if (training.getId() != null) {
-            storage.getTrainings().put(training.getId(), training);
-            logger.info("Updated Training with ID: {}", training.getId());
-            return training.getId();
-        } else {
+        if (training.getId() == null) {
             Long newId = storage.getNextTrainingId();
             training.setId(newId);
-            storage.getTrainings().put(newId, training);
             logger.info("Saved Training with new ID: {}", newId);
-            return newId;
+        } else {
+            logger.info("Updated Training with ID: {}", training.getId());
         }
+        storage.getTrainings().put(training.getId(), training);
+        return training.getId();
     }
+
 
     @Override
     public boolean delete(Long id) {
-        if (storage.getTrainings().containsKey(id)) {
-            storage.getTrainings().remove(id);
+        Training removedTraining = storage.getTrainings().remove(id);
+        if (removedTraining != null) {
             logger.info("Deleted Training with ID: {}", id);
             return true;
         } else {

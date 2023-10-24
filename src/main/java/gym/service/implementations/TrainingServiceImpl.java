@@ -1,11 +1,11 @@
-package gym.service;
+package gym.service.implementations;
 
 import gym.dao.*;
 import gym.entities.Trainee;
 import gym.entities.Trainer;
 import gym.entities.Training;
 import gym.entities.TrainingType;
-import gym.service.interfaces.TrainingService;
+import gym.service.TrainingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +44,11 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Long create(Long traineeId, Long trainerId, String trainingName, Long trainingTypeId, Date trainingDate, int trainingDuration) {
+        if(traineeId==null || trainerId==null ||trainingTypeId == null || trainingTypeId==null || trainingDate==null){
+            logger.error("Failed to create Training: the following parameters cannot be null (traineeId, trainerId, trainingTypeId, trainingTypeId, trainingDate)");
+            return null;
+        }
+
         if (traineeDAO.findById(traineeId) != null && trainerDAO.findById(trainerId) != null && trainingTypeDAO.findById(trainingTypeId) != null) {
             Training training = new Training();
             training.setTrainee(traineeDAO.findById(traineeId));
@@ -65,6 +70,10 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training select(Long id) {
+        if(id == null){
+            logger.error("Failed to create Training: the following parameters cannot be null (id)");
+            return null;
+        }
         return trainingDAO.findById(id);
     }
 }

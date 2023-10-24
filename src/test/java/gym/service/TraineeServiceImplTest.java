@@ -5,7 +5,7 @@ import gym.entities.Trainee;
 import gym.entities.User;
 import gym.dao.DataAccessObject;
 import gym.dao.UserDAO;
-import gym.service.interfaces.TraineeService;
+import gym.service.implementations.TraineeServiceImpl;
 import gym.storage.InMemoryGymStorage;
 import org.junit.Before;
 import org.junit.Test;

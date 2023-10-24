@@ -1,17 +1,15 @@
-package gym.service;
+package gym.service.implementations;
 
 import gym.dao.DataAccessObject;
-import gym.dao.UserDAO;
 import gym.entities.Trainer;
 import gym.entities.User;
 import gym.entities.TrainingType;
-import gym.service.interfaces.TrainerService;
+import gym.service.TrainerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.Random;
 
 @Service
@@ -40,46 +38,38 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public Long create(String firstName, String lastName, boolean isActive, Date dateOfBirth, String address, Long specialization) {
-        String username = generateUniqueUsername(firstName, lastName);
-        String password = generateRandomPassword();
-
-        User user = new User();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setActive(isActive);
-        user.setUsername(username);
-        user.setPassword(password);
-
-        logger.info("Generated username for new Trainer: {}", username);
-        logger.info("Generated password for new Trainer: {}", password);
-
-        userDAO.save(user);
-
+    public Long create(String firstName, String lastName, boolean isActive, Long specialization) {
+        if (firstName == null || lastName == null) {
+            logger.error("Failed to create Trainer: the following parameters cannot be null (firstName, lastName)");
+            return null;
+        }
+        User user = UserCreationService.createUser(firstName, lastName, isActive, userDAO);
         TrainingType trainingType = trainingTypeDAO.findById(specialization);
         if (trainingType == null) {
             return null;
         }
-
         Trainer trainer = new Trainer();
         trainer.setUser(user);
         trainer.setSpecialization(trainingType);
 
-        logger.info("Created a new Trainer with ID: {}", trainerDAO.save(trainer));
+        Long trainerId = trainerDAO.save(trainer);
+        logger.info("Created a new Trainer with ID: {}", trainerId);
 
-        return trainerDAO.save(trainer);
+        return trainerId;
     }
 
     @Override
-    public boolean update(Long id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address, Long specialization) {
+    public boolean update(Long id, String firstName, String lastName, boolean isActive, Long specialization) {
+        if(id==null || firstName==null || lastName==null){
+            logger.error("Failed to create Trainer: the following parameters cannot be null (id, firstName, lastName)");
+            return false;
+        }
         Trainer trainer = trainerDAO.findById(id);
-
         if (trainer != null) {
             User user = trainer.getUser();
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setActive(isActive);
-
             userDAO.save(user);
 
             TrainingType trainingType = trainingTypeDAO.findById(specialization);
@@ -93,8 +83,6 @@ public class TrainerServiceImpl implements TrainerService {
 
             if (isUpdated) {
                 logger.info("Updated Trainer with ID: {}", id);
-                logger.info("Updated Trainer username: {}", user.getUsername());
-                logger.info("Updated Trainer password: {}", user.getPassword());
             } else {
                 logger.error("Failed to update Trainer with ID: {}", id);
             }
@@ -102,42 +90,19 @@ public class TrainerServiceImpl implements TrainerService {
             return isUpdated;
         }
 
-        logger.warn("Failed to update Trainer with ID: {} - Trainer not found.",id);
+        logger.warn("Failed to update Trainer with ID: {} - Trainer not found.", id);
 
         return false;
     }
 
+
     @Override
     public Trainer select(Long id) {
+        if (id == null) {
+            logger.error("Failed to select Trainer: the following parameters cannot be null (id)");
+            return null;
+        }
         return trainerDAO.findById(id);
     }
 
-    private String generateUniqueUsername(String firstName, String lastName) {
-        String baseUsername = firstName + "." + lastName;
-        String generatedUsername = baseUsername;
-
-
-        while (((UserDAO) userDAO).isUsernameTaken(generatedUsername)) {
-            generatedUsername = baseUsername + "." + generateRandomNumber();
-        }
-
-        return generatedUsername;
-    }
-
-    private String generateRandomPassword() {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder password = new StringBuilder();
-
-        for (int i = 0; i < 10; i++) {
-            int index = random.nextInt(characters.length());
-            password.append(characters.charAt(index));
-        }
-
-        return password.toString();
-    }
-
-    private String generateRandomNumber() {
-        int randomInt = random.nextInt((999999 - 100000) + 1) + 100000;
-        return String.format("%06d", randomInt);
-    }
 }

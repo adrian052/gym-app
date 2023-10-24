@@ -28,28 +28,29 @@ public class TraineeDAO implements DataAccessObject<Trainee> {
 
     @Override
     public Trainee findById(Long id) {
+        if(id == null){
+            return null;
+        }
         return storage.getTrainees().get(id);
     }
 
     @Override
     public Long save(Trainee trainee) {
-        if (trainee.getId() != null) {
-            storage.getTrainees().put(trainee.getId(), trainee);
-            logger.info("Updated Trainee with ID: {}", trainee.getId());
-            return trainee.getId();
-        } else {
+        if (trainee.getId() == null) {
             Long newId = storage.getNextTraineeId();
             trainee.setId(newId);
-            storage.getTrainees().put(newId, trainee);
             logger.info("Saved new Trainee with ID: {}", newId);
-            return newId;
+        } else {
+            logger.info("Updated Trainee with ID: {}", trainee.getId());
         }
+        storage.getTrainees().put(trainee.getId(), trainee);
+        return trainee.getId();
     }
 
     @Override
     public boolean delete(Long id) {
-        if (storage.getTrainees().containsKey(id)) {
-            storage.getTrainees().remove(id);
+        Trainee removedTrainee = storage.getTrainees().remove(id);
+        if (removedTrainee != null) {
             logger.info("Deleted Trainee with ID: {}", id);
             return true;
         } else {

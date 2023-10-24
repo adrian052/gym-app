@@ -5,7 +5,7 @@ import gym.entities.Training;
 import gym.entities.TrainingType;
 import gym.entities.Trainer;
 import gym.entities.Trainee;
-import gym.service.interfaces.TrainingService;
+import gym.service.implementations.TrainingServiceImpl;
 import gym.storage.GymStorage;
 import gym.storage.InMemoryGymStorage;
 import org.junit.Before;

@@ -64,25 +64,6 @@ public class UserDAOTest {
         assertThat(userDAO.findById(id)).isNull();
     }
 
-    @Test
-    public void givenUserWithSameUsername_whenIsUsernameTaken_thenShouldReturnTrue() {
-        User user1 = createUser("John", "Doe");
-        user1.setUsername("John.Doe");
-        userDAO.save(user1);
-        boolean isUsernameTaken = ((UserDAO) userDAO).isUsernameTaken("John.Doe");
-
-        assertTrue(isUsernameTaken);
-    }
-
-    @Test
-    public void givenUserWithDifferentUsernames_whenIsUsernameTaken_thenShouldReturnFalse() {
-        User user1 = createUser("John", "Doe");
-        user1.setUsername("John.Doe");
-        userDAO.save(user1);
-        boolean isUsernameTaken = ((UserDAO) userDAO).isUsernameTaken("John.DoeX");
-
-        assertFalse(isUsernameTaken);
-    }
 
     private User createUser(String firstName, String lastName) {
         User user = new User();

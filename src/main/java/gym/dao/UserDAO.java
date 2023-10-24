@@ -1,5 +1,6 @@
 package gym.dao;
 
+import gym.entities.Training;
 import gym.entities.User;
 import gym.storage.GymStorage;
 import org.slf4j.Logger;
@@ -33,37 +34,28 @@ public class UserDAO implements DataAccessObject<User> {
 
     @Override
     public Long save(User user) {
-        if (user.getId() != null) {
-            storage.getUsers().put(user.getId(), user);
-            logger.info("Updated User with ID: {}", user.getId());
-            return user.getId();
+        Long userId = user.getId();
+        if (userId == null) {
+            userId = storage.getNextUserId();
+            user.setId(userId);
+            logger.info("Saved new User with ID: {}", userId);
         } else {
-            Long newId = storage.getNextUserId();
-            user.setId(newId);
-            storage.getUsers().put(newId, user);
-            logger.info("Saved User with new ID: {}", newId);
-            return newId;
+            logger.info("Updated User with ID: {}", userId);
         }
+        storage.getUsers().put(userId, user);
+        return userId;
     }
+
 
     @Override
     public boolean delete(Long id) {
-        if (storage.getUsers().containsKey(id)) {
-            storage.getUsers().remove(id);
+        User removedUser = storage.getUsers().remove(id);
+        if (removedUser != null) {
             logger.info("Deleted User with ID: {}", id);
             return true;
         } else {
             logger.warn("Failed to delete User with ID: {} - User not found.", id);
             return false;
         }
-    }
-
-    public boolean isUsernameTaken(String username) {
-        for (User user : findAll()) {
-            if (user.getUsername().equalsIgnoreCase(username)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

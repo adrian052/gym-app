@@ -47,7 +47,7 @@ public class GymApp {
         }
 
         // Create a new Trainer
-        Long newTrainerId = facadeGym.createTrainer("John", "Doe", true, new Date(), "789 Oak St", 1L);
+        Long newTrainerId = facadeGym.createTrainer("John", "Doe", true, 1L);
         System.out.println("New Trainer created with ID: " + newTrainerId);
 
         // Update an existing Trainer
