@@ -1,6 +1,6 @@
 package gym.service.implementations;
 
-import gym.dao.DataAccessObject;
+import gym.dao.GenericDAO;
 import gym.entities.Trainer;
 import gym.entities.User;
 import gym.entities.TrainingType;
@@ -10,30 +10,28 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Random;
 
 @Service
 public class TrainerServiceImpl implements TrainerService {
-    private DataAccessObject<Trainer> trainerDAO;
-    private DataAccessObject<TrainingType> trainingTypeDAO;
-    private DataAccessObject<User> userDAO;
+    private GenericDAO<Trainer> trainerDAO;
+    private GenericDAO<TrainingType> trainingTypeDAO;
+    private GenericDAO<User> userDAO;
 
-    private final Random random = new Random();
 
     private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
 
     @Autowired
-    public void setTrainerDAO(DataAccessObject<Trainer> trainerDAO) {
+    public void setTrainerDAO(GenericDAO<Trainer> trainerDAO) {
         this.trainerDAO = trainerDAO;
     }
 
     @Autowired
-    public void setTrainingTypeDAO(DataAccessObject<TrainingType> trainingTypeDAO) {
+    public void setTrainingTypeDAO(GenericDAO<TrainingType> trainingTypeDAO) {
         this.trainingTypeDAO = trainingTypeDAO;
     }
 
     @Autowired
-    public void setUserDAO(DataAccessObject<User> userDAO) {
+    public void setUserDAO(GenericDAO<User> userDAO) {
         this.userDAO = userDAO;
     }
 

@@ -18,10 +18,10 @@ import static org.junit.Assert.assertNull;
 
 public class TrainingServiceImplTest {
     private TrainingService trainingService;
-    private DataAccessObject<Trainee> traineeDAO;
-    private DataAccessObject<Trainer> trainerDAO;
-    private DataAccessObject<TrainingType> trainingTypeDAO;
-    private DataAccessObject<Training> trainingDAO;
+    private GenericDAO<Trainee> traineeDAO;
+    private GenericDAO<Trainer> trainerDAO;
+    private GenericDAO<TrainingType> trainingTypeDAO;
+    private GenericDAO<Training> trainingDAO;
 
     @Before
     public void setUp() {

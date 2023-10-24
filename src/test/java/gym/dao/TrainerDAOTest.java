@@ -12,13 +12,13 @@ import java.util.List;
 
 public class TrainerDAOTest {
 
-    private DataAccessObject<Trainer> trainerDAO;
+    private TrainerDAO trainerDAO;
 
     @Before
     public void setUp() {
         GymStorage storage = new InMemoryGymStorage();
         trainerDAO = new TrainerDAO();
-        ((TrainerDAO) trainerDAO).setStorage(storage);
+        trainerDAO.setStorage(storage);
     }
 
     @Test

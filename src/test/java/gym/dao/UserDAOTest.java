@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 public class UserDAOTest {
 
-    private DataAccessObject<User> userDAO;
+    private GenericDAO<User> userDAO;
 
     @Before
     public void setUp() {

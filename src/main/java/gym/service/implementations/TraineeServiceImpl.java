@@ -1,6 +1,6 @@
 package gym.service.implementations;
 
-import gym.dao.DataAccessObject;
+import gym.dao.GenericDAO;
 import gym.entities.Trainee;
 import gym.entities.User;
 import gym.service.TraineeService;
@@ -13,18 +13,18 @@ import java.util.Date;
 
 @Service
 public class TraineeServiceImpl implements TraineeService {
-    private DataAccessObject<Trainee> traineeDAO;
-    private DataAccessObject<User> userDAO;
+    private GenericDAO<Trainee> traineeDAO;
+    private GenericDAO<User> userDAO;
 
     private static final Logger logger = LoggerFactory.getLogger(TraineeServiceImpl.class);
 
     @Autowired
-    public void setTraineeDAO(DataAccessObject<Trainee> traineeDAO) {
+    public void setTraineeDAO(GenericDAO<Trainee> traineeDAO) {
         this.traineeDAO = traineeDAO;
     }
 
     @Autowired
-    public void setUserDAO(DataAccessObject<User> userDAO) {
+    public void setUserDAO(GenericDAO<User> userDAO) {
         this.userDAO = userDAO;
     }
 

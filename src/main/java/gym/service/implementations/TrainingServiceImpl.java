@@ -15,36 +15,36 @@ import java.util.Date;
 
 @Service
 public class TrainingServiceImpl implements TrainingService {
-    private DataAccessObject<Trainee> traineeDAO;
-    private DataAccessObject<Trainer> trainerDAO;
-    private DataAccessObject<TrainingType> trainingTypeDAO;
-    private DataAccessObject<Training> trainingDAO;
+    private GenericDAO<Trainee> traineeDAO;
+    private GenericDAO<Trainer> trainerDAO;
+    private GenericDAO<TrainingType> trainingTypeDAO;
+    private GenericDAO<Training> trainingDAO;
 
     private static final Logger logger = LoggerFactory.getLogger(TrainingServiceImpl.class);
 
     @Autowired
-    public void setTraineeDAO(DataAccessObject<Trainee> traineeDAO) {
+    public void setTraineeDAO(GenericDAO<Trainee> traineeDAO) {
         this.traineeDAO = traineeDAO;
     }
 
     @Autowired
-    public void setTrainerDAO(DataAccessObject<Trainer> trainerDAO) {
+    public void setTrainerDAO(GenericDAO<Trainer> trainerDAO) {
         this.trainerDAO = trainerDAO;
     }
 
     @Autowired
-    public void setTrainingTypeDAO(DataAccessObject<TrainingType> trainingTypeDAO) {
+    public void setTrainingTypeDAO(GenericDAO<TrainingType> trainingTypeDAO) {
         this.trainingTypeDAO = trainingTypeDAO;
     }
 
     @Autowired
-    public void setTrainingDAO(DataAccessObject<Training> trainingDAO) {
+    public void setTrainingDAO(GenericDAO<Training> trainingDAO) {
         this.trainingDAO = trainingDAO;
     }
 
     @Override
     public Long create(Long traineeId, Long trainerId, String trainingName, Long trainingTypeId, Date trainingDate, int trainingDuration) {
-        if(traineeId==null || trainerId==null ||trainingTypeId == null || trainingTypeId==null || trainingDate==null){
+        if(traineeId==null || trainerId==null ||trainingName == null || trainingTypeId==null || trainingDate==null){
             logger.error("Failed to create Training: the following parameters cannot be null (traineeId, trainerId, trainingTypeId, trainingTypeId, trainingDate)");
             return null;
         }

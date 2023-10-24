@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TrainingTypeDAOTest {
 
-    private DataAccessObject<TrainingType> trainingTypeDAO;
+    private GenericDAO<TrainingType> trainingTypeDAO;
 
     @Before
     public void setUp() {

@@ -1,6 +1,7 @@
 package gym.service.implementations;
 
-import gym.dao.DataAccessObject;
+
+import gym.dao.GenericDAO;
 import gym.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,7 @@ public class UserCreationService {
     private static final Random random = new Random();
     private static final Logger logger = LoggerFactory.getLogger(UserCreationService.class);
 
-    public static User createUser(String firstName, String lastName, boolean isActive, DataAccessObject<User> userDAO) {
+    public static User createUser(String firstName, String lastName, boolean isActive, GenericDAO<User> userDAO) {
         if (firstName == null || lastName == null) {
             logger.error("Failed to create the User: the following parameters cannot be null (firstName, lastName)");
             return null;
@@ -31,7 +32,7 @@ public class UserCreationService {
         return user;
     }
 
-    private static String generateUniqueUsername(String firstName, String lastName, DataAccessObject<User> userDAO) {
+    private static String generateUniqueUsername(String firstName, String lastName, GenericDAO<User> userDAO) {
         String baseUsername = firstName + "." + lastName;
         String generatedUsername = baseUsername;
 
@@ -42,7 +43,7 @@ public class UserCreationService {
         return generatedUsername;
     }
 
-    private static boolean usernameAlreadyExist(String username, DataAccessObject<User> userDAO) {
+    private static boolean usernameAlreadyExist(String username, GenericDAO<User> userDAO) {
         for (User user : userDAO.findAll()) {
             if (user.getUsername().equalsIgnoreCase(username)) {
                 return true;

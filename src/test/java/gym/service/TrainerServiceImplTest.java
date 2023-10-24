@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TrainerServiceImplTest {
     private TrainerService trainerService;
-    private DataAccessObject<TrainingType> trainingTypeDAO;
+    private GenericDAO<TrainingType> trainingTypeDAO;
 
     @Before
     public void setUp() {

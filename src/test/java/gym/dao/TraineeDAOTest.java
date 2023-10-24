@@ -13,7 +13,7 @@ import java.util.List;
 
 public class TraineeDAOTest {
 
-    private DataAccessObject<Trainee> traineeDAO;
+    private GenericDAO<Trainee> traineeDAO;
 
     @Before
     public void setUp() {
