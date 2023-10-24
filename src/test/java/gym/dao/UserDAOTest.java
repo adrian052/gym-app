@@ -9,6 +9,8 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class UserDAOTest {
 
@@ -22,24 +24,16 @@ public class UserDAOTest {
     }
 
     @Test
-    public void save_ShouldAddUserToStorage() {
-        User user = createUser(1L, "John", "Doe");
-        userDAO.save(user);
-        assertThat(userDAO.findById(1L)).isEqualTo(user);
+    public void givenUserDAOWithInitializedData_whenSaveUserWithId_thenUserShouldBeAddedToStorage() {
+        User user = createUser("John", "Doe");
+        Long newId = userDAO.save(user);
+        assertThat(userDAO.findById(newId)).isEqualTo(user);
     }
 
     @Test
-    public void findById_ShouldReturnUserById() {
-        User user = createUser(1L, "John", "Doe");
-        userDAO.save(user);
-        User result = userDAO.findById(1L);
-        assertThat(result).isEqualTo(user);
-    }
-
-    @Test
-    public void findAll_ShouldReturnAllUsers() {
-        User user1 = createUser(1L, "John", "Doe");
-        User user2 = createUser(2L, "Jane", "Smith");
+    public void givenUserDAOWithInitializedData_whenFindAllUsers_thenShouldReturnAllUsers() {
+        User user1 = createUser("John", "Doe");
+        User user2 = createUser("Jane", "Smith");
         userDAO.save(user1);
         userDAO.save(user2);
         List<User> result = userDAO.findAll();
@@ -47,16 +41,51 @@ public class UserDAOTest {
     }
 
     @Test
-    public void delete_ShouldRemoveUserFromStorage() {
-        User user = createUser(1L, "John", "Doe");
-        userDAO.save(user);
-        userDAO.delete(1L);
-        assertThat(userDAO.findById(1L)).isNull();
+    public void givenUserInStorage_whenSaveUserWithoutId_thenUserShouldBeAddedWithNewId() {
+        User user1 = createUser("John", "Doe");
+        Long newId = userDAO.save(user1);
+        assertThat(newId).isNotNull();
+        User result = userDAO.findById(newId);
+        assertThat(result).isEqualTo(user1);
     }
 
-    private User createUser(Long id, String firstName, String lastName) {
+    @Test
+    public void givenUserInStorage_whenDeleteNonExistentUser_thenShouldReturnFalse() {
+        boolean deleted = userDAO.delete(123L); // Assuming 123L doesn't exist
+        assertFalse(deleted);
+    }
+
+    @Test
+    public void givenUserInStorage_whenDeleteUser_thenShouldReturnTrue() {
+        User user = createUser("John", "Doe");
+        Long id = userDAO.save(user);
+        boolean deleted = userDAO.delete(id);
+        assertTrue(deleted);
+        assertThat(userDAO.findById(id)).isNull();
+    }
+
+    @Test
+    public void givenUserWithSameUsername_whenIsUsernameTaken_thenShouldReturnTrue() {
+        User user1 = createUser("John", "Doe");
+        user1.setUsername("John.Doe");
+        userDAO.save(user1);
+        boolean isUsernameTaken = ((UserDAO) userDAO).isUsernameTaken("John.Doe");
+
+        assertTrue(isUsernameTaken);
+    }
+
+    @Test
+    public void givenUserWithDifferentUsernames_whenIsUsernameTaken_thenShouldReturnFalse() {
+        User user1 = createUser("John", "Doe");
+        user1.setUsername("John.Doe");
+        userDAO.save(user1);
+        boolean isUsernameTaken = ((UserDAO) userDAO).isUsernameTaken("John.DoeX");
+
+        assertFalse(isUsernameTaken);
+    }
+
+    private User createUser(String firstName, String lastName) {
         User user = new User();
-        user.setId(id);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         return user;

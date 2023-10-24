@@ -17,38 +17,36 @@ class TraineeTest {
     }
 
     @Test
-     void testGetAndSetId() {
+    void givenValidTrainee_whenSettingId_thenIdShouldBeSet() {
         trainee.setId(1L);
         assertThat(trainee.getId()).isEqualTo(1L);
     }
 
     @Test
-    void testGetAndSetDateOfBirth() {
+    void givenValidTrainee_whenSettingDateOfBirth_thenDateOfBirthShouldBeSet() {
         Date dateOfBirth = new Date();
         trainee.setDateOfBirth(dateOfBirth);
         assertThat(trainee.getDateOfBirth()).isEqualTo(dateOfBirth);
     }
 
     @Test
-    void testGetAndSetAddress() {
+    void givenValidTrainee_whenSettingAddress_thenAddressShouldBeSet() {
         trainee.setAddress("123 Elm St.");
         assertThat(trainee.getAddress()).isEqualTo("123 Elm St.");
     }
 
     @Test
-    void testGetAndSetUser() {
+    void givenValidTrainee_whenSettingUser_thenUserShouldBeSet() {
         User user = new User();
         user.setId(1L);
         user.setFirstName("Alice");
         user.setLastName("Johnson");
-
         trainee.setUser(user);
-
         assertThat(trainee.getUser()).isEqualTo(user);
     }
 
     @Test
-    void testToString() {
+    void givenTraineeWithUser_whenCallingToString_thenExpectedStringShouldBeGenerated() {
         User user = new User();
         user.setId(1L);
         user.setFirstName("Alice");
@@ -69,3 +67,4 @@ class TraineeTest {
         assertThat(actual).isEqualTo(expectedString);
     }
 }
+

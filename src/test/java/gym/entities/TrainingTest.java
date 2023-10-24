@@ -1,31 +1,29 @@
 package gym.entities;
 
-import jakarta.persistence.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 class TrainingTest {
 
     private Training training;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         training = new Training();
     }
 
     @Test
-    void testGetAndSetId() {
+    void givenValidTraining_whenSettingId_thenIdShouldBeSet() {
         training.setId(1L);
         assertThat(training.getId()).isEqualTo(1L);
     }
 
     @Test
-    void testGetAndSetTrainee() {
+    void givenValidTraining_whenSettingTrainee_thenTraineeShouldBeSet() {
         Trainee trainee = new Trainee();
         trainee.setId(1L);
         training.setTrainee(trainee);
@@ -33,7 +31,7 @@ class TrainingTest {
     }
 
     @Test
-    void testGetAndSetTrainer() {
+    void givenValidTraining_whenSettingTrainer_thenTrainerShouldBeSet() {
         Trainer trainer = new Trainer();
         trainer.setId(1L);
         training.setTrainer(trainer);
@@ -41,13 +39,13 @@ class TrainingTest {
     }
 
     @Test
-    void testGetAndSetTrainingName() {
+    void givenValidTraining_whenSettingTrainingName_thenTrainingNameShouldBeSet() {
         training.setTrainingName("Strength Training");
         assertThat(training.getTrainingName()).isEqualTo("Strength Training");
     }
 
     @Test
-    void testGetAndSetTrainingType() {
+    void givenValidTraining_whenSettingTrainingType_thenTrainingTypeShouldBeSet() {
         TrainingType trainingType = new TrainingType();
         trainingType.setTrainingTypeName("Cardio");
         training.setTrainingType(trainingType);
@@ -55,20 +53,20 @@ class TrainingTest {
     }
 
     @Test
-    void testGetAndSetTrainingDate() {
+    void givenValidTraining_whenSettingTrainingDate_thenTrainingDateShouldBeSet() {
         Date trainingDate = new Date();
         training.setTrainingDate(trainingDate);
         assertThat(training.getTrainingDate()).isEqualTo(trainingDate);
     }
 
     @Test
-    public void testGetAndSetTrainingDuration() {
+    void givenValidTraining_whenSettingTrainingDuration_thenTrainingDurationShouldBeSet() {
         training.setTrainingDuration(60);
         assertThat(training.getTrainingDuration()).isEqualTo(60);
     }
 
     @Test
-    void testToString() {
+    void givenTrainingWithAllDetails_whenCallingToString_thenExpectedStringShouldBeGenerated() {
         Trainee trainee = new Trainee();
         trainee.setId(1L);
         User traineeUser = new User();
@@ -107,5 +105,4 @@ class TrainingTest {
 
         assertThat(actual).isEqualTo(expectedString);
     }
-
 }

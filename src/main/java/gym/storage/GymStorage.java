@@ -14,5 +14,14 @@ public interface GymStorage {
     Map<Long, TrainingType> getTrainingTypes();
 
     Map<Long, User> getUsers();
+    long getNextTrainerId();
+
+    long getNextTraineeId();
+
+    long getNextTrainingId();
+
+    long getNextTrainingTypeId();
+
+    long getNextUserId();
 
 }

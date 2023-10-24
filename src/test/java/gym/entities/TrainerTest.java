@@ -1,29 +1,28 @@
 package gym.entities;
 
-import jakarta.persistence.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
+
 
 class TrainerTest {
 
     private Trainer trainer;
 
     @BeforeEach
-     void setUp() {
+    void setUp() {
         trainer = new Trainer();
     }
 
     @Test
-    void testGetAndSetId() {
+    void givenValidTrainer_whenSettingId_thenIdShouldBeSet() {
         trainer.setId(1L);
         assertThat(trainer.getId()).isEqualTo(1L);
     }
 
     @Test
-    void testGetAndSetSpecialization() {
+    void givenValidTrainer_whenSettingSpecialization_thenSpecializationShouldBeSet() {
         TrainingType specialization = new TrainingType();
         specialization.setTrainingTypeName("Strength Training");
         trainer.setSpecialization(specialization);
@@ -31,7 +30,7 @@ class TrainerTest {
     }
 
     @Test
-    void testGetAndSetUser() {
+    void givenValidTrainer_whenSettingUser_thenUserShouldBeSet() {
         User user = new User();
         user.setId(1L);
         user.setFirstName("Alice");
@@ -41,7 +40,7 @@ class TrainerTest {
     }
 
     @Test
-    void testToString() {
+    void givenTrainerWithUser_whenCallingToString_thenExpectedStringShouldBeGenerated() {
         User user = new User();
         user.setId(1L);
         user.setFirstName("Alice");
@@ -63,8 +62,9 @@ class TrainerTest {
     }
 
     @Test
-    void testSpecializationNull() {
-        // Ensure that the specialization is null by default
+    void givenNewTrainer_whenCheckingSpecialization_thenSpecializationShouldBeNull() {
         assertThat(trainer.getSpecialization()).isNull();
     }
 }
+
+

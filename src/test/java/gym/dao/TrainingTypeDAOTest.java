@@ -1,7 +1,6 @@
 package gym.dao;
 
 import gym.dao.DataAccessObject;
-import gym.dao.TrainingTypeDAO;
 import gym.entities.TrainingType;
 import gym.storage.GymStorage;
 import gym.storage.InMemoryGymStorage;
@@ -24,24 +23,24 @@ public class TrainingTypeDAOTest {
     }
 
     @Test
-    public void save_ShouldAddTrainingTypeToStorage() {
-        TrainingType type = createTrainingType(1L, "Type1");
-        trainingTypeDAO.save(type);
-        assertThat(trainingTypeDAO.findById(1L)).isEqualTo(type);
+    public void givenTrainingTypeDAOWithInitializedData_whenSaveTrainingType_thenTrainingTypeShouldBeAddedToStorage() {
+        TrainingType type = createTrainingType("Type1");
+        Long newId = trainingTypeDAO.save(type);
+        assertThat(trainingTypeDAO.findById(newId)).isEqualTo(type);
     }
 
     @Test
-    public void findById_ShouldReturnTrainingTypeById() {
-        TrainingType type = createTrainingType(1L, "Type1");
-        trainingTypeDAO.save(type);
-        TrainingType result = trainingTypeDAO.findById(1L);
+    public void givenTrainingTypeDAOWithInitializedData_whenFindTrainingTypeById_thenShouldReturnTrainingType() {
+        TrainingType type = createTrainingType("Type1");
+        Long newId = trainingTypeDAO.save(type);
+        TrainingType result = trainingTypeDAO.findById(newId);
         assertThat(result).isEqualTo(type);
     }
 
     @Test
-    public void findAll_ShouldReturnAllTrainingTypes() {
-        TrainingType type1 = createTrainingType(1L, "Type1");
-        TrainingType type2 = createTrainingType(2L, "Type2");
+    public void givenTrainingTypeDAOWithInitializedData_whenFindAllTrainingTypes_thenShouldReturnAllTrainingTypes() {
+        TrainingType type1 = createTrainingType("Type1");
+        TrainingType type2 = createTrainingType("Type2");
         trainingTypeDAO.save(type1);
         trainingTypeDAO.save(type2);
         List<TrainingType> result = trainingTypeDAO.findAll();
@@ -49,16 +48,22 @@ public class TrainingTypeDAOTest {
     }
 
     @Test
-    public void delete_ShouldRemoveTrainingTypeFromStorage() {
-        TrainingType type = createTrainingType(1L, "Type1");
-        trainingTypeDAO.save(type);
-        trainingTypeDAO.delete(1L);
-        assertThat(trainingTypeDAO.findById(1L)).isNull();
+    public void givenTrainingTypeInStorage_whenSaveTrainingTypeWithoutId_thenTrainingTypeShouldBeAddedWithNewId() {
+        TrainingType type1 = createTrainingType("Type1");
+        Long newId = trainingTypeDAO.save(type1);
+        assertThat(newId).isNotNull();
+        TrainingType result = trainingTypeDAO.findById(newId);
+        assertThat(result).isEqualTo(type1);
     }
 
-    private TrainingType createTrainingType(Long id, String name) {
+    @Test
+    public void givenTrainingTypeInStorage_whenDeleteNonExistentTrainingType_thenShouldReturnFalse() {
+        boolean deleted = trainingTypeDAO.delete(123L); // Assuming 123L doesn't exist
+        assertThat(deleted).isFalse();
+    }
+
+    private TrainingType createTrainingType(String name) {
         TrainingType type = new TrainingType();
-        type.setId(id);
         type.setTrainingTypeName(name);
         return type;
     }

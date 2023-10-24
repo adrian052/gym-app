@@ -1,13 +1,12 @@
 {
   "trainers": [
     {
-      "id": 1,
       "specialization": {
-        "id": 1,
+        "id": 0,
         "trainingTypeName": "Training Type 1"
       },
       "user": {
-        "id": 1,
+        "id": 0,
         "firstName": "John",
         "lastName": "Doe",
         "username": "John.Doe",
@@ -16,13 +15,12 @@
       }
     },
     {
-      "id": 2,
       "specialization": {
-        "id": 2,
+        "id": 1,
         "trainingTypeName": "Training Type 2"
       },
       "user": {
-        "id": 2,
+        "id": 1,
         "firstName": "Jane",
         "lastName": "Smith",
         "username": "Jane.Smith",
@@ -33,11 +31,11 @@
   ],
   "trainees": [
     {
-      "id": 1,
+      "id": 0,
       "dateOfBirth": "1990-01-15",
       "address": "123 Main St",
       "user": {
-        "id": 3,
+        "id": 2,
         "firstName": "Alice",
         "lastName": "Johnson",
         "username": "Alice.Johnson",
@@ -46,11 +44,11 @@
       }
     },
     {
-      "id": 2,
+      "id": 1,
       "dateOfBirth": "1985-03-20",
       "address": "456 Elm St",
       "user": {
-        "id": 4,
+        "id": 3,
         "firstName": "Bob",
         "lastName": "Smith",
         "username": "Bob.Smith",
@@ -61,15 +59,51 @@
   ],
   "trainings": [
     {
+      "id": 0,
+      "trainee": {
+        "id": 0,
+        "user": {
+          "id": 2,
+          "firstName": "Alice",
+          "lastName": "Johnson",
+          "username": "Alice.Johnson",
+          "password": "user-pass",
+          "active": true
+        }
+      },
+      "trainer": {
+        "id": 0,
+        "specialization": {
+          "id": 0,
+          "trainingTypeName": "Training Type 1"
+        },
+        "user": {
+          "id": 0,
+          "firstName": "John",
+          "lastName": "Doe",
+          "username": "John.Doe",
+          "password": "password123",
+          "active": true
+        }
+      },
+      "trainingType": {
+        "id": 0,
+        "trainingTypeName": "Training Type 1"
+      },
+      "trainingName": "Training 1",
+      "trainingDate": "2023-05-10",
+      "trainingDuration": 60
+    },
+    {
       "id": 1,
       "trainee": {
         "id": 1,
         "user": {
           "id": 3,
-          "firstName": "Alice",
-          "lastName": "Johnson",
-          "username": "Alice.Johnson",
-          "password": "user-pass",
+          "firstName": "Bob",
+          "lastName": "Smith",
+          "username": "Bob.Smith",
+          "password": "password123",
           "active": true
         }
       },
@@ -92,42 +126,6 @@
         "id": 1,
         "trainingTypeName": "Training Type 1"
       },
-      "trainingName": "Training 1",
-      "trainingDate": "2023-05-10",
-      "trainingDuration": 60
-    },
-    {
-      "id": 2,
-      "trainee": {
-        "id": 2,
-        "user": {
-          "id": 4,
-          "firstName": "Bob",
-          "lastName": "Smith",
-          "username": "Bob.Smith",
-          "password": "password123",
-          "active": true
-        }
-      },
-      "trainer": {
-        "id": 2,
-        "specialization": {
-          "id": 2,
-          "trainingTypeName": "Training Type 2"
-        },
-        "user": {
-          "id": 2,
-          "firstName": "Jane",
-          "lastName": "Smith",
-          "username": "Jane.Smith",
-          "password": "secure-pass",
-          "active": true
-        }
-      },
-      "trainingType": {
-        "id": 2,
-        "trainingTypeName": "Training Type 2"
-      },
       "trainingName": "Training 2",
       "trainingDate": "2023-06-15",
       "trainingDuration": 45
@@ -135,17 +133,14 @@
   ],
   "trainingTypes": [
     {
-      "id": 1,
       "trainingTypeName": "Training Type 1"
     },
     {
-      "id": 2,
       "trainingTypeName": "Training Type 2"
     }
   ],
   "users": [
     {
-      "id": 1,
       "firstName": "John",
       "lastName": "Doe",
       "username": "John.Doe",
@@ -153,7 +148,6 @@
       "active": true
     },
     {
-      "id": 2,
       "firstName": "Jane",
       "lastName": "Smith",
       "username": "Jane.Smith",
@@ -161,7 +155,6 @@
       "active": true
     },
     {
-      "id": 3,
       "firstName": "Alice",
       "lastName": "Johnson",
       "username": "Alice.Johnson",
@@ -169,7 +162,6 @@
       "active": true
     },
     {
-      "id": 4,
       "firstName": "Bob",
       "lastName": "Smith",
       "username": "Bob.Smith",

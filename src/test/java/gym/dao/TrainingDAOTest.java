@@ -1,7 +1,6 @@
 package gym.dao;
 
 import gym.dao.DataAccessObject;
-import gym.dao.TrainingDAO;
 import gym.entities.*;
 import gym.storage.GymStorage;
 import gym.storage.InMemoryGymStorage;
@@ -25,14 +24,15 @@ public class TrainingDAOTest {
     }
 
     @Test
-    public void save_ShouldAddTrainingToStorage() {
+    public void givenTrainingDAOWithInitializedData_whenSaveTraining_thenTrainingShouldBeAddedToStorage() {
         Training training = createTraining(1L, "Training1");
-        trainingDAO.save(training);
-        assertThat(trainingDAO.findById(1L)).isEqualTo(training);
+        training.setId(null);
+        Long newId = trainingDAO.save(training);
+        assertThat(trainingDAO.findById(newId)).isEqualTo(training);
     }
 
     @Test
-    public void findById_ShouldReturnTrainingById() {
+    public void givenTrainingDAOWithInitializedData_whenFindTrainingById_thenShouldReturnTraining() {
         Training training = createTraining(1L, "Training1");
         trainingDAO.save(training);
         Training result = trainingDAO.findById(1L);
@@ -40,7 +40,7 @@ public class TrainingDAOTest {
     }
 
     @Test
-    public void findAll_ShouldReturnAllTrainings() {
+    public void givenTrainingDAOWithInitializedData_whenFindAllTrainings_thenShouldReturnAllTrainings() {
         Training training1 = createTraining(1L, "Training1");
         Training training2 = createTraining(2L, "Training2");
         trainingDAO.save(training1);
@@ -50,11 +50,28 @@ public class TrainingDAOTest {
     }
 
     @Test
-    public void delete_ShouldRemoveTrainingFromStorage() {
+    public void givenTrainingDAOWithInitializedData_whenDeleteTraining_thenTrainingShouldBeRemovedFromStorage() {
         Training training = createTraining(1L, "Training1");
         trainingDAO.save(training);
         trainingDAO.delete(1L);
         assertThat(trainingDAO.findById(1L)).isNull();
+    }
+    @Test
+    public void givenTrainingInStorage_whenSaveTrainingWithoutId_thenTrainingValuesShouldBeUpdated() {
+        Training training1 = createTraining(1L, "Training1");
+        Long id = trainingDAO.save(training1);
+        Training training2 = trainingDAO.findById(id);
+        training2.setTrainingName("UpdatedTraining1");
+
+        trainingDAO.save(training2);
+
+        assertThat(training1.getTrainingName()).isEqualTo("UpdatedTraining1");
+    }
+
+    @Test
+    public void givenNonExistentTraining_whenDeleteNonExistentTraining_thenShouldReturnFalse() {
+        boolean deleted = trainingDAO.delete(123L); // Assuming 123L doesn't exist
+        assertThat(deleted).isFalse();
     }
 
     private Training createTraining(Long id, String name) {
