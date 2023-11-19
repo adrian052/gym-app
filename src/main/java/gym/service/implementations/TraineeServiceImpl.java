@@ -1,6 +1,6 @@
 package gym.service.implementations;
 
-import gym.dao.GenericDAO;
+import gym.dao.DataAccessObject;
 import gym.entities.Trainee;
 import gym.entities.User;
 import gym.service.TraineeService;
@@ -13,18 +13,18 @@ import java.util.Date;
 
 @Service
 public class TraineeServiceImpl implements TraineeService {
-    private GenericDAO<Trainee> traineeDAO;
-    private GenericDAO<User> userDAO;
+    private DataAccessObject<Trainee> traineeDAO;
+    private DataAccessObject<User> userDAO;
 
     private static final Logger logger = LoggerFactory.getLogger(TraineeServiceImpl.class);
 
     @Autowired
-    public void setTraineeDAO(GenericDAO<Trainee> traineeDAO) {
+    public void setTraineeDAO(DataAccessObject<Trainee> traineeDAO) {
         this.traineeDAO = traineeDAO;
     }
 
     @Autowired
-    public void setUserDAO(GenericDAO<User> userDAO) {
+    public void setUserDAO(DataAccessObject<User> userDAO) {
         this.userDAO = userDAO;
     }
 
@@ -41,7 +41,7 @@ public class TraineeServiceImpl implements TraineeService {
         trainee.setDateOfBirth(dateOfBirth);
         trainee.setAddress(address);
 
-        Long traineeId = traineeDAO.save(trainee);
+        Long traineeId = traineeDAO.save(trainee).getId();
 
         logger.info("Created a new Trainee with ID: {}", traineeId);
 

@@ -1,6 +1,6 @@
 package gym.service.implementations;
 
-import gym.dao.GenericDAO;
+import gym.dao.DataAccessObject;
 import gym.entities.Trainer;
 import gym.entities.User;
 import gym.entities.TrainingType;
@@ -13,25 +13,25 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TrainerServiceImpl implements TrainerService {
-    private GenericDAO<Trainer> trainerDAO;
-    private GenericDAO<TrainingType> trainingTypeDAO;
-    private GenericDAO<User> userDAO;
+    private DataAccessObject<Trainer> trainerDAO;
+    private DataAccessObject<TrainingType> trainingTypeDAO;
+    private DataAccessObject<User> userDAO;
 
 
     private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
 
     @Autowired
-    public void setTrainerDAO(GenericDAO<Trainer> trainerDAO) {
+    public void setTrainerDAO(DataAccessObject<Trainer> trainerDAO) {
         this.trainerDAO = trainerDAO;
     }
 
     @Autowired
-    public void setTrainingTypeDAO(GenericDAO<TrainingType> trainingTypeDAO) {
+    public void setTrainingTypeDAO(DataAccessObject<TrainingType> trainingTypeDAO) {
         this.trainingTypeDAO = trainingTypeDAO;
     }
 
     @Autowired
-    public void setUserDAO(GenericDAO<User> userDAO) {
+    public void setUserDAO(DataAccessObject<User> userDAO) {
         this.userDAO = userDAO;
     }
 
@@ -50,7 +50,7 @@ public class TrainerServiceImpl implements TrainerService {
         trainer.setUser(user);
         trainer.setSpecialization(trainingType);
 
-        Long trainerId = trainerDAO.save(trainer);
+        Long trainerId = trainerDAO.save(trainer).getId();
         logger.info("Created a new Trainer with ID: {}", trainerId);
 
         return trainerId;

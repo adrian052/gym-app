@@ -3,7 +3,7 @@ package gym.entities;
 
 import java.util.Date;
 
-public class Trainee {
+public class Trainee implements Entity {
     private Long id;
 
     private Date dateOfBirth;
@@ -11,6 +11,16 @@ public class Trainee {
     private String address;
 
     private User user;
+
+    public Trainee() {
+    }
+
+    public Trainee(Long id, Date dateOfBirth, String address, User user) {
+        this.id = id;
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.user = user;
+    }
 
     // Getters and setters
 

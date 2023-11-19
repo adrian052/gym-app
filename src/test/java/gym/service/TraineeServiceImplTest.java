@@ -1,10 +1,9 @@
 package gym.service;
 
-import gym.dao.GenericDAO;
+import gym.dao.DataAccessObject;
 import gym.dao.TraineeDAO;
 import gym.entities.Trainee;
 import gym.entities.User;
-import gym.dao.DataAccessObject;
 import gym.dao.UserDAO;
 import gym.service.implementations.TraineeServiceImpl;
 import gym.storage.InMemoryGymStorage;
@@ -18,8 +17,8 @@ import static org.junit.Assert.*;
 public class TraineeServiceImplTest {
 
     private TraineeService traineeService;
-    private GenericDAO<Trainee> traineeDAO;
-    private GenericDAO<User> userDAO;
+    private DataAccessObject<Trainee> traineeDAO;
+    private DataAccessObject<User> userDAO;
 
     @Before
     public void setUp() {

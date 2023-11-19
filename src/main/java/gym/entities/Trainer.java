@@ -1,11 +1,20 @@
 package gym.entities;
 
-public class Trainer {
+public class Trainer implements Entity{
     private Long id;
 
     private TrainingType specialization;
 
     private User user;
+
+    public Trainer(Long id, TrainingType specialization, User user) {
+        this.id = id;
+        this.specialization = specialization;
+        this.user = user;
+    }
+
+    public Trainer() {
+    }
 
     // Getters and setters
 

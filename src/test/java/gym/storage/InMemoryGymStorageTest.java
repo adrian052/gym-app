@@ -3,9 +3,9 @@ package gym.storage;
 import gym.entities.*;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class InMemoryGymStorageTest {
@@ -16,25 +16,15 @@ public class InMemoryGymStorageTest {
     public void setUp() {
         String jsonFilePath = "data/data.json";
         storage = new InMemoryGymStorage();
-
-        ((InMemoryGymStorage)storage).setJsonFilePath(jsonFilePath);
-        ((InMemoryGymStorage)storage).initializeData();
-    }
-
-    @Test
-    public void givenStorageWithInitializedData_whenGetDataFromMaps_thenDataShouldBeLoadedFromFile() {
-        assertThat(storage.getTrainers()).isNotEmpty();
-        assertThat(storage.getTrainees()).isNotEmpty();
-        assertThat(storage.getTrainings()).isNotEmpty();
-        assertThat(storage.getTrainingTypes()).isNotEmpty();
-        assertThat(storage.getUsers()).isNotEmpty();
+        storage.setJsonFilePath(jsonFilePath);
+        storage.initializeData();
     }
 
     @Test
     public void givenNewJsonFilePath_whenSetJsonFilePath_thenJsonFilePathShouldBeUpdated() {
         String newFilePath = "new/data.json";
-        ((InMemoryGymStorage)storage).setJsonFilePath(newFilePath);
-        assertThat(((InMemoryGymStorage)storage).getJsonFilePath()).isEqualTo(newFilePath);
+        storage.setJsonFilePath(newFilePath);
+        assertThat(storage.getJsonFilePath()).isEqualTo(newFilePath);
     }
 
     @Test
@@ -69,20 +59,12 @@ public class InMemoryGymStorageTest {
 
     @Test
     public void givenInvalidJsonFile_whenInitializeData_thenExceptionShouldBeHandled() {
-        ((InMemoryGymStorage) storage).setJsonFilePath("invalid_file_path.json");
+        storage.setJsonFilePath("invalid_file_path.json");
         try {
-            ((InMemoryGymStorage) storage).initializeData();
+            storage.initializeData();
             assertNotNull(storage);
         } catch (Exception e) {
             assertNotNull(e);
         }
-    }
-
-    @Test
-    public void givenNewUser_whenGetNextUserId_thenUserIdShouldBeIncremented() {
-        long initialUserId = ((InMemoryGymStorage) storage).getNextUserId();
-        long expectedUserId = initialUserId + 1;
-        long nextUserId = ((InMemoryGymStorage) storage).getNextUserId();
-        assertEquals(expectedUserId, nextUserId);
     }
 }

@@ -13,15 +13,12 @@ public interface GymStorage {
 
     Map<Long, TrainingType> getTrainingTypes();
 
+    long getNextId(Class<?> entityType);
+
     Map<Long, User> getUsers();
-    long getNextTrainerId();
+    void initializeData();
 
-    long getNextTraineeId();
-
-    long getNextTrainingId();
-
-    long getNextTrainingTypeId();
-
-    long getNextUserId();
+    void setJsonFilePath(String jsonFilePath);
+    String getJsonFilePath();
 
 }

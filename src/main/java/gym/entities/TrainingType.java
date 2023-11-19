@@ -1,10 +1,18 @@
 package gym.entities;
 
 
-public class TrainingType {
+public class TrainingType implements Entity{
     private Long id;
 
     private String trainingTypeName;
+
+    public TrainingType(Long id, String trainingTypeName) {
+        this.id = id;
+        this.trainingTypeName = trainingTypeName;
+    }
+
+    public TrainingType() {
+    }
 
     // Getters and setters
 

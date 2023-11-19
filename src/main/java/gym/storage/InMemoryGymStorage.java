@@ -44,12 +44,31 @@ public class InMemoryGymStorage implements GymStorage {
         this.nextUserId = 0L;
     }
 
+    @Override
     public void setJsonFilePath(String jsonFilePath) {
         this.jsonFilePath = jsonFilePath;
     }
 
+    @Override
     public String getJsonFilePath() {
         return this.jsonFilePath;
+    }
+
+    @Override
+    public long getNextId(Class<?> entityType) {
+        if (entityType.equals(Trainer.class)) {
+            return nextTrainerId++;
+        } else if (entityType.equals(Trainee.class)) {
+            return nextTraineeId++;
+        } else if (entityType.equals(Training.class)) {
+            return nextTrainingId++;
+        } else if (entityType.equals(TrainingType.class)) {
+            return nextTrainingTypeId++;
+        } else if (entityType.equals(User.class)) {
+            return nextUserId++;
+        } else {
+            throw new IllegalArgumentException("Unsupported entity type: " + entityType.getName());
+        }
     }
 
     @Override
@@ -78,30 +97,6 @@ public class InMemoryGymStorage implements GymStorage {
     }
 
     @Override
-    public long getNextTrainerId() {
-        return nextTrainerId++;
-    }
-
-    @Override
-    public long getNextTraineeId() {
-        return nextTraineeId++;
-    }
-
-    @Override
-    public long getNextTrainingId() {
-        return nextTrainingId++;
-    }
-
-    @Override
-    public long getNextTrainingTypeId() {
-        return nextTrainingTypeId++;
-    }
-
-    @Override
-    public long getNextUserId() {
-        return nextUserId++;
-    }
-
     @PostConstruct
     public void initializeData() {
         try {
@@ -114,38 +109,35 @@ public class InMemoryGymStorage implements GymStorage {
             logger.info("Initialized Users");
 
             gymDataLoader.getTrainers().forEach(trainer -> {
-                trainer.setId(getNextTrainerId());
+                trainer.setId(getNextId(Trainer.class));
                 trainers.put(trainer.getId(), trainer);
             });
 
             logger.info("Initialized Trainers");
 
             gymDataLoader.getTrainees().forEach(trainee -> {
-                trainee.setId(getNextTraineeId());
+                trainee.setId(getNextId(Trainee.class));
                 trainees.put(trainee.getId(), trainee);
             });
 
             logger.info("Initialized Trainees");
 
             gymDataLoader.getTrainings().forEach(training -> {
-                training.setId(getNextTrainingId());
+                training.setId(getNextId(TrainingType.class));
                 trainings.put(training.getId(), training);
             });
 
             logger.info("Initialized Trainings");
 
             gymDataLoader.getTrainingTypes().forEach(trainingType -> {
-                trainingType.setId(getNextTrainingTypeId());
+                trainingType.setId(getNextId(TrainingType.class));
                 trainingTypes.put(trainingType.getId(), trainingType);
             });
 
             logger.info("Initialized Training Types");
 
         } catch (Exception e) {
-            e.printStackTrace();
             logger.error("Failed to initialize data", e);
         }
     }
-
-
 }

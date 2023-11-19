@@ -18,10 +18,10 @@ import static org.junit.Assert.assertNull;
 
 public class TrainingServiceImplTest {
     private TrainingService trainingService;
-    private GenericDAO<Trainee> traineeDAO;
-    private GenericDAO<Trainer> trainerDAO;
-    private GenericDAO<TrainingType> trainingTypeDAO;
-    private GenericDAO<Training> trainingDAO;
+    private DataAccessObject<Trainee> traineeDAO;
+    private DataAccessObject<Trainer> trainerDAO;
+    private DataAccessObject<TrainingType> trainingTypeDAO;
+    private DataAccessObject<Training> trainingDAO;
 
     @Before
     public void setUp() {
@@ -47,15 +47,15 @@ public class TrainingServiceImplTest {
     public void givenValidData_whenCreateNewTraining_thenShouldReturnTrainingId() {
         // Create and save a valid Trainee
         Trainee trainee = new Trainee();
-        Long traineeId = traineeDAO.save(trainee);
+        Long traineeId = traineeDAO.save(trainee).getId();
 
         // Create and save a valid Trainer
         Trainer trainer = new Trainer();
-        Long trainerId = trainerDAO.save(trainer);
+        Long trainerId = trainerDAO.save(trainer).getId();
 
         // Create and save a valid TrainingType
         TrainingType trainingType = new TrainingType();
-        Long trainingTypeId = trainingTypeDAO.save(trainingType);
+        Long trainingTypeId = trainingTypeDAO.save(trainingType).getId();
 
         String trainingName = "Test Training";
         Date trainingDate = new Date();
@@ -82,15 +82,15 @@ public class TrainingServiceImplTest {
     public void givenValidTraining_whenSelectTraining_thenShouldReturnTraining() {
         // Create and save a valid Trainee
         Trainee trainee = new Trainee();
-        Long traineeId = traineeDAO.save(trainee);
+        Long traineeId = traineeDAO.save(trainee).getId();
 
         // Create and save a valid Trainer
         Trainer trainer = new Trainer();
-        Long trainerId = trainerDAO.save(trainer);
+        Long trainerId = trainerDAO.save(trainer).getId();
 
         // Create and save a valid TrainingType
         TrainingType trainingType = new TrainingType();
-        Long trainingTypeId = trainingTypeDAO.save(trainingType);
+        Long trainingTypeId = trainingTypeDAO.save(trainingType).getId();
 
         String trainingName = "Test Training";
         Date trainingDate = new Date();

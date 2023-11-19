@@ -1,30 +1,23 @@
 package gym.dao;
 
 import gym.entities.Trainer;
-import gym.storage.GymStorage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class TrainerDAO extends GenericDAO<Trainer> {
-    private GymStorage storage;
-    @Autowired
-    public void setStorage(GymStorage storage){
-        this.storage = storage;
-    }
+public class TrainerDAO extends DataAccessObject<Trainer> {
     @Override
     protected Map<Long, Trainer> getEntityMap() {
         return storage.getTrainers();
     }
 
     @Override
-    protected Long getId(Trainer entity) {
-        return entity.getId();
+    protected boolean hasReferentialIntegrity(Trainer trainer) {
+        return isEntityIdInMap(trainer.getUser(), storage.getUsers());
     }
 
     @Override
-    protected void setId(Trainer entity, Long id) {
-        entity.setId(id);
+    protected boolean validateNotNull(Trainer trainer) {
+        return trainer.getSpecialization()!=null && trainer.getUser()!=null;
     }
 }

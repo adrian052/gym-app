@@ -15,30 +15,30 @@ import java.util.Date;
 
 @Service
 public class TrainingServiceImpl implements TrainingService {
-    private GenericDAO<Trainee> traineeDAO;
-    private GenericDAO<Trainer> trainerDAO;
-    private GenericDAO<TrainingType> trainingTypeDAO;
-    private GenericDAO<Training> trainingDAO;
+    private DataAccessObject<Trainee> traineeDAO;
+    private DataAccessObject<Trainer> trainerDAO;
+    private DataAccessObject<TrainingType> trainingTypeDAO;
+    private DataAccessObject<Training> trainingDAO;
 
     private static final Logger logger = LoggerFactory.getLogger(TrainingServiceImpl.class);
 
     @Autowired
-    public void setTraineeDAO(GenericDAO<Trainee> traineeDAO) {
+    public void setTraineeDAO(DataAccessObject<Trainee> traineeDAO) {
         this.traineeDAO = traineeDAO;
     }
 
     @Autowired
-    public void setTrainerDAO(GenericDAO<Trainer> trainerDAO) {
+    public void setTrainerDAO(DataAccessObject<Trainer> trainerDAO) {
         this.trainerDAO = trainerDAO;
     }
 
     @Autowired
-    public void setTrainingTypeDAO(GenericDAO<TrainingType> trainingTypeDAO) {
+    public void setTrainingTypeDAO(DataAccessObject<TrainingType> trainingTypeDAO) {
         this.trainingTypeDAO = trainingTypeDAO;
     }
 
     @Autowired
-    public void setTrainingDAO(GenericDAO<Training> trainingDAO) {
+    public void setTrainingDAO(DataAccessObject<Training> trainingDAO) {
         this.trainingDAO = trainingDAO;
     }
 
@@ -57,7 +57,7 @@ public class TrainingServiceImpl implements TrainingService {
             training.setTrainingType(trainingTypeDAO.findById(trainingTypeId));
             training.setTrainingDate(trainingDate);
             training.setTrainingDuration(trainingDuration);
-            Long trainingId = trainingDAO.save(training);
+            Long trainingId = trainingDAO.save(training).getId();
 
             logger.info("Created a new Training with ID: {}" , trainingId);
 

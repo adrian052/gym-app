@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TrainerServiceImplTest {
     private TrainerService trainerService;
-    private GenericDAO<TrainingType> trainingTypeDAO;
+    private DataAccessObject<TrainingType> trainingTypeDAO;
 
     @Before
     public void setUp() {
@@ -60,7 +60,7 @@ public class TrainerServiceImplTest {
 
         TrainingType newTrainingType = new TrainingType();
         newTrainingType.setTrainingTypeName("Nuevo Tipo de Entrenamiento");
-        Long specialization = trainingTypeDAO.save(newTrainingType);
+        Long specialization = trainingTypeDAO.save(newTrainingType).getId();
 
         Long trainerId = trainerService.create(firstName, lastName, isActive, specialization);
         System.out.println(trainerId);
@@ -76,7 +76,7 @@ public class TrainerServiceImplTest {
 
         TrainingType newTrainingType = new TrainingType();
         newTrainingType.setTrainingTypeName("Nuevo Tipo de Entrenamiento");
-        Long specialization = trainingTypeDAO.save(newTrainingType);
+        Long specialization = trainingTypeDAO.save(newTrainingType).getId();
 
         Long trainerId = trainerService.create(firstName, lastName, isActive,  specialization);
 
@@ -102,7 +102,7 @@ public class TrainerServiceImplTest {
 
         TrainingType newTrainingType = new TrainingType();
         newTrainingType.setTrainingTypeName("Nuevo Tipo de Entrenamiento");
-        Long specialization = trainingTypeDAO.save(newTrainingType);
+        Long specialization = trainingTypeDAO.save(newTrainingType).getId();
 
         Long trainerId1 = trainerService.create(firstName, lastName, isActive,  specialization);
         Long trainerId2 = trainerService.create(firstName, lastName, isActive,  specialization);
