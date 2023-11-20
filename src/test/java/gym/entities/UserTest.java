@@ -69,6 +69,6 @@ class UserTest {
                 "Username: alice123\n" +
                 "Active: true";
 
-        assertThat(user.toString()).isEqualTo(expectedString);
+        assertThat(user).hasToString(expectedString);
     }
 }

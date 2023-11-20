@@ -2,8 +2,6 @@ package gym.dao;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-
 public class DateUtil {
     public static Date date(int year, int month, int day){
         Calendar calendar = Calendar.getInstance();
