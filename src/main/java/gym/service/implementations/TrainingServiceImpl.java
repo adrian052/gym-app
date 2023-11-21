@@ -19,7 +19,6 @@ public class TrainingServiceImpl implements TrainingService {
     private DataAccessObject<Trainer> trainerDAO;
     private DataAccessObject<TrainingType> trainingTypeDAO;
     private DataAccessObject<Training> trainingDAO;
-
     private static final Logger logger = LoggerFactory.getLogger(TrainingServiceImpl.class);
 
     @Autowired
@@ -43,36 +42,27 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public Long create(Long traineeId, Long trainerId, String trainingName, Long trainingTypeId, Date trainingDate, int trainingDuration) {
+    public Training create(Long traineeId, Long trainerId, String trainingName, Long trainingTypeId, Date trainingDate, int trainingDuration) {
         if(traineeId==null || trainerId==null ||trainingName == null || trainingTypeId==null || trainingDate==null){
-            logger.error("Failed to create Training: the following parameters cannot be null (traineeId, trainerId, trainingTypeId, trainingTypeId, trainingDate)");
-            return null;
+            logger.error("(traineeId, trainerId, trainingName, trainingTypeId, trainingDate) are not allowed to be null");
+            throw new IllegalArgumentException("(traineeId, trainerId, trainingName, trainingTypeId, trainingDate) are not allowed to be null");
         }
 
-        if (traineeDAO.findById(traineeId) != null && trainerDAO.findById(trainerId) != null && trainingTypeDAO.findById(trainingTypeId) != null) {
-            Training training = new Training();
-            training.setTrainee(traineeDAO.findById(traineeId));
-            training.setTrainer(trainerDAO.findById(trainerId));
-            training.setTrainingName(trainingName);
-            training.setTrainingType(trainingTypeDAO.findById(trainingTypeId));
-            training.setTrainingDate(trainingDate);
-            training.setTrainingDuration(trainingDuration);
-            Long trainingId = trainingDAO.save(training).getId();
-
-            logger.info("Created a new Training with ID: {}" , trainingId);
-
-            return trainingId;
-        } else {
-            logger.warn("Failed to create training");
-            return null;
-        }
+        Training training = new Training();
+        training.setTrainee(traineeDAO.findById(traineeId));
+        training.setTrainer(trainerDAO.findById(trainerId));
+        training.setTrainingName(trainingName);
+        training.setTrainingType(trainingTypeDAO.findById(trainingTypeId));
+        training.setTrainingDate(trainingDate);
+        training.setTrainingDuration(trainingDuration);
+        return trainingDAO.save(training);
     }
 
     @Override
     public Training select(Long id) {
         if(id == null){
-            logger.error("Failed to create Training: the following parameters cannot be null (id)");
-            return null;
+            logger.error("(id) is not allowed to be null");
+            throw new IllegalArgumentException("(id) is not allowed to be null");
         }
         return trainingDAO.findById(id);
     }

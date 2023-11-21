@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class GymApp {
     public static void main(String[] args) {
-        // Initialize the Spring application context
+        /*// Initialize the Spring application context
         ApplicationContext context = new AnnotationConfigApplicationContext("gym");
 
         // Get the FacadeGym bean from the application context
@@ -65,6 +65,6 @@ public class GymApp {
 
         // Create a new Training
         Long newTrainingId = facadeGym.createTraining(1L, 1L, "New Training", 1L, new Date(), 60);
-        System.out.println("New Training created with ID: " + newTrainingId);
+        System.out.println("New Training created with ID: " + newTrainingId);*/
     }
 }

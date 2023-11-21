@@ -28,12 +28,12 @@ public class SimpleFacadeGym implements FacadeGym {
     }
 
     @Override
-    public Long createTrainee(String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
+    public Trainee createTrainee(String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
         return traineeService.create(firstName, lastName, isActive, dateOfBirth, address);
     }
 
     @Override
-    public boolean updateTrainee(Long id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
+    public Trainee updateTrainee(Long id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
         return traineeService.update(id, firstName, lastName, isActive, dateOfBirth, address);
     }
 
@@ -48,12 +48,12 @@ public class SimpleFacadeGym implements FacadeGym {
     }
 
     @Override
-    public Long createTrainer(String firstName, String lastName, boolean isActive, Long specializationId) {
-        return trainerService.create(firstName, lastName, isActive,specializationId);
+    public Trainer createTrainer(String firstName, String lastName, boolean isActive, Long specialization) {
+        return trainerService.create(firstName, lastName, isActive,specialization);
     }
 
     @Override
-    public boolean updateTrainer(Long id, String firstName, String lastName, boolean isActive,Date birthDate,String address, Long specializationId) {
+    public Trainer updateTrainer(Long id, String firstName, String lastName, boolean isActive,Date birthDate,String address, Long specializationId) {
         return trainerService.update(id, firstName, lastName, isActive,specializationId);
     }
 
@@ -63,7 +63,7 @@ public class SimpleFacadeGym implements FacadeGym {
     }
 
     @Override
-    public Long createTraining(Long traineeId, Long trainerId, String trainingName, Long trainingTypeId, Date trainingDate, int trainingDuration) {
+    public Training createTraining(Long traineeId, Long trainerId, String trainingName, Long trainingTypeId, Date trainingDate, int trainingDuration) {
         return trainingService.create(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
     }
 }

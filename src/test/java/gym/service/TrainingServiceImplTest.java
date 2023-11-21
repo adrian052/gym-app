@@ -1,112 +1,90 @@
 package gym.service;
 
-import gym.dao.*;
-import gym.entities.Training;
-import gym.entities.TrainingType;
-import gym.entities.Trainer;
-import gym.entities.Trainee;
+
+import gym.dao.DataAccessObject;
+
+import gym.dao.DateUtil;
+import gym.entities.*;
 import gym.service.implementations.TrainingServiceImpl;
-import gym.storage.GymStorage;
-import gym.storage.InMemoryGymStorage;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Date;
+import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
+@RunWith(MockitoJUnitRunner.class)
 public class TrainingServiceImplTest {
-    private TrainingService trainingService;
-    private DataAccessObject<Trainee> traineeDAO;
+    @InjectMocks
+    private TrainingService trainingService = new TrainingServiceImpl();
+
+    @Mock
     private DataAccessObject<Trainer> trainerDAO;
+
+    @Mock
     private DataAccessObject<TrainingType> trainingTypeDAO;
+
+    @Mock
+    private DataAccessObject<Trainee> traineeDAO;
+
+    @Mock
     private DataAccessObject<Training> trainingDAO;
 
-    @Before
-    public void setUp() {
-        GymStorage storage = new InMemoryGymStorage();
-        traineeDAO = new TraineeDAO();
-        trainerDAO = new TrainerDAO();
-        trainingTypeDAO = new TrainingTypeDAO();
-        trainingDAO = new TrainingDAO();
 
-        ((TraineeDAO)traineeDAO).setStorage(storage);
-        ((TrainerDAO)trainerDAO).setStorage(storage);
-        ((TrainingTypeDAO)trainingTypeDAO).setStorage(storage);
-        ((TrainingDAO)trainingDAO).setStorage(storage);
+    @Test
+    public void givenValidRequest_whenCreateTraining_thenShouldReturnTraining(){
+        //arrange
+        User mockUser = new User(1L, "Adrian", "Ibarra", "Adrian.Ibarra","password",true);
+        TrainingType trainingType = new TrainingType(1L, "HipTrust");
+        Trainee trainee = new Trainee(1L, DateUtil.date(2022,2,2),"address",mockUser);
+        Trainer trainer = new Trainer(1L,trainingType, mockUser);
+        when(traineeDAO.findById(1L)).thenReturn(trainee);
+        when(trainerDAO.findById(1L)).thenReturn(trainer);
+        when(trainingTypeDAO.findById(1L)).thenReturn(trainingType);
+        when(trainingDAO.save(any(Training.class)))
+                .thenReturn(new Training(1L,
+                        trainee,trainer,
+                        "TrainingName",
+                        trainingType,DateUtil.date(2022, 2,2),
+                        60));
+        //act
+        Training newTraining = trainingService.create(1L,1L,"TrainingName",
+                1L, DateUtil.date(2022, 2,2),60);
+        //assert
+        assertThat(newTraining).isNotNull()
+                .hasFieldOrPropertyWithValue("id", 1L)
+                .hasFieldOrPropertyWithValue("trainee", trainee)
+                .hasFieldOrPropertyWithValue("trainer", trainer)
+                .hasFieldOrPropertyWithValue("trainingName", "TrainingName")
+                .hasFieldOrPropertyWithValue("trainingDate",DateUtil.date(2022, 2,2))
+                .hasFieldOrPropertyWithValue("trainingDuration", 60);
 
-        trainingService = new TrainingServiceImpl();
-        ((TrainingServiceImpl)trainingService).setTraineeDAO(traineeDAO);
-        ((TrainingServiceImpl)trainingService).setTrainerDAO(trainerDAO);
-        ((TrainingServiceImpl)trainingService).setTrainingTypeDAO(trainingTypeDAO);
-        ((TrainingServiceImpl)trainingService).setTrainingDAO(trainingDAO);
     }
 
     @Test
-    public void givenValidData_whenCreateNewTraining_thenShouldReturnTrainingId() {
-        // Create and save a valid Trainee
-        Trainee trainee = new Trainee();
-        Long traineeId = traineeDAO.save(trainee).getId();
-
-        // Create and save a valid Trainer
-        Trainer trainer = new Trainer();
-        Long trainerId = trainerDAO.save(trainer).getId();
-
-        // Create and save a valid TrainingType
-        TrainingType trainingType = new TrainingType();
-        Long trainingTypeId = trainingTypeDAO.save(trainingType).getId();
-
-        String trainingName = "Test Training";
-        Date trainingDate = new Date();
-        int trainingDuration = 60;
-
-        Long trainingId = trainingService.create(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
-        assertNotNull(trainingId);
+    public void givenRequestWithNullValues_whenCreateTraining_thenShouldThrownAnException() {
+        //Arrange
+        //act
+        Throwable thrown = catchThrowable(() -> trainingService
+                .create(null, null, null,null, null, 60 ));
+        //assert
+        assertThatThrownBy(() ->{throw thrown;})
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("(traineeId, trainerId, trainingName, trainingTypeId, trainingDate) are not allowed to be null");
     }
 
     @Test
-    public void givenInvalidData_whenCreateNewTraining_thenShouldReturnNull() {
-        Long traineeId = 12345L; // Non-existent Trainee
-        Long trainerId = 2L;
-        String trainingName = "Test Training";
-        Date trainingDate = new Date();
-        int trainingDuration = 60;
-        Long trainingTypeId = 3L;
-
-        Long trainingId = trainingService.create(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
-        assertNull(trainingId);
-    }
-
-    @Test
-    public void givenValidTraining_whenSelectTraining_thenShouldReturnTraining() {
-        // Create and save a valid Trainee
-        Trainee trainee = new Trainee();
-        Long traineeId = traineeDAO.save(trainee).getId();
-
-        // Create and save a valid Trainer
-        Trainer trainer = new Trainer();
-        Long trainerId = trainerDAO.save(trainer).getId();
-
-        // Create and save a valid TrainingType
-        TrainingType trainingType = new TrainingType();
-        Long trainingTypeId = trainingTypeDAO.save(trainingType).getId();
-
-        String trainingName = "Test Training";
-        Date trainingDate = new Date();
-        int trainingDuration = 60;
-
-        Long trainingId = trainingService.create(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
-        assertNotNull(trainingId);
-
-        Training selectedTraining = trainingService.select(trainingId);
-        assertNotNull(selectedTraining);
-    }
-
-    @Test
-    public void givenInvalidTrainingId_whenSelectTraining_thenShouldReturnNull() {
-        Long invalidTrainingId = 12345L; // Non-existent Training
-        Training selectedTraining = trainingService.select(invalidTrainingId);
-        assertNull(selectedTraining);
+    public void givenRequestWithNullValues_whenSelectTraining_thenShouldThrownAnException() {
+        //Arrange
+        //act
+        Throwable thrown = catchThrowable(() -> trainingService
+                .select(null ));
+        //assert
+        assertThatThrownBy(() ->{throw thrown;})
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("(id) is not allowed to be null");
     }
 }

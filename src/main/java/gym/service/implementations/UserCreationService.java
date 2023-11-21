@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import java.util.Random;
 
 public class UserCreationService {
+    private UserCreationService(){
+
+    }
     private static final Random random = new Random();
     private static final Logger logger = LoggerFactory.getLogger(UserCreationService.class);
 
