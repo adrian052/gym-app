@@ -1,6 +1,5 @@
 package gym.entities;
 
-import jakarta.persistence.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,24 +10,24 @@ class TrainingTypeTest {
     private TrainingType trainingType;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         trainingType = new TrainingType();
     }
 
     @Test
-     void testGetAndSetId() {
+    void givenValidTrainingType_whenSettingId_thenIdShouldBeSet() {
         trainingType.setId(1L);
         assertThat(trainingType.getId()).isEqualTo(1L);
     }
 
     @Test
-     void testGetAndSetTrainingTypeName() {
+    void givenValidTrainingType_whenSettingTrainingTypeName_thenTrainingTypeNameShouldBeSet() {
         trainingType.setTrainingTypeName("Cardio");
         assertThat(trainingType.getTrainingTypeName()).isEqualTo("Cardio");
     }
 
     @Test
-     void testToString() {
+    void givenTrainingTypeWithAllDetails_whenCallingToString_thenExpectedStringShouldBeGenerated() {
         trainingType.setId(1L);
         trainingType.setTrainingTypeName("Cardio");
 
@@ -38,5 +37,4 @@ class TrainingTypeTest {
 
         assertThat(actual).isEqualTo(expectedString);
     }
-
 }

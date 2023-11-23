@@ -2,73 +2,130 @@ package gym.dao;
 
 import gym.entities.Trainee;
 import gym.entities.User;
-import gym.storage.GymStorage;
-import gym.storage.InMemoryGymStorage;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.dao.DataIntegrityViolationException;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
+import static org.mockito.Mockito.when;
+import java.util.*;
 
-import java.util.Date;
-import java.util.List;
+public class TraineeDAOTest extends DAOTest<Trainee>{
+    @Override
+    protected DataAccessObject<Trainee> getInstance() {
+        return new TraineeDAO();
+    }
 
-public class TraineeDAOTest {
+    @Override
+    protected void configureOwnMap(Map<Long, Trainee> mockMap) {
+        when(storage.getTrainees()).thenReturn(mockMap);
+    }
 
-    private DataAccessObject<Trainee> traineeDAO;
+    protected Trainee entityWithDependencies(Long id){
+        User user = new User(id, "John"+id, "Doe"+id, "John.Doe"+id, "secret_password"+id, true);
+        return new Trainee(id,DateUtil.date(2022, 8,2),"5 de Mayo", user);
+    }
 
-    @Before
-    public void setUp() {
-        GymStorage storage = new InMemoryGymStorage();
-        traineeDAO = new TraineeDAO();
-        ((TraineeDAO) traineeDAO).setStorage(storage);
+    @Override
+    protected Trainee entityWithNullValues(Long id) {
+        return new Trainee(1L,null,null,null);
+    }
+
+    ///FindById
+    @Test
+    public void givenUserMapWithTraineeId1_whenFindById1_thenReturnCorrectTrainee() {
+        // arrange
+        Map<Long, Trainee> mapWithTrainee = new HashMap<>();
+        User user = new User(1L, "Adrian", "Ibarra", "Adrian.Ibarra", "password", true);
+        Trainee expectedTrainee = new Trainee(1L,null,null,user);
+        mapWithTrainee.put(1L, expectedTrainee);
+        configureOwnMap(mapWithTrainee);
+        // act
+        Trainee actualTrainee = dao.findById(1L);
+        // assert
+        assertThat(actualTrainee).isNotNull()
+                .hasFieldOrPropertyWithValue("id", 1L)
+                .hasFieldOrPropertyWithValue("dateOfBirth", null)
+                .hasFieldOrPropertyWithValue("address", null)
+                .hasFieldOrPropertyWithValue("user", user);
     }
 
     @Test
-    public void save_ShouldAddTraineeToStorage() {
-        Trainee trainee = createTrainee(1L, "Trainee1");
-        traineeDAO.save(trainee);
-        assertThat(traineeDAO.findById(1L)).isEqualTo(trainee);
+    public void givenTraineeMapWithSomeTrainee_whenFindAll_thenReturnListWithTheSameTrainees() {
+        //arrange
+        Trainee trainee1 = new Trainee(1L, DateUtil.date(2022,8,2), null,null);
+        Trainee trainee2 = new Trainee(2L, null, "5 de Mayo",null);
+        Trainee trainee3 = new Trainee(3L, DateUtil.date(2022,5,2), null, null);
+        configureOwnMap(new HashMap<>(Map.of(1L, trainee1, 2L, trainee2, 3L, trainee3)));
+        //act
+        List<Trainee> trainees = dao.findAll();
+        //assert
+        assertThat(trainees).isNotNull().hasSize(3);
+        assertThat(trainees.get(0)).usingRecursiveComparison().isEqualTo(trainee1);
+        assertThat(trainees.get(1)).usingRecursiveComparison().isEqualTo(trainee2);
+        assertThat(trainees.get(2)).usingRecursiveComparison().isEqualTo(trainee3);
+    }
+
+    //Save
+    @Test
+    public void givenTraineeWithoutIdAndWithForeignKeysNotSaved_whenSaveTrainee_thenThrowException(){
+        //arrange
+        User masterUser = new User(1L, "Adrian", "Ibarra", "Adrian.Ibarra", "password", true);
+        Trainee trainee = new Trainee(1L, null,null, masterUser);
+
+        when(storage.getUsers()).thenReturn(Collections.emptyMap());
+        //act
+        Throwable thrown = catchThrowable(() -> dao.save(trainee));
+        //assert
+        assertThatThrownBy(() ->{throw thrown;})
+                .isInstanceOf(DataIntegrityViolationException.class)
+                .hasMessage("Failed to save: Data integrity violation while creating/updating the entity.");
     }
 
     @Test
-    public void findById_ShouldReturnTraineeById() {
-        Trainee trainee = createTrainee(1L, "Trainee1");
-        traineeDAO.save(trainee);
-        Trainee result = traineeDAO.findById(1L);
-        assertThat(result).isEqualTo(trainee);
+    public void givenTraineeWithoutId_whenSaveUser_thenReturnValidTrainee(){
+        //arrange
+        User masterUser = new User(1L, "Adrian", "Ibarra", "Adrian.Ibarra", "password", true);
+        Trainee trainee = new Trainee(null, null, null, masterUser);
+
+        when(storage.getNextId(Trainee.class)).thenReturn(1L);
+        when(storage.getUsers()).thenReturn(new HashMap<>(Map.of(1L,masterUser)));
+        configureOwnMap(new HashMap<>());
+
+        //act
+        Trainee actualTrainee = dao.save(trainee);
+        //assert
+        assertThat(actualTrainee).isNotNull()
+                .hasFieldOrPropertyWithValue("id", 1L)
+                .hasFieldOrPropertyWithValue("user", masterUser)
+                .hasFieldOrPropertyWithValue("dateOfBirth", null)
+                .hasFieldOrPropertyWithValue("address", null);
     }
 
     @Test
-    public void findAll_ShouldReturnAllTrainees() {
-        Trainee trainee1 = createTrainee(1L, "Trainee1");
-        Trainee trainee2 = createTrainee(2L, "Trainee2");
-        traineeDAO.save(trainee1);
-        traineeDAO.save(trainee2);
-        List<Trainee> result = traineeDAO.findAll();
-        assertThat(result).containsExactlyInAnyOrder(trainee1, trainee2);
-    }
+    public void givenValidTraineeCreatedBefore_whenSaveUser_thenReturnAValidTraineeUpdated() {
+        //arrange
 
-    @Test
-    public void delete_ShouldRemoveTraineeFromStorage() {
-        Trainee trainee = createTrainee(1L, "Trainee1");
-        traineeDAO.save(trainee);
-        traineeDAO.delete(1L);
-        assertThat(traineeDAO.findById(1L)).isNull();
-    }
+        User user = new User(1L, "Fernando", "Robles", "Fernando.Robles", "password", true);
+        Trainee traineeBefore = new Trainee(1L,  DateUtil.date(2022, 8, 2),null,user);
+        Trainee traineeAfter = new Trainee(1L, DateUtil.date(2022, 8, 3),null,user);
 
-    private Trainee createTrainee(Long id, String name) {
-        Trainee trainee = new Trainee();
-        trainee.setId(id);
-        trainee.setUser(createUser(id, name));
-        trainee.setDateOfBirth(new Date());
-        trainee.setAddress("Address for " + name);
-        return trainee;
-    }
+        when(storage.getUsers()).thenReturn(new HashMap<>(Map.of(1L,user)));
+        configureOwnMap(new HashMap<>(Map.of(1L,traineeBefore)));
 
-    private User createUser(Long id, String name) {
-        User user = new User();
-        user.setId(id);
-        user.setFirstName(name);
-        user.setLastName("LastName");
-        return user;
+        //act
+        assertThat(dao.findById(1L)).isNotNull()
+                .hasFieldOrPropertyWithValue("id", 1L)
+                .hasFieldOrPropertyWithValue("user", user)
+                .hasFieldOrPropertyWithValue("dateOfBirth", DateUtil.date(2022, 8, 2))
+                .hasFieldOrPropertyWithValue("address", null);
+
+        Trainee actualTrainee = dao.save(traineeAfter);
+        //assert
+        assertThat(actualTrainee).isNotNull()
+                .hasFieldOrPropertyWithValue("id", 1L)
+                .hasFieldOrPropertyWithValue("user", user)
+                .hasFieldOrPropertyWithValue("dateOfBirth", DateUtil.date(2022, 8, 3))
+                .hasFieldOrPropertyWithValue("address", null);
     }
 }

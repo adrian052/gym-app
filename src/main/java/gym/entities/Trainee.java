@@ -1,24 +1,26 @@
 package gym.entities;
 
-import jakarta.persistence.*;
 
 import java.util.Date;
 
-@Entity
-public class Trainee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Trainee implements Entity {
     private Long id;
 
-    @Column
     private Date dateOfBirth;
 
-    @Column
     private String address;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
     private User user;
+
+    public Trainee() {
+    }
+
+    public Trainee(Long id, Date dateOfBirth, String address, User user) {
+        this.id = id;
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.user = user;
+    }
 
     // Getters and setters
 

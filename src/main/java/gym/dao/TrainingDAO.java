@@ -1,35 +1,25 @@
 package gym.dao;
 
 import gym.entities.Training;
-import gym.storage.GymStorage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
-
-
+import java.util.Map;
 @Component
-public class TrainingDAO implements DataAccessObject<Training> {
-    private GymStorage storage;
-
-    @Autowired
-    public void setStorage(GymStorage storage) {
-        this.storage = storage;
-    }
-    public List<Training> findAll() {
-        return new ArrayList<>(storage.getTrainings().values());
+public class TrainingDAO extends DataAccessObject<Training> {
+    @Override
+    protected Map<Long, Training> getEntityMap() {
+        return storage.getTrainings();
     }
 
-    public Training findById(Long id) {
-        return storage.getTrainings().get(id);
+    @Override
+    protected boolean hasReferentialIntegrity(Training training) {
+        return isEntityIdInMap(training.getTrainee(), storage.getTrainees())
+                && isEntityIdInMap(training.getTrainer(), storage.getTrainers())
+                && isEntityIdInMap(training.getTrainingType(), storage.getTrainingTypes());
     }
 
-    public void save(Training training) {
-        storage.getTrainings().put(training.getId(), training);
-    }
-
-    public void delete(Long id) {
-        storage.getTrainings().remove(id);
+    @Override
+    protected boolean validateNotNull(Training training) {
+        return training.getTrainee()!=null && training.getTrainer()!=null && training.getTrainingName()!=null
+                && training.getTrainingType()!=null && training.getTrainingDate()!=null;
     }
 }

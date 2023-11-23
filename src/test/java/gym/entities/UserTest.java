@@ -1,6 +1,5 @@
 package gym.entities;
 
-import jakarta.persistence.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,48 +10,54 @@ class UserTest {
     private User user;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         user = new User();
     }
 
     @Test
-     void testGetAndSetId() {
+    void givenValidUser_whenSettingId_thenIdShouldBeSet() {
         user.setId(1L);
         assertThat(user.getId()).isEqualTo(1L);
     }
 
     @Test
-    void testGetAndSetFirstName() {
+    void givenValidUser_whenSettingFirstName_thenFirstNameShouldBeSet() {
         user.setFirstName("Alice");
         assertThat(user.getFirstName()).isEqualTo("Alice");
     }
 
     @Test
-    void testGetAndSetLastName() {
+    void givenValidUser_whenSettingLastName_thenLastNameShouldBeSet() {
         user.setLastName("Johnson");
         assertThat(user.getLastName()).isEqualTo("Johnson");
     }
 
     @Test
-    void testGetAndSetUsername() {
+    void givenValidUser_whenSettingUsername_thenUsernameShouldBeSet() {
         user.setUsername("alice123");
         assertThat(user.getUsername()).isEqualTo("alice123");
     }
 
     @Test
-    void testGetAndSetPassword() {
+    void givenValidUser_whenSettingPassword_thenPasswordShouldBeSet() {
         user.setPassword("password123");
         assertThat(user.getPassword()).isEqualTo("password123");
     }
 
     @Test
-    void testIsAndSetActive() {
+    void givenUserWithActiveTrue_whenCheckingIsActive_thenShouldReturnTrue() {
         user.setActive(true);
         assertThat(user.isActive()).isTrue();
     }
 
     @Test
-    void testToString() {
+    void givenUserWithActiveFalse_whenCheckingIsActive_thenShouldReturnFalse() {
+        user.setActive(false);
+        assertThat(user.isActive()).isFalse();
+    }
+
+    @Test
+    void givenUserWithAllDetails_whenCallingToString_thenExpectedStringShouldBeGenerated() {
         user.setId(1L);
         user.setFirstName("Alice");
         user.setLastName("Johnson");
@@ -64,6 +69,6 @@ class UserTest {
                 "Username: alice123\n" +
                 "Active: true";
 
-        assertThat(user.toString()).isEqualTo(expectedString);
+        assertThat(user).hasToString(expectedString);
     }
 }

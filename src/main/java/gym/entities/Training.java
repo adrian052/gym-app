@@ -1,36 +1,40 @@
 package gym.entities;
 
-import jakarta.persistence.*;
 
 import java.util.Date;
 
-@Entity
-public class Training {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+public class Training implements Entity{
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "trainee_id")
     private Trainee trainee;
 
-    @ManyToOne
-    @JoinColumn(name = "trainer_id")
+
     private Trainer trainer;
 
-    @Column(nullable = false)
+
     private String trainingName;
 
-    @ManyToOne
-    @JoinColumn(name = "training_type_id")
+
     private TrainingType trainingType;
 
-    @Column(nullable = false)
+
     private Date trainingDate;
 
-    @Column(nullable = false)
     private int trainingDuration;
 
+    public Training() {
+    }
+
+    public Training(Long id, Trainee trainee, Trainer trainer, String trainingName, TrainingType trainingType, Date trainingDate, int trainingDuration) {
+        this.id = id;
+        this.trainee = trainee;
+        this.trainer = trainer;
+        this.trainingName = trainingName;
+        this.trainingType = trainingType;
+        this.trainingDate = trainingDate;
+        this.trainingDuration = trainingDuration;
+    }
     // Getters and setters
 
     public Long getId() {

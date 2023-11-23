@@ -1,81 +1,132 @@
 package gym.dao;
 
-import gym.dao.DataAccessObject;
-import gym.dao.TrainerDAO;
-import gym.entities.Trainer;
-import gym.entities.TrainingType;
-import gym.entities.User;
-import gym.storage.GymStorage;
-import gym.storage.InMemoryGymStorage;
-import org.junit.Before;
+import gym.entities.*;
 import org.junit.Test;
+import org.springframework.dao.DataIntegrityViolationException;
 import static org.assertj.core.api.Assertions.assertThat;
-import java.util.List;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
+import static org.mockito.Mockito.when;
 
-public class TrainerDAOTest {
+import java.util.*;
+public class TrainerDAOTest extends DAOTest<Trainer>{
+    ///FindById
+    @Override
+    protected DataAccessObject<Trainer> getInstance() {
+        return new TrainerDAO();
+    }
 
-    private DataAccessObject<Trainer> trainerDAO;
+    @Override
+    protected void configureOwnMap(Map<Long, Trainer> mockMap) {
+        when(storage.getTrainers()).thenReturn(mockMap);
+    }
 
-    @Before
-    public void setUp() {
-        GymStorage storage = new InMemoryGymStorage();
-        trainerDAO = new TrainerDAO();
-        ((TrainerDAO) trainerDAO).setStorage(storage);
+    @Override
+    protected Trainer entityWithDependencies(Long id) {
+        User user = new User(1L, "Adrian", "Ibarra", "Adrian.Ibarra", "password", true);
+        TrainingType trainingType = new TrainingType(1L, "Hip Trust");
+        return new Trainer(id,trainingType,user);
+    }
+    @Override
+    protected Trainer entityWithNullValues(Long id) {
+        return new Trainer(id, null,null);
     }
 
     @Test
-    public void save_ShouldAddTrainerToStorage() {
-        Trainer trainer = createTrainer(1L, "Trainer1");
-        trainerDAO.save(trainer);
-        assertThat(trainerDAO.findById(1L)).isEqualTo(trainer);
+    public void givenUserMapWithTrainerId1_whenFindById1_thenReturnCorrectTrainer() {
+        // arrange
+        Map<Long, Trainer> mapWithTrainer = new HashMap<>();
+        User user = new User(1L, "Adrian", "Ibarra", "Adrian.Ibarra", "password", true);
+        TrainingType trainingType = new TrainingType(1L, "Hip Trust");
+        Trainer expectedTrainer = new Trainer(1L,trainingType,user);
+        mapWithTrainer.put(1L, expectedTrainer);
+        configureOwnMap(mapWithTrainer);
+        // act
+        Trainer actualTrainer = dao.findById(1L);
+
+        // assert
+        assertThat(actualTrainer).isNotNull()
+                .hasFieldOrPropertyWithValue("id", 1L)
+                .hasFieldOrPropertyWithValue("specialization", trainingType)
+                .hasFieldOrPropertyWithValue("user", user);
+    }
+
+    //FindAll
+    @Test
+    public void givenTrainersMapWithSomeTrainers_whenFindAll_thenReturnListWithTheSameTrainers() {
+        //arrange
+        Trainer trainer1 = new Trainer(1L, null, null);
+        Trainer trainer2 = new Trainer(2L, null, null);
+        Trainer trainer3 = new Trainer(3L, null, null);
+        configureOwnMap(new HashMap<>(Map.of(1L, trainer1, 2L, trainer2, 3L, trainer3)));
+        //act
+        List<Trainer> trainers = dao.findAll();
+        //assert
+        assertThat(trainers).isNotNull().hasSize(3);
+        assertThat(trainers.get(0)).usingRecursiveComparison().isEqualTo(trainer1);
+        assertThat(trainers.get(1)).usingRecursiveComparison().isEqualTo(trainer2);
+        assertThat(trainers.get(2)).usingRecursiveComparison().isEqualTo(trainer3);
+    }
+    //Save
+    @Test
+    public void givenTrainerWithoutIdAndWithForeignKeysNotSaved_whenSaveTraining_thenThrowException(){
+        //arrange
+        User masterUser = new User(1L, "Adrian", "Ibarra", "Adrian.Ibarra", "password", true);
+        TrainingType trainingType = new TrainingType(1L, "Hip Trust");
+        Trainer trainer = new Trainer(1L, trainingType, masterUser);
+
+        //act
+        Throwable thrown = catchThrowable(() -> dao.save(trainer));
+        //assert
+        assertThatThrownBy(() ->{throw thrown;})
+                .isInstanceOf(DataIntegrityViolationException.class)
+                .hasMessage("Failed to save: Data integrity violation while creating/updating the entity.");
     }
 
     @Test
-    public void findById_ShouldReturnTrainerById() {
-        Trainer trainer = createTrainer(1L, "Trainer1");
-        trainerDAO.save(trainer);
-        Trainer result = trainerDAO.findById(1L);
-        assertThat(result).isEqualTo(trainer);
+    public void givenTrainerWithoutId_whenSaveUser_thenReturnValidTrainer(){
+        //arrange
+        User masterUser = new User(1L, "Adrian", "Ibarra", "Adrian.Ibarra", "password", true);
+        TrainingType trainingType = new TrainingType(1L, "Hip Trust");
+        Trainer trainer = new Trainer(null, trainingType, masterUser);
+
+        when(storage.getNextId(Trainer.class)).thenReturn(1L);
+        when(storage.getUsers()).thenReturn(new HashMap<>(Map.of(1L,masterUser)));
+        configureOwnMap(new HashMap<>());
+
+
+        //act
+        Trainer actualTrainer = dao.save(trainer);
+        //assert
+        assertThat(actualTrainer).isNotNull()
+                .hasFieldOrPropertyWithValue("id", 1L)
+                .hasFieldOrPropertyWithValue("specialization", trainingType)
+                .hasFieldOrPropertyWithValue("user", masterUser);
     }
 
     @Test
-    public void findAll_ShouldReturnAllTrainers() {
-        Trainer trainer1 = createTrainer(1L, "Trainer1");
-        Trainer trainer2 = createTrainer(2L, "Trainer2");
-        trainerDAO.save(trainer1);
-        trainerDAO.save(trainer2);
-        List<Trainer> result = trainerDAO.findAll();
-        assertThat(result).containsExactlyInAnyOrder(trainer1, trainer2);
-    }
+    public void givenValidTrainerCreatedBefore_whenSaveUser_thenReturnAValidTrainerUpdated() {
+        //arrange
+        User user1 = new User(1L, "Adrian", "Ibarra", "Adrian.Ibarra", "password", true);
+        TrainingType trainingType = new TrainingType(1L, "Hip Trust");
+        User user2 = new User(2L, "Fernando", "Robles", "Fernando.Robles", "password", true);
+        Trainer trainerBefore = new Trainer(1L, trainingType, user1);
+        Trainer trainerAfter = new Trainer(1L, trainingType, user2);
 
-    @Test
-    public void delete_ShouldRemoveTrainerFromStorage() {
-        Trainer trainer = createTrainer(1L, "Trainer1");
-        trainerDAO.save(trainer);
-        trainerDAO.delete(1L);
-        assertThat(trainerDAO.findById(1L)).isNull();
-    }
+        when(storage.getUsers()).thenReturn(new HashMap<>(Map.of(1L,user1, 2L,user2)));
+        configureOwnMap(new HashMap<>(Map.of(1L,trainerBefore)));
 
-    private Trainer createTrainer(Long id, String name) {
-        Trainer trainer = new Trainer();
-        trainer.setId(id);
-        trainer.setUser(createUser(id, name));
-        trainer.setSpecialization(createTrainingType(id, "Specialization " + name));
-        return trainer;
-    }
+        //act
+        assertThat(dao.findById(1L)).isNotNull()
+                .hasFieldOrPropertyWithValue("id", 1L)
+                .hasFieldOrPropertyWithValue("user", user1)
+                .hasFieldOrPropertyWithValue("specialization", trainingType);
 
-    private User createUser(Long id, String name) {
-        User user = new User();
-        user.setId(id);
-        user.setFirstName(name);
-        user.setLastName("LastName");
-        return user;
-    }
-
-    private TrainingType createTrainingType(Long id, String name) {
-        TrainingType type = new TrainingType();
-        type.setId(id);
-        type.setTrainingTypeName(name);
-        return type;
+        Trainer actualTrainer = dao.save(trainerAfter);
+        //assert
+        assertThat(actualTrainer).isNotNull()
+                .hasFieldOrPropertyWithValue("id", 1L)
+                .hasFieldOrPropertyWithValue("user", user2)
+                .hasFieldOrPropertyWithValue("specialization", trainingType);
     }
 }
