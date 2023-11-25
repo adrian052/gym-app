@@ -1,6 +1,7 @@
 package gym.service.implementations;
 
 import gym.dao.DataAccessObject;
+
 import gym.entities.Trainee;
 import gym.entities.User;
 import gym.service.TraineeService;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -62,6 +64,7 @@ public class TraineeServiceImpl implements TraineeService {
     }
 
     @Override
+    @Transactional
     public boolean delete(Long id) {
         if(id==null){
             logger.error(ID_MESSAGE);

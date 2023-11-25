@@ -1,6 +1,7 @@
 package gym.dao;
 
-import gym.entities.Entity;
+import gym.dao.inmemory.InMemoryDao;
+import gym.entities.Identifiable;
 import gym.storage.GymStorage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,12 +17,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
 @RunWith(MockitoJUnitRunner.class)
-public abstract class DAOTest<T extends Entity> {
+public abstract class DAOTest<T extends Identifiable> {
     @InjectMocks
-    protected DataAccessObject<T> dao = getInstance();
+    protected InMemoryDao<T> dao = getInstance();
     @Mock
     protected GymStorage storage;
-    protected abstract DataAccessObject<T> getInstance();
+    protected abstract InMemoryDao<T> getInstance();
     protected abstract void configureOwnMap(Map<Long, T> mockMap);
 
     protected abstract T entityWithDependencies(Long id);
@@ -44,9 +45,9 @@ public abstract class DAOTest<T extends Entity> {
     public void givenEmptyEntityMap_whenFindByIdWithNonexistentId_thenReturnsNull() {
         //arrange
         //act
-        Entity actualEntity = dao.findById(0L);
+        Identifiable actualIdentifiable = dao.findById(0L);
         //assert
-        assertThat(actualEntity).isNull();
+        assertThat(actualIdentifiable).isNull();
     }
 
     @Test

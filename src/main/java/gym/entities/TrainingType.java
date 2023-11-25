@@ -1,9 +1,15 @@
 package gym.entities;
 
+import jakarta.persistence.*;
 
-public class TrainingType implements Entity{
+@Entity
+@Table(name = "training_type")
+public class TrainingType implements Identifiable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "training_type_name", nullable = false)
     private String trainingTypeName;
 
     public TrainingType(Long id, String trainingTypeName) {

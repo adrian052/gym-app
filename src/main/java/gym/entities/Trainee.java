@@ -1,15 +1,28 @@
 package gym.entities;
 
 
-import java.util.Date;
+import jakarta.persistence.*;
 
-public class Trainee implements Entity {
+import java.util.Date;
+import java.util.List;
+
+@Entity
+public class Trainee implements Identifiable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
+    @Column(name = "address")
     private String address;
 
+    @ManyToMany(mappedBy = "trainees")
+    private List<Trainer> trainers;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Trainee() {

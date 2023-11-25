@@ -1,5 +1,7 @@
 package gym.dao;
 
+import gym.dao.inmemory.InMemoryDao;
+import gym.dao.inmemory.TraineeInMemoryDao;
 import gym.entities.Trainee;
 import gym.entities.User;
 import org.junit.Test;
@@ -10,10 +12,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.Mockito.when;
 import java.util.*;
 
-public class TraineeDAOTest extends DAOTest<Trainee>{
+public class InMemoryTraineeDAOTest extends DAOTest<Trainee>{
     @Override
-    protected DataAccessObject<Trainee> getInstance() {
-        return new TraineeDAO();
+    protected InMemoryDao<Trainee> getInstance() {
+        return new TraineeInMemoryDao();
     }
 
     @Override

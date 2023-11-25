@@ -1,11 +1,13 @@
-package gym.dao;
+package gym.dao.inmemory;
 
 import gym.entities.Trainee;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class TraineeDAO extends DataAccessObject<Trainee> {
+@Profile("memory")
+public class TraineeInMemoryDao extends InMemoryDao<Trainee> {
     @Override
     protected Map<Long, Trainee> getEntityMap() {
         return storage.getTrainees();

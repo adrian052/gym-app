@@ -1,6 +1,6 @@
 package gym.service.implementations;
 
-import gym.dao.*;
+import gym.dao.DataAccessObject;
 import gym.entities.Trainee;
 import gym.entities.Trainer;
 import gym.entities.Training;

@@ -1,6 +1,6 @@
 package gym.entities;
 
-public interface Entity {
+public interface Identifiable {
     Long getId();
     void setId(Long id);
 }

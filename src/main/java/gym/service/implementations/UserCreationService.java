@@ -1,6 +1,5 @@
 package gym.service.implementations;
 
-
 import gym.dao.DataAccessObject;
 import gym.entities.User;
 import org.slf4j.Logger;
@@ -30,7 +29,7 @@ public class UserCreationService {
         user.setActive(isActive);
         user.setUsername(username);
         user.setPassword(password);
-        userDAO.save(user);
+        //userDAO.save(user);
 
         return user;
     }

@@ -1,11 +1,33 @@
 package gym.entities;
 
-public class Trainer implements Entity{
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+public class Trainer implements Identifiable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "training_type_id")
     private TrainingType specialization;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "trainer")
+    private List<Training> trainings;
+
+    @ManyToMany
+    @JoinTable(
+            name = "training",
+            joinColumns = @JoinColumn(name = "trainer_id"),
+            inverseJoinColumns = @JoinColumn(name = "trainee_id")
+    )
+    private List<Trainee> trainees;
 
     public Trainer(Long id, TrainingType specialization, User user) {
         this.id = id;

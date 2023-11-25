@@ -1,5 +1,7 @@
 package gym.dao;
 
+import gym.dao.inmemory.InMemoryDao;
+import gym.dao.inmemory.UserInMemoryDao;
 import gym.entities.User;
 import org.junit.Test;
 import java.util.HashMap;
@@ -10,8 +12,8 @@ import static org.mockito.Mockito.when;
 
 public class UserDAOTest extends DAOTest<User>{
     @Override
-    protected DataAccessObject<User> getInstance() {
-        return new UserDAO();
+    protected InMemoryDao<User> getInstance() {
+        return new UserInMemoryDao();
     }
     @Override
     protected void configureOwnMap(Map<Long, User> mockMap) {

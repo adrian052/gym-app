@@ -5,6 +5,7 @@ import gym.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component("storage")
+@Profile("memory")
 @PropertySource("context.properties")
 public class InMemoryGymStorage implements GymStorage {
     private static final Logger logger = LoggerFactory.getLogger(InMemoryGymStorage.class);
@@ -103,7 +105,6 @@ public class InMemoryGymStorage implements GymStorage {
             ObjectMapper objectMapper = new ObjectMapper();
             File jsonFile = new File(jsonFilePath);
             GymDataLoader gymDataLoader = objectMapper.readValue(jsonFile, GymDataLoader.class);
-
             gymDataLoader.getUsers().forEach(user -> users.put(user.getId(), user));
 
             logger.info("Initialized Users");
@@ -123,13 +124,16 @@ public class InMemoryGymStorage implements GymStorage {
             logger.info("Initialized Trainees");
 
             gymDataLoader.getTrainings().forEach(training -> {
+
                 training.setId(getNextId(TrainingType.class));
+                System.out.println(training.getId());
                 trainings.put(training.getId(), training);
             });
 
             logger.info("Initialized Trainings");
 
             gymDataLoader.getTrainingTypes().forEach(trainingType -> {
+
                 trainingType.setId(getNextId(TrainingType.class));
                 trainingTypes.put(trainingType.getId(), trainingType);
             });

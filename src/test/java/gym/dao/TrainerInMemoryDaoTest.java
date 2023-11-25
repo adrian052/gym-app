@@ -1,5 +1,7 @@
 package gym.dao;
 
+import gym.dao.inmemory.InMemoryDao;
+import gym.dao.inmemory.TrainerInMemoryDao;
 import gym.entities.*;
 import org.junit.Test;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -9,11 +11,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.Mockito.when;
 
 import java.util.*;
-public class TrainerDAOTest extends DAOTest<Trainer>{
+public class TrainerInMemoryDaoTest extends DAOTest<Trainer>{
     ///FindById
     @Override
-    protected DataAccessObject<Trainer> getInstance() {
-        return new TrainerDAO();
+    protected InMemoryDao<Trainer> getInstance() {
+        return new TrainerInMemoryDao();
     }
 
     @Override

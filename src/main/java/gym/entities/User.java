@@ -1,17 +1,26 @@
 package gym.entities;
+import jakarta.persistence.*;
 
-
-public class User implements Entity{
+@Entity
+@Table(name = "user_gym")
+public class User implements Identifiable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name="first_name", nullable = false)
     private String firstName;
 
+    @Column(name="last_name", nullable = false)
     private String lastName;
 
+    @Column(name="username", nullable = false, unique = true)
     private String username;
 
+    @Column(name="password", nullable = false)
     private String password;
 
+    @Column(name="is_active", nullable = false)
     private boolean isActive;
 
     public User(Long id, String firstName, String lastName, String username, String password, boolean isActive) {

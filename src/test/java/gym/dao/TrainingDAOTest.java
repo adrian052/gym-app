@@ -1,5 +1,7 @@
 package gym.dao;
 
+import gym.dao.inmemory.InMemoryDao;
+import gym.dao.inmemory.TrainingInMemoryDao;
 import gym.entities.*;
 import org.junit.Test;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,8 +13,8 @@ import static org.mockito.Mockito.when;
 
 public class TrainingDAOTest extends DAOTest<Training>{
     @Override
-    protected DataAccessObject<Training> getInstance() {
-        return new TrainingDAO();
+    protected InMemoryDao<Training> getInstance() {
+        return new TrainingInMemoryDao();
     }
 
     @Override
