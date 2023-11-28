@@ -1,6 +1,6 @@
 package gym.dao.db;
 
-import gym.service.simple.ValidationUtil;
+import gym.service.ValidationUtil;
 import gym.entities.Identifiable;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

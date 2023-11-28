@@ -1,46 +1,50 @@
 package gym.service.simple;
 
-import gym.dao.*;
-import gym.entities.Training;
-import gym.entities.User;
+import gym.dao.DataAccessObject;
+import gym.dao.db.TraineeDbDao;
+import gym.dao.db.TrainerDbDao;
+import gym.dao.db.TrainingTypeDbDao;
+import gym.dao.db.TrainingDbDao;
+import gym.entities.*;
 import gym.service.AuthService;
 import gym.service.Credentials;
 import gym.service.TrainingService;
+import gym.service.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-
 import javax.naming.AuthenticationException;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @Service
+@Profile("memory")
 public class TrainingServiceImpl implements TrainingService {
-    private TraineeDao traineeDAO;
-    private TrainerDao trainerDAO;
-    private TrainingTypeDao trainingTypeDAO;
-    private TrainingDao trainingDAO;
+    protected DataAccessObject<Trainee> traineeDAO;
+    protected DataAccessObject<Trainer> trainerDAO;
+    protected DataAccessObject<TrainingType> trainingTypeDAO;
+    protected DataAccessObject<Training> trainingDAO;
 
     private AuthService authService;
 
     @Autowired
-    public void setTraineeDAO(TraineeDao traineeDAO) {
+    public void setTraineeDAO(TraineeDbDao traineeDAO) {
         this.traineeDAO = traineeDAO;
     }
 
     @Autowired
-    public void setTrainerDAO(TrainerDao trainerDAO) {
+    public void setTrainerDAO(TrainerDbDao trainerDAO) {
         this.trainerDAO = trainerDAO;
     }
 
     @Autowired
-    public void setTrainingTypeDAO(TrainingTypeDao trainingTypeDAO) {
+    public void setTrainingTypeDAO(TrainingTypeDbDao trainingTypeDAO) {
         this.trainingTypeDAO = trainingTypeDAO;
     }
 
     @Autowired
-    public void setTrainingDAO(TrainingDao trainingDAO) {
+    public void setTrainingDAO(TrainingDbDao trainingDAO) {
         this.trainingDAO = trainingDAO;
     }
 
@@ -71,35 +75,4 @@ public class TrainingServiceImpl implements TrainingService {
         return trainingDAO.findById(id);
     }
 
-    @Override
-    public List<Training> getTraineeTrainingsByTrainingName(String username, String trainingName) {
-        ValidationUtil.validateNotNull(Map.of("username",username,"trainingName",trainingName));
-        return trainingDAO.getTraineeTrainingsByUsername(username).stream()
-                .filter(training -> training.getTrainingName().equalsIgnoreCase(trainingName))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Training> getTraineeTrainingsByDuration(String username, int minDuration, int maxDuration) {
-        ValidationUtil.validateNotNull(Map.of("username",username));
-        return trainingDAO.getTraineeTrainingsByUsername(username).stream()
-                .filter(training -> training.getTrainingDuration() >= minDuration && training.getTrainingDuration() <= maxDuration)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Training> getTrainerTrainingsByTrainingName(String username, String trainingName) {
-        ValidationUtil.validateNotNull(Map.of("username",username,"trainingName",trainingName));
-        return trainingDAO.getTrainerTrainingsByUsername(username).stream()
-                .filter(training -> training.getTrainingName().equalsIgnoreCase(trainingName))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Training> getTrainerTrainingsByDuration(String username, int minDuration, int maxDuration) {
-        ValidationUtil.validateNotNull(Map.of("username",username));
-        return trainingDAO.getTrainerTrainingsByUsername(username).stream()
-                .filter(training -> training.getTrainingDuration() >= minDuration && training.getTrainingDuration() <= maxDuration)
-                .collect(Collectors.toList());
-    }
 }

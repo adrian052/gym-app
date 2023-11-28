@@ -1,7 +1,8 @@
 package gym.service.simple;
 
-import gym.dao.CRUD;
+import gym.dao.DataAccessObject;
 import gym.entities.User;
+import gym.service.ValidationUtil;
 
 import java.util.Map;
 import java.util.Random;
@@ -11,7 +12,7 @@ public class UserCreationService {
     }
     private static final Random random = new Random();
 
-    public static User createUser(String firstName, String lastName, boolean isActive, CRUD<User> userDAO) {
+    public static User createUser(String firstName, String lastName, boolean isActive, DataAccessObject<User> userDAO) {
         ValidationUtil.validateNotNull(Map.of("firstName",firstName, "lastName",lastName));
         String username = generateUniqueUsername(firstName, lastName, userDAO);
         String password = generateRandomPassword();
@@ -26,7 +27,7 @@ public class UserCreationService {
         return user;
     }
 
-    private static String generateUniqueUsername(String firstName, String lastName, CRUD<User> userDAO) {
+    private static String generateUniqueUsername(String firstName, String lastName, DataAccessObject<User> userDAO) {
         String baseUsername = firstName + "." + lastName;
         String generatedUsername = baseUsername;
 
@@ -37,7 +38,7 @@ public class UserCreationService {
         return generatedUsername;
     }
 
-    private static boolean usernameAlreadyExist(String username, CRUD<User> userDAO) {
+    private static boolean usernameAlreadyExist(String username, DataAccessObject<User> userDAO) {
         for (User user : userDAO.findAll()) {
             if (user.getUsername().equalsIgnoreCase(username)) {
                 return true;

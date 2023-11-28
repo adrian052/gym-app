@@ -1,9 +1,8 @@
 package gym.service;
 
 
-import gym.dao.CRUD;
+import gym.dao.DataAccessObject;
 
-import gym.dao.DateUtil;
 import gym.entities.*;
 import gym.service.simple.TrainingServiceImpl;
 import org.junit.Test;
@@ -14,7 +13,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TrainingServiceImplTest {
@@ -22,16 +20,16 @@ public class TrainingServiceImplTest {
     private TrainingService trainingService = new TrainingServiceImpl();
 
     @Mock
-    private CRUD<Trainer> trainerDAO;
+    private DataAccessObject<Trainer> trainerDAO;
 
     @Mock
-    private CRUD<TrainingType> trainingTypeDAO;
+    private DataAccessObject<TrainingType> trainingTypeDAO;
 
     @Mock
-    private CRUD<Trainee> traineeDAO;
+    private DataAccessObject<Trainee> traineeDAO;
 
     @Mock
-    private CRUD<Training> trainingDAO;
+    private DataAccessObject<Training> trainingDAO;
 
 /*
     @Test

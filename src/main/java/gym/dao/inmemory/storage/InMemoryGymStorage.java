@@ -1,4 +1,4 @@
-package gym.storage;
+package gym.dao.inmemory.storage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gym.entities.*;

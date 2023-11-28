@@ -1,5 +1,7 @@
 package gym.storage;
 
+import gym.dao.inmemory.storage.GymStorage;
+import gym.dao.inmemory.storage.InMemoryGymStorage;
 import gym.entities.*;
 import org.junit.Before;
 import org.junit.Test;

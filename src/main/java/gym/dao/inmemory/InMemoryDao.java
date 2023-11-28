@@ -1,8 +1,8 @@
 package gym.dao.inmemory;
 
-import gym.service.simple.ValidationUtil;
+import gym.service.ValidationUtil;
 import gym.entities.Identifiable;
-import gym.storage.GymStorage;
+import gym.dao.inmemory.storage.GymStorage;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

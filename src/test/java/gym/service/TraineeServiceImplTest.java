@@ -1,11 +1,11 @@
 package gym.service;
 
-import gym.dao.CRUD;
+import gym.dao.DataAccessObject;
 import gym.dao.DateUtil;
 import gym.entities.Trainee;
 import gym.entities.User;
 import gym.service.simple.TraineeServiceImpl;
-import jakarta.persistence.EntityNotFoundException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,9 +27,9 @@ public class TraineeServiceImplTest {
     @InjectMocks
     private TraineeService traineeService = new TraineeServiceImpl();
     @Mock
-    private CRUD<Trainee> traineeDAO;
+    private DataAccessObject<Trainee> traineeDAO;
     @Mock
-    private CRUD<User> userDAO;
+    private DataAccessObject<User> userDAO;
 
     @Test
     public void givenValidRequest_whenCreateTrainee_thenTraineeShouldBeReturned() {

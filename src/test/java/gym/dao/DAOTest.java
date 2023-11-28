@@ -1,20 +1,11 @@
 package gym.dao;
 
-import gym.dao.inmemory.InMemoryDao;
 import gym.entities.Identifiable;
-import gym.storage.GymStorage;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
 @RunWith(MockitoJUnitRunner.class)
 public abstract class DAOTest<T extends Identifiable> {/*

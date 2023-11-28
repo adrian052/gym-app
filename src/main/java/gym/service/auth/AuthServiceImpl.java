@@ -1,6 +1,7 @@
 package gym.service.auth;
 
-import gym.dao.UserDao;
+import gym.dao.DataAccessObject;
+import gym.dao.db.UserDbDao;
 import gym.entities.User;
 import gym.service.AuthService;
 import gym.service.Credentials;
@@ -14,16 +15,20 @@ import java.util.Objects;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-    private UserDao userDao;
+    private UserDbDao userDao;
     private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
-    @Autowired
-    public void setUserDao(UserDao userDao) {
+    @Autowired(required = false)
+    public void setUserDao(UserDbDao userDao) {
         this.userDao = userDao;
     }
 
     @Override
     public void authorize(Credentials credentials, User userOwner) throws AuthenticationException {
-        User credentialsUser = userDao.findByUsername(credentials.getUsername());
+        if (userDao ==null){
+            /*Returns because findByUsername is not implemented for inmemoryDAO*/
+            return;
+        }
+        User credentialsUser = userDao.findByUsername(credentials.username());
         if (credentialsUser != null) {
             if (userOwner.equals(credentialsUser)) {
                 logger.info("User successfully authorized");
@@ -38,9 +43,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     public void authenticate(Credentials credentials) throws AuthenticationException {
-        User credentialsUser = userDao.findByUsername(credentials.getUsername());
+        if (userDao ==null){
+            /*Returns because findByUsername is not implemented for inmemoryDAO*/
+            return;
+        }
+        User credentialsUser = userDao.findByUsername(credentials.username());
         if (credentialsUser != null) {
-            if (Objects.equals(credentialsUser.getPassword(), credentials.getPassword())) {
+            if (Objects.equals(credentialsUser.getPassword(), credentials.password())) {
                 logger.info("User successfully authenticated");
                 return;
             }

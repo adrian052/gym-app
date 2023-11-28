@@ -1,45 +1,50 @@
 package gym.service.simple;
 
-import gym.dao.TrainerDao;
-import gym.dao.TrainingTypeDao;
-import gym.dao.UserDao;
+import gym.dao.DataAccessObject;
+import gym.dao.db.TrainerDbDao;
+import gym.dao.db.TrainingTypeDbDao;
+import gym.dao.db.UserDbDao;
 import gym.entities.Trainer;
 import gym.entities.User;
 import gym.entities.TrainingType;
 import gym.service.AuthService;
 import gym.service.Credentials;
 import gym.service.TrainerService;
+import gym.service.ValidationUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.naming.AuthenticationException;
+import javax.xml.crypto.Data;
 import java.util.Map;
 
 @Service
+@Profile("memory")
 public class TrainerServiceImpl implements TrainerService {
-    private TrainerDao trainerDAO;
-    private TrainingTypeDao trainingTypeDAO;
-    private UserDao userDAO;
+    protected DataAccessObject<Trainer> trainerDAO;
+    protected DataAccessObject<TrainingType> trainingTypeDAO;
+    protected DataAccessObject<User> userDAO;
 
-    private AuthService authService;
+    protected AuthService authService;
 
-    private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
+    protected static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
 
     @Autowired
-    public void setTrainerDAO(TrainerDao trainerDAO) {
+    public void setTrainerDAO(TrainerDbDao trainerDAO) {
         this.trainerDAO = trainerDAO;
     }
 
     @Autowired
-    public void setTrainingTypeDAO(TrainingTypeDao trainingTypeDAO) {
+    public void setTrainingTypeDAO(TrainingTypeDbDao trainingTypeDAO) {
         this.trainingTypeDAO = trainingTypeDAO;
     }
 
     @Autowired
-    public void setUserDAO(UserDao userDAO) {
+    public void setUserDAO(UserDbDao userDAO) {
         this.userDAO = userDAO;
     }
 
@@ -81,36 +86,4 @@ public class TrainerServiceImpl implements TrainerService {
         return trainerDAO.findById(id);
     }
 
-    @Override
-    public Trainer selectByUsername(String username) {
-        ValidationUtil.validateNotNull(Map.of("username",username));
-        return trainerDAO.findByUsername(username);
-    }
-
-    @Override
-    public Trainer updatePassword(Credentials credentials, Long id, String newPassword) throws AuthenticationException {
-        ValidationUtil.validateNotNull(Map.of("credentials",credentials,"id",id, "newPassword",newPassword));
-        Trainer trainer = trainerDAO.findById(id);
-        User user = trainer.getUser();
-        authService.authenticationFlow(credentials, user);
-        user.setPassword(newPassword);
-        trainerDAO.save(trainer);
-        return trainer;
-    }
-
-    @Override
-    public Trainer updateStatus(Credentials credentials, Long id, boolean newStatus) throws AuthenticationException {
-            ValidationUtil.validateNotNull(Map.of("credentials",credentials,"id",id));
-            Trainer trainer = trainerDAO.findById(id);
-            User user = trainer.getUser();
-            authService.authenticationFlow(credentials,user);
-            if (user.isActive() == newStatus) {
-                logger.info("No change in status. Trainer ID: {}, Current Status: {}", id, newStatus);
-            } else {
-                user.setActive(newStatus);
-                userDAO.save(user);
-                logger.info("Status updated successfully. Trainer ID: {}, New Status: {}", id, newStatus);
-            }
-            return trainer;
-    }
 }

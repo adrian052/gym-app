@@ -1,6 +1,6 @@
 package gym.service;
 
-import gym.dao.CRUD;
+import gym.dao.DataAccessObject;
 import gym.entities.Trainer;
 import gym.entities.TrainingType;
 
@@ -22,13 +22,13 @@ public class TrainerServiceImplTest {
     @InjectMocks
     private TrainerService trainerService = new TrainerServiceImpl();
     @Mock
-    private CRUD<Trainer> trainerDAO;
+    private DataAccessObject<Trainer> trainerDAO;
 
     @Mock
-    private CRUD<TrainingType> trainingTypeDAO;
+    private DataAccessObject<TrainingType> trainingTypeDAO;
 
     @Mock
-    private CRUD<User> userDAO;
+    private DataAccessObject<User> userDAO;
 
     @Test
     public void givenValidRequest_whenCreateTrainer_thenTrainerShouldBeReturned() {
