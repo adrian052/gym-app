@@ -1,6 +1,6 @@
 package gym.dao.inmemory;
 
-import gym.dao.DataAccessObject;
+import gym.service.simple.ValidationUtil;
 import gym.entities.Identifiable;
 import gym.storage.GymStorage;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class InMemoryDao<T extends Identifiable> implements DataAccessObject<T> {
+public abstract class InMemoryDao<T extends Identifiable>{
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     protected GymStorage storage;
@@ -29,18 +29,12 @@ public abstract class InMemoryDao<T extends Identifiable> implements DataAccessO
     }
 
     public T findById(Long id) {
-        if (id == null) {
-            logger.error("Failed to findById: Entity must not be null");
-            throw new IllegalArgumentException("Failed to findById: Entity must not be null");
-        }
+        ValidationUtil.validateNotNull(Map.of("id",id));
         return getEntityMap().get(id);
     }
 
     public T save(T entity) {
-        if(entity==null) {
-            logger.error("Failed to save: Entity must not be null");
-            throw new IllegalArgumentException("Failed to save: Entity must not be null");
-        }
+        ValidationUtil.validateNotNull(Map.of("entity",entity));
         if(!validateNotNull(entity)) {
             logger.error("Failed to save: Null values are not allowed for certain attributes");
             throw new IllegalArgumentException("Failed to save: Null values are not allowed for certain attributes");
@@ -67,10 +61,7 @@ public abstract class InMemoryDao<T extends Identifiable> implements DataAccessO
     }
 
     public boolean delete(Long id) {
-        if(id==null){
-            logger.error("Failed to delete entity with null id: - Id entity must not be null.");
-            throw new IllegalArgumentException("Failed to delete entity with null id");
-        }
+        ValidationUtil.validateNotNull(Map.of("id",id));
         T removedEntity = getEntityMap().remove(id);
         if (removedEntity != null) {
             logger.info("Deleted entity with ID: {}", id);

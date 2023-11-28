@@ -1,25 +1,18 @@
-package gym.service.implementations;
+package gym.service.simple;
 
-import gym.dao.DataAccessObject;
+import gym.dao.CRUD;
 import gym.entities.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.util.Map;
 import java.util.Random;
 
 public class UserCreationService {
     private UserCreationService(){
-
     }
     private static final Random random = new Random();
-    private static final Logger logger = LoggerFactory.getLogger(UserCreationService.class);
 
-    public static User createUser(String firstName, String lastName, boolean isActive, DataAccessObject<User> userDAO) {
-        if (firstName == null || lastName == null) {
-            logger.error("Failed to create the User: the following parameters cannot be null (firstName, lastName)");
-            return null;
-        }
-
+    public static User createUser(String firstName, String lastName, boolean isActive, CRUD<User> userDAO) {
+        ValidationUtil.validateNotNull(Map.of("firstName",firstName, "lastName",lastName));
         String username = generateUniqueUsername(firstName, lastName, userDAO);
         String password = generateRandomPassword();
 
@@ -29,12 +22,11 @@ public class UserCreationService {
         user.setActive(isActive);
         user.setUsername(username);
         user.setPassword(password);
-        //userDAO.save(user);
-
+        userDAO.save(user);
         return user;
     }
 
-    private static String generateUniqueUsername(String firstName, String lastName, DataAccessObject<User> userDAO) {
+    private static String generateUniqueUsername(String firstName, String lastName, CRUD<User> userDAO) {
         String baseUsername = firstName + "." + lastName;
         String generatedUsername = baseUsername;
 
@@ -45,7 +37,7 @@ public class UserCreationService {
         return generatedUsername;
     }
 
-    private static boolean usernameAlreadyExist(String username, DataAccessObject<User> userDAO) {
+    private static boolean usernameAlreadyExist(String username, CRUD<User> userDAO) {
         for (User user : userDAO.findAll()) {
             if (user.getUsername().equalsIgnoreCase(username)) {
                 return true;

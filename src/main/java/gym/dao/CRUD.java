@@ -3,7 +3,7 @@ package gym.dao;
 import gym.entities.Identifiable;
 import java.util.List;
 
-public interface DataAccessObject<T extends Identifiable> {
+public interface CRUD<T extends Identifiable> {
 
     List<T> findAll();
 

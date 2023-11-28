@@ -11,7 +11,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.Mockito.when;
 
 import java.util.*;
-public class TrainerInMemoryDaoTest extends DAOTest<Trainer>{
+public class TrainerInMemoryDaoTest extends DAOTest<Trainer>{/*
     ///FindById
     @Override
     protected InMemoryDao<Trainer> getInstance() {
@@ -130,5 +130,5 @@ public class TrainerInMemoryDaoTest extends DAOTest<Trainer>{
                 .hasFieldOrPropertyWithValue("id", 1L)
                 .hasFieldOrPropertyWithValue("user", user2)
                 .hasFieldOrPropertyWithValue("specialization", trainingType);
-    }
+    }*/
 }

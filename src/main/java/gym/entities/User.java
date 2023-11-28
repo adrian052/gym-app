@@ -92,4 +92,15 @@ public class User implements Identifiable {
                 "\nUsername: " + username +
                 "\nActive: " + isActive;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+
+        return username.equals(user.username);
+    }
+    @Override
+    public int hashCode() {
+        return username.hashCode();
+    }
 }

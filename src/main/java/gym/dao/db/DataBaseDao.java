@@ -1,6 +1,6 @@
 package gym.dao.db;
 
-import gym.dao.DataAccessObject;
+import gym.service.simple.ValidationUtil;
 import gym.entities.Identifiable;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,21 +8,21 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
+import java.util.Map;
 
-public abstract class DataBaseDao<T extends Identifiable> implements DataAccessObject<T> {
+public abstract class DataBaseDao<T extends Identifiable> {
 
-    private final Logger logger = LoggerFactory.getLogger(getIdentifieableClass());
+    protected final Logger logger = LoggerFactory.getLogger(getIdentifieableClass());
 
-    private SessionFactory sessionFactory;
+    protected SessionFactory sessionFactory;
 
     @Autowired
     private void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    @Override
+
     public List<T> findAll() {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("SELECT e FROM " + getIdentifieableClass().getName() + " e", getIdentifieableClass()).getResultList();
@@ -32,9 +32,9 @@ public abstract class DataBaseDao<T extends Identifiable> implements DataAccessO
         }
     }
 
-    @Override
+
     public T findById(Long id) {
-        checkNotNull(id);
+        ValidationUtil.validateNotNull(Map.of("id",id));
         try (Session session = sessionFactory.openSession()) {
             return session.get(getIdentifieableClass(), id);
         } catch (Exception e) {
@@ -43,9 +43,9 @@ public abstract class DataBaseDao<T extends Identifiable> implements DataAccessO
         }
     }
 
-    @Override
+
     public T save(T entity) {
-        checkNotNull(entity);
+        ValidationUtil.validateNotNull(Map.of("entity",entity));
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             session.merge(entity);
@@ -58,9 +58,8 @@ public abstract class DataBaseDao<T extends Identifiable> implements DataAccessO
         return entity;
     }
 
-    @Override
     public boolean delete(Long id) {
-        checkNotNull(id);
+        ValidationUtil.validateNotNull(Map.of("id",id));
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             T entity = session.get(getIdentifieableClass(), id);
@@ -77,15 +76,6 @@ public abstract class DataBaseDao<T extends Identifiable> implements DataAccessO
         } catch (Exception e) {
             logger.error("Error in delete method", e);
             throw e;
-        }
-    }
-
-    private void checkNotNull(Object... objects) {
-        for (Object obj : objects) {
-            if (obj == null) {
-                logger.error("DAO arguments must not be null");
-                throw new IllegalArgumentException("DAO arguments must not be null");
-            }
         }
     }
 

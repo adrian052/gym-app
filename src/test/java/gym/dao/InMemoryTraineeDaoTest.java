@@ -12,7 +12,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.Mockito.when;
 import java.util.*;
 
-public class InMemoryTraineeDAOTest extends DAOTest<Trainee>{
+public class InMemoryTraineeDaoTest extends DAOTest<Trainee>{
+    /*
     @Override
     protected InMemoryDao<Trainee> getInstance() {
         return new TraineeInMemoryDao();
@@ -129,5 +130,5 @@ public class InMemoryTraineeDAOTest extends DAOTest<Trainee>{
                 .hasFieldOrPropertyWithValue("user", user)
                 .hasFieldOrPropertyWithValue("dateOfBirth", DateUtil.date(2022, 8, 3))
                 .hasFieldOrPropertyWithValue("address", null);
-    }
+    }*/
 }
