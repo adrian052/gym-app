@@ -18,8 +18,8 @@ public class Trainee implements Identifiable {
     @Column(name = "address")
     private String address;
 
-    @ManyToMany(mappedBy = "trainees")
-    private List<Trainer> trainers;
+    @OneToMany(mappedBy = "trainee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Training> trainings;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
@@ -36,6 +36,11 @@ public class Trainee implements Identifiable {
     }
 
     // Getters and setters
+
+
+    public List<Training> getTrainings() {
+        return trainings;
+    }
 
     public Long getId() {
         return id;

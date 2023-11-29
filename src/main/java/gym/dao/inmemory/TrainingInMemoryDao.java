@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 @Component
 @Profile("memory")
-public class TrainingInMemoryDao extends InMemoryDao<Training> implements DataAccessObject<Training> {
+public class TrainingInMemoryDao extends InMemoryDao<Training> {
     @Override
     protected Map<Long, Training> getEntityMap() {
         return storage.getTrainings();
@@ -17,8 +17,7 @@ public class TrainingInMemoryDao extends InMemoryDao<Training> implements DataAc
     @Override
     protected boolean hasReferentialIntegrity(Training training) {
         return isEntityIdInMap(training.getTrainee(), storage.getTrainees())
-                && isEntityIdInMap(training.getTrainer(), storage.getTrainers())
-                && isEntityIdInMap(training.getTrainingType(), storage.getTrainingTypes());
+                && isEntityIdInMap(training.getTrainer(), storage.getTrainers());
     }
 
     @Override

@@ -1,14 +1,24 @@
-package gym.dao;
+package gym.dao.inmemory;
 
+import gym.dao.inmemory.InMemoryDao;
+import gym.dao.inmemory.storage.GymStorage;
 import gym.entities.Identifiable;
+import org.assertj.core.api.Assertions;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
 @RunWith(MockitoJUnitRunner.class)
-public abstract class DAOTest<T extends Identifiable> {/*
+public abstract class DAOTest<T extends Identifiable> {
     @InjectMocks
     protected InMemoryDao<T> dao = getInstance();
     @Mock
@@ -29,7 +39,7 @@ public abstract class DAOTest<T extends Identifiable> {/*
             throw thrown;
         })
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Failed to findById: Entity must not be null");
+                .hasMessage("id cannot be null");
     }
 
     @Test
@@ -52,14 +62,15 @@ public abstract class DAOTest<T extends Identifiable> {/*
     }
 
     @Test
-    public void givenNullId_whenDelete_thenThrowsExceptionWithCorrectMessage(){
-        //arrange
-        //act
-        Throwable thrown = catchThrowable(() -> dao.delete(null));
-        //assert
-        assertThatThrownBy(() ->{throw thrown;})
+    public void givenNullId_whenDelete_thenThrowsExceptionWithCorrectMessage() {
+        // Arrange
+        // Act
+        Throwable thrown = Assertions.catchThrowable(() -> dao.delete(null));
+
+        // Assert
+        assertThatThrownBy(() -> { throw thrown; })
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Failed to delete entity with null id");
+                .hasMessage("id cannot be null");
     }
 
     @Test
@@ -92,7 +103,7 @@ public abstract class DAOTest<T extends Identifiable> {/*
         //assert
         assertThatThrownBy(() ->{throw thrown;})
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Failed to save: Entity must not be null");
+                .hasMessage("entity cannot be null");
     }
 
     @Test
@@ -106,5 +117,5 @@ public abstract class DAOTest<T extends Identifiable> {/*
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Failed to save: Null values are not allowed for certain attributes");
     }
-*/
+
 }

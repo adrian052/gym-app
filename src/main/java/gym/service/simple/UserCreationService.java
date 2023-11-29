@@ -13,7 +13,7 @@ public class UserCreationService {
     private static final Random random = new Random();
 
     public static User createUser(String firstName, String lastName, boolean isActive, DataAccessObject<User> userDAO) {
-        ValidationUtil.validateNotNull(Map.of("firstName",firstName, "lastName",lastName));
+        ValidationUtil.validateNotNull("firstName",firstName, "lastName",lastName);
         String username = generateUniqueUsername(firstName, lastName, userDAO);
         String password = generateRandomPassword();
 

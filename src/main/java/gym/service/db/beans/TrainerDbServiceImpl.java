@@ -18,13 +18,13 @@ import java.util.Map;
 public class TrainerDbServiceImpl extends TrainerServiceImpl implements TrainerDbService {
     @Override
     public Trainer selectByUsername(String username) {
-        ValidationUtil.validateNotNull(Map.of("username",username));
+        ValidationUtil.validateNotNull("username",username);
         return ((TrainerDbDao)trainerDAO).findByUsername(username);
     }
 
     @Override
     public Trainer updatePassword(Credentials credentials, Long id, String newPassword) throws AuthenticationException {
-        ValidationUtil.validateNotNull(Map.of("credentials",credentials,"id",id, "newPassword",newPassword));
+        ValidationUtil.validateNotNull("credentials",credentials,"id",id, "newPassword",newPassword);
         Trainer trainer = trainerDAO.findById(id);
         User user = trainer.getUser();
         authService.authenticationFlow(credentials, user);
@@ -35,7 +35,7 @@ public class TrainerDbServiceImpl extends TrainerServiceImpl implements TrainerD
 
     @Override
     public Trainer updateStatus(Credentials credentials, Long id, boolean newStatus) throws AuthenticationException {
-        ValidationUtil.validateNotNull(Map.of("credentials",credentials,"id",id));
+        ValidationUtil.validateNotNull("credentials",credentials,"id",id);
         Trainer trainer = trainerDAO.findById(id);
         User user = trainer.getUser();
         authService.authenticationFlow(credentials,user);

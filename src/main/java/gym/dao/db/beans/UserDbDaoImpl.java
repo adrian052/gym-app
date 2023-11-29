@@ -21,7 +21,7 @@ public class UserDbDaoImpl extends DataBaseDao<User> implements UserDbDao {
         return User.class;
     }
     public User findByUsername(String username) {
-        ValidationUtil.validateNotNull(Map.of("username",username));
+        ValidationUtil.validateNotNull("username",username);
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("FROM User WHERE username = :username", User.class);
             query.setParameter("username", username);

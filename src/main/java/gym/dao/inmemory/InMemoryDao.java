@@ -1,5 +1,6 @@
 package gym.dao.inmemory;
 
+import gym.dao.DataAccessObject;
 import gym.service.ValidationUtil;
 import gym.entities.Identifiable;
 import gym.dao.inmemory.storage.GymStorage;
@@ -11,10 +12,13 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class InMemoryDao<T extends Identifiable>{
+import static java.util.Map.entry;
+
+public abstract class InMemoryDao<T extends Identifiable> implements DataAccessObject<T> {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     protected GymStorage storage;
@@ -29,12 +33,12 @@ public abstract class InMemoryDao<T extends Identifiable>{
     }
 
     public T findById(Long id) {
-        ValidationUtil.validateNotNull(Map.of("id",id));
+        validateNotNull("id", id);
         return getEntityMap().get(id);
     }
 
     public T save(T entity) {
-        ValidationUtil.validateNotNull(Map.of("entity",entity));
+        validateNotNull("entity", entity);
         if(!validateNotNull(entity)) {
             logger.error("Failed to save: Null values are not allowed for certain attributes");
             throw new IllegalArgumentException("Failed to save: Null values are not allowed for certain attributes");
@@ -61,7 +65,7 @@ public abstract class InMemoryDao<T extends Identifiable>{
     }
 
     public boolean delete(Long id) {
-        ValidationUtil.validateNotNull(Map.of("id",id));
+        validateNotNull("id", id);
         T removedEntity = getEntityMap().remove(id);
         if (removedEntity != null) {
             logger.info("Deleted entity with ID: {}", id);
@@ -76,6 +80,22 @@ public abstract class InMemoryDao<T extends Identifiable>{
         return identifiable != null && entityMap.containsKey(identifiable.getId());
     }
 
+
+    public void validateNotNull(Object... keyValuePairs) {
+        if (keyValuePairs.length % 2 != 0) {
+            throw new IllegalArgumentException("Number of arguments must be even");
+        }
+        for (int i = 0; i < keyValuePairs.length; i += 2) {
+            String key = (String) keyValuePairs[i];
+            Object value = keyValuePairs[i + 1];
+
+            if (value == null) {
+                String errorMessage = String.format("%s cannot be null", key);
+                logger.error(errorMessage);
+                throw new IllegalArgumentException(errorMessage);
+            }
+        }
+    }
     private Long getNewId(T entity) {
         return storage.getNextId(entity.getClass());
     }

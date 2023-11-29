@@ -1,17 +1,21 @@
-package gym.dao;
+package gym.dao.inmemory;
 
-import gym.dao.inmemory.InMemoryDao;
-import gym.dao.inmemory.TrainingInMemoryDao;
+import gym.dao.DateUtil;
 import gym.entities.*;
 import org.junit.Test;
 import org.springframework.dao.DataIntegrityViolationException;
-import java.util.*;
+
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.Mockito.when;
 
-public class TrainingDAOTest extends DAOTest<Training>{/*
+public class TrainingInMemoryDAOTest extends DAOTest<Training>{
     @Override
     protected InMemoryDao<Training> getInstance() {
         return new TrainingInMemoryDao();
@@ -107,7 +111,6 @@ public class TrainingDAOTest extends DAOTest<Training>{/*
         configureOwnMap(new HashMap<>());
         when(storage.getTrainees()).thenReturn(new HashMap<>(Map.of(1L,trainee)));
         when(storage.getTrainers()).thenReturn(new HashMap<>(Map.of(1L,trainer)));
-        when(storage.getTrainingTypes()).thenReturn(new HashMap<>(Map.of(1L,trainingType)));
 
         //act
         Training actualTraining = dao.save(training);
@@ -135,7 +138,6 @@ public class TrainingDAOTest extends DAOTest<Training>{/*
         configureOwnMap(new HashMap<>(Map.of(1L,trainingBefore)));
         when(storage.getTrainees()).thenReturn(new HashMap<>(Map.of(1L,trainee)));
         when(storage.getTrainers()).thenReturn(new HashMap<>(Map.of(1L,trainer)));
-        when(storage.getTrainingTypes()).thenReturn(new HashMap<>(Map.of(1L,trainingType)));
 
         //act
         assertThat(dao.findById(1L)).isNotNull()
@@ -155,7 +157,7 @@ public class TrainingDAOTest extends DAOTest<Training>{/*
                 .hasFieldOrPropertyWithValue("trainer", trainer)
                 .hasFieldOrPropertyWithValue("trainingName", "Training #1")
                 .hasFieldOrPropertyWithValue("trainingType", trainingType)
-                .hasFieldOrPropertyWithValue("trainingDate", DateUtil.date(2023,Calendar.OCTOBER,1))
+                .hasFieldOrPropertyWithValue("trainingDate", DateUtil.date(2023, Calendar.OCTOBER,1))
                 .hasFieldOrPropertyWithValue("trainingDuration", 60);
-    }*/
+    }
 }

@@ -83,6 +83,6 @@ public class TrainingServiceImplTest {
         //assert
         assertThatThrownBy(() ->{throw thrown;})
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("(id) is not allowed to be null");
+                .hasMessage("id cannot be null");
     }
 }

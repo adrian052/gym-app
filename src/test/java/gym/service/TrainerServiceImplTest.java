@@ -62,7 +62,7 @@ public class TrainerServiceImplTest {
         //assert
         assertThatThrownBy(() ->{throw thrown;})
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("(firstName, lastName, specialization) are not allowed to be null");
+                .hasMessage("firstName cannot be null");
 
     }
 

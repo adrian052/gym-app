@@ -3,7 +3,7 @@ package gym.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "training_type")
+@Table(name = "trainingtype")
 public class TrainingType implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

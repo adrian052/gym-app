@@ -1,19 +1,23 @@
-package gym.dao;
+package gym.dao.inmemory;
 
-import gym.dao.inmemory.InMemoryDao;
-import gym.dao.inmemory.TraineeInMemoryDao;
+import gym.dao.DateUtil;
 import gym.entities.Trainee;
 import gym.entities.User;
 import org.junit.Test;
 import org.springframework.dao.DataIntegrityViolationException;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.Mockito.when;
-import java.util.*;
 
-public class InMemoryTraineeDaoTest extends DAOTest<Trainee>{
-    /*
+public class TraineeInMemoryDaoTest extends DAOTest<Trainee>{
+
     @Override
     protected InMemoryDao<Trainee> getInstance() {
         return new TraineeInMemoryDao();
@@ -26,7 +30,7 @@ public class InMemoryTraineeDaoTest extends DAOTest<Trainee>{
 
     protected Trainee entityWithDependencies(Long id){
         User user = new User(id, "John"+id, "Doe"+id, "John.Doe"+id, "secret_password"+id, true);
-        return new Trainee(id,DateUtil.date(2022, 8,2),"5 de Mayo", user);
+        return new Trainee(id, DateUtil.date(2022, 8,2),"5 de Mayo", user);
     }
 
     @Override
@@ -130,5 +134,5 @@ public class InMemoryTraineeDaoTest extends DAOTest<Trainee>{
                 .hasFieldOrPropertyWithValue("user", user)
                 .hasFieldOrPropertyWithValue("dateOfBirth", DateUtil.date(2022, 8, 3))
                 .hasFieldOrPropertyWithValue("address", null);
-    }*/
+    }
 }

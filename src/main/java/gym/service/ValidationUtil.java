@@ -8,11 +8,17 @@ public class ValidationUtil {
     private static final Logger logger = LoggerFactory.getLogger(ValidationUtil.class);
     private ValidationUtil(){}
 
-    public static void validateNotNull(Map<String, Object> params) {
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            if (entry.getValue() == null) {
-                String paramName = entry.getKey();
-                String errorMessage = String.format("%s cannot be null", paramName);
+    public static void validateNotNull(Object... keyValuePairs) {
+        if (keyValuePairs.length % 2 != 0) {
+            throw new IllegalArgumentException("Number of arguments must be even");
+        }
+
+        for (int i = 0; i < keyValuePairs.length; i += 2) {
+            String key = (String) keyValuePairs[i];
+            Object value = keyValuePairs[i + 1];
+
+            if (value == null) {
+                String errorMessage = String.format("%s cannot be null", key);
                 logger.error(errorMessage);
                 throw new IllegalArgumentException(errorMessage);
             }

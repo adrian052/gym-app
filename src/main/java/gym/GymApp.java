@@ -1,7 +1,8 @@
 package gym;
 
+import gym.entities.Trainee;
+import gym.entities.Trainer;
 import gym.facade.FacadeDbGym;
-import gym.service.Credentials;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.StandardEnvironment;
@@ -17,8 +18,8 @@ public class GymApp {
         context.scan("gym");
         context.refresh();
         FacadeDbGym facadeGym = context.getBean(FacadeDbGym.class);
-        Credentials credentials = new Credentials("Adrian.Ibarra","7hrPIIXgTO");
-        System.out.println(facadeGym.updateTrainee(credentials, 14L, "Antonio", "Ibarra", true,new Date(), "5 de Mayo"));
+        Trainee trainee = facadeGym.createTrainee("Adrian", "Ibarra",true, new Date(), "5 de mayo");
+        Trainer trainer = facadeGym.createTrainer("Fernando", "Ibarra", true, 1L);
         context.close();
     }
 }

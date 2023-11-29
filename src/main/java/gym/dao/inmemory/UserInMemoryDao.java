@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Component
 @Profile("memory")
-public class UserInMemoryDao extends InMemoryDao<User> implements DataAccessObject<User> {
+public class UserInMemoryDao extends InMemoryDao<User>{
     @Override
     protected Map<Long, User> getEntityMap() {
         return storage.getUsers();

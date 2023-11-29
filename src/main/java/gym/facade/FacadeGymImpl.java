@@ -1,8 +1,6 @@
 package gym.facade;
 
-import gym.entities.Trainee;
-import gym.entities.Trainer;
-import gym.entities.Training;
+import gym.entities.*;
 import gym.service.Credentials;
 import gym.service.TraineeService;
 import gym.service.TrainerService;
@@ -65,7 +63,7 @@ public class FacadeGymImpl implements FacadeGym {
     }
 
     @Override
-    public Trainer createTrainer(Credentials credentials, String firstName, String lastName, boolean isActive, Long specialization) {
+    public Trainer createTrainer(String firstName, String lastName, boolean isActive, Long specialization) {
         return trainerService.create(firstName, lastName, isActive,specialization);
     }
 

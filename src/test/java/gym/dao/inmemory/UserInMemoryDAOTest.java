@@ -1,16 +1,16 @@
-package gym.dao;
+package gym.dao.inmemory;
 
-import gym.dao.inmemory.InMemoryDao;
-import gym.dao.inmemory.UserInMemoryDao;
 import gym.entities.User;
 import org.junit.Test;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-public class UserDAOTest extends DAOTest<User>{/*
+public class UserInMemoryDAOTest extends DAOTest<User>{
     @Override
     protected InMemoryDao<User> getInstance() {
         return new UserInMemoryDao();
@@ -103,5 +103,5 @@ public class UserDAOTest extends DAOTest<User>{/*
                 .hasFieldOrPropertyWithValue("username", "Adrian.Ibarra")
                 .hasFieldOrPropertyWithValue("password", "secret_password")
                 .hasFieldOrPropertyWithValue("active", false);
-    }*/
+    }
 }

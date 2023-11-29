@@ -20,7 +20,7 @@ public interface FacadeGym {
 
     Trainer selectTrainer(Long id);
 
-    Trainer createTrainer(Credentials credentials, String firstName, String lastName, boolean isActive, Long specializationId);
+    Trainer createTrainer( String firstName, String lastName, boolean isActive, Long specializationId);
 
     Trainer updateTrainer(Credentials credentials, Long id, String firstName, String lastName, boolean isActive,Date birthDate,String address, Long specializationId);
 

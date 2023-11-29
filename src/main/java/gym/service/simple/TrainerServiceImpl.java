@@ -1,9 +1,6 @@
 package gym.service.simple;
 
 import gym.dao.DataAccessObject;
-import gym.dao.db.TrainerDbDao;
-import gym.dao.db.TrainingTypeDbDao;
-import gym.dao.db.UserDbDao;
 import gym.entities.Trainer;
 import gym.entities.User;
 import gym.entities.TrainingType;
@@ -19,7 +16,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.naming.AuthenticationException;
-import javax.xml.crypto.Data;
 import java.util.Map;
 
 @Service
@@ -34,17 +30,17 @@ public class TrainerServiceImpl implements TrainerService {
     protected static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
 
     @Autowired
-    public void setTrainerDAO(TrainerDbDao trainerDAO) {
+    public void setTrainerDAO(DataAccessObject<Trainer> trainerDAO) {
         this.trainerDAO = trainerDAO;
     }
 
     @Autowired
-    public void setTrainingTypeDAO(TrainingTypeDbDao trainingTypeDAO) {
+    public void setTrainingTypeDAO(DataAccessObject<TrainingType> trainingTypeDAO) {
         this.trainingTypeDAO = trainingTypeDAO;
     }
 
     @Autowired
-    public void setUserDAO(UserDbDao userDAO) {
+    public void setUserDAO(DataAccessObject<User> userDAO) {
         this.userDAO = userDAO;
     }
 
@@ -55,7 +51,7 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public Trainer create(String firstName, String lastName, boolean isActive, Long specialization) {
-        ValidationUtil.validateNotNull(Map.of("firstName",firstName,"lastName",lastName, "specialization",specialization));
+        ValidationUtil.validateNotNull("firstName",firstName,"lastName",lastName, "specialization",specialization);
         TrainingType trainingType = trainingTypeDAO.findById(specialization);
         return trainerDAO.save(new Trainer(null, trainingType,
                 UserCreationService.createUser(firstName, lastName, isActive, userDAO)));
@@ -63,7 +59,7 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public Trainer update(Credentials credentials, Long id, String firstName, String lastName, boolean isActive, Long specialization) throws AuthenticationException {
-        ValidationUtil.validateNotNull(Map.of("credentials",credentials,"id",id, "firstName",firstName, "lastName",lastName));
+        ValidationUtil.validateNotNull("credentials",credentials,"id",id, "firstName",firstName, "lastName",lastName);
         Trainer trainer = trainerDAO.findById(id);
         if (trainer != null) {
             User user = trainer.getUser();
@@ -82,7 +78,7 @@ public class TrainerServiceImpl implements TrainerService {
     }
     @Override
     public Trainer select(Long id) {
-        ValidationUtil.validateNotNull(Map.of("id",id));
+        ValidationUtil.validateNotNull("id",id);
         return trainerDAO.findById(id);
     }
 

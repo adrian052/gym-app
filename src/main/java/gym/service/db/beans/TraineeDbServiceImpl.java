@@ -19,7 +19,7 @@ import java.util.Map;
 public class TraineeDbServiceImpl extends TraineeServiceImpl implements TraineeDbService{
     @Override
     public boolean deleteByUsername(Credentials credentials, String username) throws AuthenticationException {
-        ValidationUtil.validateNotNull(Map.of("credentials",credentials,"username",username));
+        ValidationUtil.validateNotNull("credentials",credentials,"username",username);
         User user = ((UserDbDao)userDAO).findByUsername(username);
         authService.authenticationFlow(credentials,user);
         return traineeDAO.delete(user.getId());
@@ -27,13 +27,13 @@ public class TraineeDbServiceImpl extends TraineeServiceImpl implements TraineeD
 
     @Override
     public Trainee selectByUsername(String username) {
-        ValidationUtil.validateNotNull(Map.of("username", username));
+        ValidationUtil.validateNotNull("username", username);
         return ((TraineeDbDao)traineeDAO).findByUsername(username);
     }
 
     @Override
     public Trainee updatePassword(Credentials credentials, Long id, String newPassword) throws AuthenticationException {
-        ValidationUtil.validateNotNull(Map.of("credentials",credentials,"id",id,"newPassword",newPassword));
+        ValidationUtil.validateNotNull("credentials",credentials,"id",id,"newPassword",newPassword);
         Trainee trainee = traineeDAO.findById(id);
         User traineeUser = trainee.getUser();
         authService.authenticationFlow(credentials,traineeUser);
@@ -44,7 +44,7 @@ public class TraineeDbServiceImpl extends TraineeServiceImpl implements TraineeD
 
     @Override
     public Trainee updateStatus(Credentials credentials, Long id, boolean newStatus) throws AuthenticationException {
-        ValidationUtil.validateNotNull(Map.of("id",id,"credentials",credentials));
+        ValidationUtil.validateNotNull("id",id,"credentials",credentials);
         Trainee trainee = traineeDAO.findById(id);
         User user = trainee.getUser();
         authService.authenticationFlow(credentials,user);

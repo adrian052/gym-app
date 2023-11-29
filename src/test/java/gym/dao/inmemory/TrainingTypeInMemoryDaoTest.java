@@ -1,7 +1,5 @@
-package gym.dao;
+package gym.dao.inmemory;
 
-import gym.dao.inmemory.InMemoryDao;
-import gym.dao.inmemory.TrainingTypeInMemoryDao;
 import gym.entities.TrainingType;
 import org.junit.Test;
 import java.util.HashMap;
@@ -10,7 +8,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-public class TrainingTypeInMemoryDaoTest extends DAOTest<TrainingType>{/*
+public class TrainingTypeInMemoryDaoTest extends DAOTest<TrainingType>{
     @Override
     protected InMemoryDao<TrainingType> getInstance() {
         return new TrainingTypeInMemoryDao();
@@ -91,5 +89,5 @@ public class TrainingTypeInMemoryDaoTest extends DAOTest<TrainingType>{/*
         assertThat(actualTrainingType).isNotNull()
                 .hasFieldOrPropertyWithValue("id", expectedId)
                 .hasFieldOrPropertyWithValue("trainingTypeName", "Run");
-    }*/
+    }
 }

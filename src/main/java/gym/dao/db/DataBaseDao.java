@@ -1,6 +1,5 @@
 package gym.dao.db;
 
-import gym.service.ValidationUtil;
 import gym.entities.Identifiable;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
-import java.util.Map;
 
 public abstract class DataBaseDao<T extends Identifiable> {
 
@@ -34,7 +32,7 @@ public abstract class DataBaseDao<T extends Identifiable> {
 
 
     public T findById(Long id) {
-        ValidationUtil.validateNotNull(Map.of("id",id));
+        validateNotNull("id",id);
         try (Session session = sessionFactory.openSession()) {
             return session.get(getIdentifieableClass(), id);
         } catch (Exception e) {
@@ -45,7 +43,7 @@ public abstract class DataBaseDao<T extends Identifiable> {
 
 
     public T save(T entity) {
-        ValidationUtil.validateNotNull(Map.of("entity",entity));
+        validateNotNull("entity",entity);
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             session.merge(entity);
@@ -59,7 +57,7 @@ public abstract class DataBaseDao<T extends Identifiable> {
     }
 
     public boolean delete(Long id) {
-        ValidationUtil.validateNotNull(Map.of("id",id));
+        validateNotNull("id",id);
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             T entity = session.get(getIdentifieableClass(), id);
@@ -76,6 +74,23 @@ public abstract class DataBaseDao<T extends Identifiable> {
         } catch (Exception e) {
             logger.error("Error in delete method", e);
             throw e;
+        }
+    }
+
+    public void validateNotNull(Object... keyValuePairs) {
+        if (keyValuePairs.length % 2 != 0) {
+            throw new IllegalArgumentException("Number of arguments must be even");
+        }
+
+        for (int i = 0; i < keyValuePairs.length; i += 2) {
+            String key = (String) keyValuePairs[i];
+            Object value = keyValuePairs[i + 1];
+
+            if (value == null) {
+                String errorMessage = String.format("%s cannot be null", key);
+                logger.error(errorMessage);
+                throw new IllegalArgumentException(errorMessage);
+            }
         }
     }
 

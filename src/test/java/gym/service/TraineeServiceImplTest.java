@@ -7,6 +7,8 @@ import gym.entities.User;
 import gym.service.simple.TraineeServiceImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 
+import javax.naming.AuthenticationException;
 import java.util.Date;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -30,6 +33,10 @@ public class TraineeServiceImplTest {
     private DataAccessObject<Trainee> traineeDAO;
     @Mock
     private DataAccessObject<User> userDAO;
+
+    @Mock
+    private AuthService authService;
+    private static final Credentials credentials = new Credentials("mock_username", "mock_password");
 
     @Test
     public void givenValidRequest_whenCreateTrainee_thenTraineeShouldBeReturned() {
@@ -62,25 +69,25 @@ public class TraineeServiceImplTest {
         //assert
         assertThatThrownBy(() ->{throw thrown;})
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("(firstName, lastName) are not allowed to be null");
+                .hasMessage("firstName cannot be null");
     }
-/*
+
     @Test
     public void givenRequestWithNullValues_whenUpdateTrainee_thenUserShouldThrownAnException() {
         //Arrange
 
         //act
-        Throwable thrown = catchThrowable(() -> traineeService.update(null,null, null,
+        Throwable thrown = catchThrowable(() -> traineeService.update(credentials, null,null, null,
                 true, DateUtil.date(2022, 2, 2), "Address"));
         //assert
         assertThatThrownBy(() ->{throw thrown;})
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("(id, firstName, lastName) are not allowed to be null");
+                .hasMessage("id cannot be null");
     }
-*/
-    /*
+
+
     @Test
-    public void givenValidRequest_whenUpdateTrainee_thenUserShouldBeReturned() {
+    public void givenValidRequest_whenUpdateTrainee_thenUserShouldBeReturned() throws AuthenticationException {
         //Arrange
         User user = new User(1L,"John","Doe","John.Doe","XS29",true);
         when(traineeDAO.findById(1L))
@@ -89,7 +96,7 @@ public class TraineeServiceImplTest {
                 .thenReturn(new Trainee(1L, DateUtil.date(2022, 2, 20),"address2",user));
 
         //act
-        Trainee trainee = traineeService.update(1L, "John","Doe"
+        Trainee trainee = traineeService.update(credentials,1L, "John","Doe"
                 , true, DateUtil.date(2022, 2, 20),"address2");
         //assert
         assertThat(trainee).isNotNull()
@@ -97,32 +104,32 @@ public class TraineeServiceImplTest {
                 .hasFieldOrPropertyWithValue("user",user)
                 .hasFieldOrPropertyWithValue("dateOfBirth",DateUtil.date(2022, 2, 20))
                 .hasFieldOrPropertyWithValue("address","address2");
-    }*/
-/*
+    }
+
     @Test
     public void givenRequestWithTraineeNotSaved_whenUpdateTrainee_thenThrowAnException() {
         //Arrange
         //act
-        Throwable thrown = catchThrowable(() -> traineeService.update(1L, "John","Doe"
+        Throwable thrown = catchThrowable(() -> traineeService.update(credentials, 1L, "John","Doe"
                 , true, DateUtil.date(2022, 2, 20),"address2"));
         //assert
         assertThatThrownBy(() ->{throw thrown;})
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessage("Unable to update the trainee, entity not found");
     }
-*/
-    /*
+
+
     @Test
     public void givenInvalidRequest_whenDelete_thenThrowAnException() {
         //Arrange
         //act
-        Throwable thrown = catchThrowable(() -> traineeService.delete(null));
+        Throwable thrown = catchThrowable(() -> traineeService.delete(credentials,null));
         //assert
         assertThatThrownBy(() ->{throw thrown;})
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("(id) is not allowed to be null");
+                .hasMessage("id cannot be null");
     }
-*/
+
     @Test
     public void givenInvalidRequest_whenSelect_thenThrowAnException() {
         //Arrange
@@ -131,7 +138,7 @@ public class TraineeServiceImplTest {
         //assert
         assertThatThrownBy(() ->{throw thrown;})
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("(id) is not allowed to be null");
+                .hasMessage("id cannot be null");
     }
 
 }

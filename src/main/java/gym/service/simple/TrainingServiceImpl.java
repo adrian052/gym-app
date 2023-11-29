@@ -29,22 +29,22 @@ public class TrainingServiceImpl implements TrainingService {
     private AuthService authService;
 
     @Autowired
-    public void setTraineeDAO(TraineeDbDao traineeDAO) {
+    public void setTraineeDAO(DataAccessObject<Trainee> traineeDAO) {
         this.traineeDAO = traineeDAO;
     }
 
     @Autowired
-    public void setTrainerDAO(TrainerDbDao trainerDAO) {
+    public void setTrainerDAO(DataAccessObject<Trainer> trainerDAO) {
         this.trainerDAO = trainerDAO;
     }
 
     @Autowired
-    public void setTrainingTypeDAO(TrainingTypeDbDao trainingTypeDAO) {
+    public void setTrainingTypeDAO(DataAccessObject<TrainingType> trainingTypeDAO) {
         this.trainingTypeDAO = trainingTypeDAO;
     }
 
     @Autowired
-    public void setTrainingDAO(TrainingDbDao trainingDAO) {
+    public void setTrainingDAO(DataAccessObject<Training> trainingDAO) {
         this.trainingDAO = trainingDAO;
     }
 
@@ -55,8 +55,8 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training create(Credentials credentials, Long traineeId, Long trainerId, String trainingName, Long trainingTypeId, Date trainingDate, int trainingDuration) throws AuthenticationException {
-        ValidationUtil.validateNotNull(Map.of("traineeId",traineeId, "trainerId",trainerId, "trainingName",trainingName,
-                "trainingTypeId", trainingTypeId, "trainingDate",trainingDate));
+        ValidationUtil.validateNotNull("traineeId",traineeId, "trainerId",trainerId, "trainingName",trainingName,
+                "trainingTypeId", trainingTypeId, "trainingDate",trainingDate);
         User user = trainerDAO.findById(traineeId).getUser();
         authService.authenticationFlow(credentials,user);
         Training training = new Training();
@@ -71,7 +71,7 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training select(Long id){
-        ValidationUtil.validateNotNull(Map.of("id",id));
+        ValidationUtil.validateNotNull("id",id);
         return trainingDAO.findById(id);
     }
 

@@ -15,7 +15,7 @@ import java.util.Map;
 public class TrainingDbServiceImpl extends TrainingServiceImpl implements TrainingDbService {
     @Override
     public List<Training> getTraineeTrainingsByTrainingName(String username, String trainingName) {
-        ValidationUtil.validateNotNull(Map.of("username",username,"trainingName",trainingName));
+        ValidationUtil.validateNotNull("username",username,"trainingName",trainingName);
         return ((TrainingDbDao)trainingDAO).getTraineeTrainingsByUsername(username).stream()
                 .filter(training -> training.getTrainingName().equalsIgnoreCase(trainingName))
                 .toList();
@@ -23,7 +23,7 @@ public class TrainingDbServiceImpl extends TrainingServiceImpl implements Traini
 
     @Override
     public List<Training> getTraineeTrainingsByDuration(String username, int minDuration, int maxDuration) {
-        ValidationUtil.validateNotNull(Map.of("username",username));
+        ValidationUtil.validateNotNull("username",username);
         return ((TrainingDbDao)trainingDAO).getTraineeTrainingsByUsername(username).stream()
                 .filter(training -> training.getTrainingDuration() >= minDuration && training.getTrainingDuration() <= maxDuration)
                 .toList();
@@ -31,7 +31,7 @@ public class TrainingDbServiceImpl extends TrainingServiceImpl implements Traini
 
     @Override
     public List<Training> getTrainerTrainingsByTrainingName(String username, String trainingName) {
-        ValidationUtil.validateNotNull(Map.of("username",username,"trainingName",trainingName));
+        ValidationUtil.validateNotNull("username",username,"trainingName",trainingName);
         return ((TrainingDbDao)trainingDAO).getTrainerTrainingsByUsername(username).stream()
                 .filter(training -> training.getTrainingName().equalsIgnoreCase(trainingName))
                 .toList();
@@ -39,7 +39,7 @@ public class TrainingDbServiceImpl extends TrainingServiceImpl implements Traini
 
     @Override
     public List<Training> getTrainerTrainingsByDuration(String username, int minDuration, int maxDuration) {
-        ValidationUtil.validateNotNull(Map.of("username",username));
+        ValidationUtil.validateNotNull("username",username);
         return ((TrainingDbDao)trainingDAO).getTrainerTrainingsByUsername(username).stream()
                 .filter(training -> training.getTrainingDuration() >= minDuration && training.getTrainingDuration() <= maxDuration)
                 .toList();

@@ -23,7 +23,7 @@ public class TrainingDbDaoImpl extends DataBaseDao<Training> implements Training
 
     @Override
     public List<Training> getTraineeTrainingsByUsername(String traineeUsername) {
-        ValidationUtil.validateNotNull(Map.of("traineeUsername",traineeUsername));
+        ValidationUtil.validateNotNull("traineeUsername",traineeUsername);
         try (Session session = sessionFactory.openSession()) {
             String hql = "SELECT t FROM Training t JOIN FETCH t.trainee tr JOIN FETCH tr.user u WHERE u.username = :username";
             Query<Training> query = session.createQuery(hql, Training.class);
@@ -37,7 +37,7 @@ public class TrainingDbDaoImpl extends DataBaseDao<Training> implements Training
 
     @Override
     public List<Training> getTrainerTrainingsByUsername(String trainerUsername) {
-        ValidationUtil.validateNotNull(Map.of("trainerUsername",trainerUsername));
+        ValidationUtil.validateNotNull("trainerUsername",trainerUsername);
         try (Session session = sessionFactory.openSession()) {
             String hql = "SELECT t FROM Training t JOIN FETCH t.trainer tr JOIN FETCH tr.user u WHERE u.username = :username";
             Query<Training> query = session.createQuery(hql, Training.class);

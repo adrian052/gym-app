@@ -21,7 +21,7 @@ public class TrainerDbDaoImpl extends DataBaseDao<Trainer> implements TrainerDbD
 
     @Override
     public Trainer findByUsername(String username) {
-        ValidationUtil.validateNotNull(Map.of("username",username));
+        ValidationUtil.validateNotNull("username",username);
         try (Session session = sessionFactory.openSession()) {
             String hql = "SELECT t FROM Trainer t JOIN FETCH t.user u WHERE u.username = :username";
             Query<Trainer> query = session.createQuery(hql, Trainer.class);
