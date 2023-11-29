@@ -57,7 +57,7 @@ public class TrainingServiceImpl implements TrainingService {
     public Training create(Credentials credentials, Long traineeId, Long trainerId, String trainingName, Long trainingTypeId, Date trainingDate, int trainingDuration) throws AuthenticationException {
         ValidationUtil.validateNotNull("traineeId",traineeId, "trainerId",trainerId, "trainingName",trainingName,
                 "trainingTypeId", trainingTypeId, "trainingDate",trainingDate);
-        User user = trainerDAO.findById(traineeId).getUser();
+        User user = trainerDAO.findById(trainerId).getUser();
         authService.authenticationFlow(credentials,user);
         Training training = new Training();
         training.setTrainee(traineeDAO.findById(traineeId));

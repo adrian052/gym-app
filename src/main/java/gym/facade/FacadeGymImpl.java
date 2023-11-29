@@ -33,7 +33,7 @@ public class FacadeGymImpl implements FacadeGym {
     }
 
     @Override
-    public Trainee createTrainee(String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
+    public Credentials createTrainee(String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
         return traineeService.create(firstName, lastName, isActive, dateOfBirth, address);
     }
 
@@ -63,12 +63,12 @@ public class FacadeGymImpl implements FacadeGym {
     }
 
     @Override
-    public Trainer createTrainer(String firstName, String lastName, boolean isActive, Long specialization) {
+    public Credentials createTrainer(String firstName, String lastName, boolean isActive, Long specialization) {
         return trainerService.create(firstName, lastName, isActive,specialization);
     }
 
     @Override
-    public Trainer updateTrainer(Credentials credentials, Long id, String firstName, String lastName, boolean isActive,Date birthDate,String address, Long specializationId) {
+    public Trainer updateTrainer(Credentials credentials, Long id, String firstName, String lastName, boolean isActive, Long specializationId) {
         try{
             return trainerService.update(credentials, id, firstName, lastName, isActive,specializationId);
         }catch (AuthenticationException e){

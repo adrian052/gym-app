@@ -50,11 +50,12 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public Trainer create(String firstName, String lastName, boolean isActive, Long specialization) {
+    public Credentials create(String firstName, String lastName, boolean isActive, Long specialization) {
         ValidationUtil.validateNotNull("firstName",firstName,"lastName",lastName, "specialization",specialization);
         TrainingType trainingType = trainingTypeDAO.findById(specialization);
-        return trainerDAO.save(new Trainer(null, trainingType,
-                UserCreationService.createUser(firstName, lastName, isActive, userDAO)));
+        User user = UserCreationService.createUser(firstName, lastName, isActive, userDAO);
+        trainerDAO.save(new Trainer(null, trainingType, user));
+        return new Credentials(user.getUsername(),user.getPassword());
     }
 
     @Override

@@ -11,7 +11,7 @@ public interface FacadeGym {
     Trainee selectTrainee(Long id);
 
 
-    Trainee createTrainee(String firstName, String lastName, boolean isActive, Date dateOfBirth, String address);
+    Credentials createTrainee(String firstName, String lastName, boolean isActive, Date dateOfBirth, String address);
 
     Trainee updateTrainee(Credentials credentials, Long id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address);
 
@@ -20,9 +20,9 @@ public interface FacadeGym {
 
     Trainer selectTrainer(Long id);
 
-    Trainer createTrainer( String firstName, String lastName, boolean isActive, Long specializationId);
+    Credentials createTrainer( String firstName, String lastName, boolean isActive, Long specializationId);
 
-    Trainer updateTrainer(Credentials credentials, Long id, String firstName, String lastName, boolean isActive,Date birthDate,String address, Long specializationId);
+    Trainer updateTrainer(Credentials credentials, Long id, String firstName, String lastName, boolean isActive,Long specializationId);
 
 
     Training selectTraining(Long id);

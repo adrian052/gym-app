@@ -71,13 +71,13 @@ public class FacadeDbGymImpl extends FacadeGymImpl implements FacadeDbGym{
 
     @Override
     public Trainer selectTrainerByUsername(String username) {
-        return ((TrainerDbService)traineeService).selectByUsername(username);
+        return ((TrainerDbService)trainerService).selectByUsername(username);
     }
 
     @Override
     public Trainer updateTrainerPassword(Credentials credentials, Long id, String newPassword) {
         try{
-            return ((TrainerDbService)traineeService).updatePassword(credentials, id, newPassword);
+            return ((TrainerDbService)trainerService).updatePassword(credentials, id, newPassword);
         }catch (AuthenticationException e){
             logger.error(AUTH_ERROR,e.getMessage());
             return null;
@@ -87,7 +87,7 @@ public class FacadeDbGymImpl extends FacadeGymImpl implements FacadeDbGym{
     @Override
     public Trainer activateTrainer(Credentials credentials, Long id) {
         try{
-            return ((TrainerDbService)traineeService).updateStatus(credentials,id, true);
+            return ((TrainerDbService)trainerService).updateStatus(credentials,id, true);
         }catch (AuthenticationException e){
             logger.error(AUTH_ERROR,e.getMessage());
             return null;
@@ -98,7 +98,7 @@ public class FacadeDbGymImpl extends FacadeGymImpl implements FacadeDbGym{
     @Override
     public Trainer deactivateTrainer(Credentials credentials, Long id) {
         try{
-            return ((TrainerDbService)traineeService).updateStatus(credentials,id, false);
+            return ((TrainerDbService)trainerService).updateStatus(credentials,id, false);
         }catch (AuthenticationException e){
             logger.error(AUTH_ERROR,e.getMessage());
             return null;

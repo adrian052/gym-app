@@ -22,6 +22,7 @@ import java.util.Date;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -50,13 +51,9 @@ public class TraineeServiceImplTest {
         when(traineeDAO.save(any(Trainee.class)))
                 .thenReturn(new Trainee(1L, dateOfBirth,address,user));
         //act
-        Trainee trainee = traineeService.create(firstName, lastName, isActive, dateOfBirth, address);
+        Credentials traineeCredentials = traineeService.create(firstName, lastName, isActive, dateOfBirth, address);
         //assert
-        assertThat(trainee).isNotNull()
-                .hasFieldOrPropertyWithValue("id",1L )
-                .hasFieldOrPropertyWithValue("user",user)
-                .hasFieldOrPropertyWithValue("dateOfBirth",dateOfBirth)
-                .hasFieldOrPropertyWithValue("address",address);
+        assertEquals(traineeCredentials.username(), "John.Doe");
     }
 
 

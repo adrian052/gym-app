@@ -14,6 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -44,12 +45,9 @@ public class TrainerServiceImplTest {
         when(trainerDAO.save(any()))
                 .thenReturn(new Trainer(1L, trainingType,user));
         //act
-        Trainer trainee = trainerService.create(firstName,lastName,isActive,1L);
+        Credentials trainerCredentials = trainerService.create(firstName,lastName,isActive,1L);
         //assert
-        assertThat(trainee).isNotNull()
-                .hasFieldOrPropertyWithValue("id",1L )
-                .hasFieldOrPropertyWithValue("specialization", trainingType)
-                .hasFieldOrPropertyWithValue("user",user);
+        assertEquals("John.Doe", trainerCredentials.username());
 
     }
 
@@ -66,16 +64,16 @@ public class TrainerServiceImplTest {
 
     }
 
-/*
+
     @Test
     public void givenRequestWithNullValues_whenUpdateTrainee_thenUserShouldThrownAnException() {
         //Arrange
         //act
-        Throwable thrown = catchThrowable(() -> trainerService.update(null, null,null,true,null));
+        Throwable thrown = catchThrowable(() -> trainerService.update(new Credentials("mock", "mock"),null, null,null,true,null));
         //assert
         assertThatThrownBy(() ->{throw thrown;})
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("(id, firstName, lastName, specialization) are not allowed to be null");
+                .hasMessage("id cannot be null");
     }
-*/
+
 }

@@ -58,10 +58,11 @@ public class TraineeServiceImpl implements TraineeService {
     }
 
     @Override
-    public Trainee create(String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
+    public Credentials create(String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
         ValidationUtil.validateNotNull("firstName",firstName,"lastName",lastName);
-        return traineeDAO.save(new Trainee(null, dateOfBirth, address,
-                UserCreationService.createUser(firstName, lastName, isActive,userDAO)));
+        User user = UserCreationService.createUser(firstName, lastName, isActive,userDAO);
+        traineeDAO.save(new Trainee(null, dateOfBirth, address,user));
+        return new Credentials(user.getUsername(), user.getPassword());
     }
 
     @Override
